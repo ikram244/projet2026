@@ -1,0 +1,95 @@
+{
+  "echelon": "J",
+  "note": "Regles operationnelles collectees aupres des ouvriers/salle de controle. A etendre a K et L une fois confirmees identiques.",
+  "parametres": {
+    "TIC_sortie_ech": {
+      "label": "Temperature sortie echangeur",
+      "min": 76,
+      "max": 80,
+      "unite": "degC",
+      "contrainte_associee": "ecart_entree_sortie"
+    },
+    "TI_entree_ech": {
+      "label": "Temperature entree echangeur",
+      "min": 79,
+      "max": 83,
+      "unite": "degC",
+      "contrainte_associee": "ecart_entree_sortie"
+    },
+    "ecart_entree_sortie": {
+      "label": "Ecart temperature entree/sortie echangeur",
+      "min": 3,
+      "max": 4,
+      "unite": "degC",
+      "action_si_hors_plage": "Agir sur le debit (ou autre parametre) pour revenir a l'ecart standard, independamment des plages absolues individuelles."
+    },
+    "PI_boucle": {
+      "label": "Pression boucle",
+      "min": 2.15,
+      "max": 2.26,
+      "unite": "bar",
+      "risques": [
+        {"condition": "depasse 2.26 bar", "consequence": "Chute de temperature, risque sur l'echangeur."},
+        {"condition": "boucle se vide (pression tres basse)", "consequence": "Vibrations puis montee rapide de temperature.", "action": "Diminuer le debit d'acide sorti (prod_sortie_54) et/ou la vitesse de rotation de la pompe AP05 (parametres distincts)."}
+      ]
+    },
+    "PI_calendre": {
+      "label": "Pression calandre",
+      "zone_normale_max": 0.90,
+      "unite": "bar",
+      "seuils_arret": [0.90, 0.96, 1.02],
+      "action_si_seuil_atteint": "Arret de l'echelon et nettoyage obligatoire."
+    },
+    "PI_separateur": {
+      "label": "Vide separateur / bouilleur",
+      "max_normal": 120,
+      "unite": "mmHg",
+      "ecart_bouilleur_separateur": 10,
+      "risques": [
+        {"condition": "boucle extremement pleine", "consequence": "Le vide monte a 130-140 mmHg — zone de danger."},
+        {"condition": ">120 mmHg", "consequence": "Bruit dans la pompe."}
+      ],
+      "redondance": "Si le bouilleur ou le separateur tombe en panne, on bascule sur l'autre."
+    },
+    "prod_sortie_54": {
+      "label": "Debit de sortie de l'acide concentre 54% (tag FIC250, pompe AP05)",
+      "unite": "m3/h",
+      "seuils": "NON CONFIRMES -- a fournir. Exemple observe dans le code : ~19 m3/h en fonctionnement normal ; reduit a ~10 m3/h quand la boucle se vide.",
+      "note": "Parametre ajoute recemment au modele (v3 du CSV). Distinct de la vitesse de rotation propre de la pompe AP05 (max 1470 L/min), qui n'est pas une variable du modele."
+    },
+    "vanne_vapeur": {
+      "label": "Ouverture vanne vapeur",
+      "ouverture_normale_pct": 55,
+      "pas_ajustement_pct": 2,
+      "logique_ajustement": "Si le labo (mesure toutes les 2h) indique une densite encore inferieure a la cible, l'ouvrier augmente le debit de vapeur entrant par pas de 2%. Fonctionnement normal, pas d'arret associe.",
+      "seuil_arret_pct": 100,
+      "action_si_seuil_atteint": "Declenchement du TAR (arret automatique)."
+    },
+    "vapeur_amont": {
+      "pression_arrivee_bar": 5,
+      "pression_apres_detente_bar": 2,
+      "debit_moyen_t_h": 45,
+      "note": "Detente 5->2 bar via vanne pour proteger les instruments."
+    }
+  },
+  "demarrage": {
+    "temperature_vapeur_premier_demarrage_degC": [56, 84],
+    "temperature_chauffage_initiale_acide_28pct_degC": [56, 60],
+    "note": "Temperature minimale pour amorcer la concentration et atteindre la densite cible."
+  },
+  "equipements": {
+    "AS05": {
+      "designation_correcte": "Devesiculeur (separateur de gouttelettes)",
+      "localisation": "Station de desurchauffe, avec le desurchauffeur 604AD04",
+      "role": "Retient les gouttelettes de liquide entrainees dans le flux gaz/vapeur avant qu'elles ne repartent dans le circuit.",
+      "source": "KOFERT deck, slide 107"
+    },
+    "AP05": {
+      "designation": "Pompe acide concentre sorti (604AP05)",
+      "debit_nominal_m3_h": 18,
+      "densite_produit": "1.65 a 1.72",
+      "parametres_distincts": ["debit d'acide sorti = prod_sortie_54 (variable du modele)", "vitesse de rotation propre (max 1470 L/min, hors modele)"],
+      "source": "dicte + KOFERT deck slide 114"
+    }
+  }
+}

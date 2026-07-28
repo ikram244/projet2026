@@ -1,0 +1,870 @@
+[
+  {
+    "id": "slide_5",
+    "slide": 5,
+    "module": "MODULE 1",
+    "section": "SCHEMA GENERAL  KOFERT",
+    "text": "L’usine  KOFERT   est  une unité  de  production  des engrais  DAP de capacité 1Mt/an.  Elle est construite dans le but   de répondre à la demande du marché en  Engrais suivant la stratégie  du groupe  OCP    INTRODUCTION"
+  },
+  {
+    "id": "slide_6",
+    "slide": 6,
+    "module": "MODULE 1",
+    "section": "SCHEMA GENERAL  KOFERT",
+    "text": "CAPACITE DE PRODUCTION       L’usine KOFERT se compose des unités suivantes; Unité des Utilités  Unité Sulfurique,   Unité Phosphorique,    Unité Engrais.    Services de Maintenance :                Mécanique – Electrique – Instrumentation-génie civil-Services annexes Description de  KOFERT"
+  },
+  {
+    "id": "slide_7",
+    "slide": 7,
+    "module": "MODULE 1",
+    "section": "SCHEMA GENERAL  KOFERT",
+    "text": "Capacité des ateliers de production:  -DAP \t                            :  1.000.000 T/an    -phosphorique \t                 : 450.000 T P2O5/an     -sulfurique  avec  HRS\t        :  4200 TMH/J   -  centrale  de capacité         : 66  MWH                      CAPACITE  DE PRODUCTION"
+  },
+  {
+    "id": "slide_9",
+    "slide": 9,
+    "module": "MODULE 1",
+    "section": "CENTRALE",
+    "text": "L’atelier produit et distribue les utilités aux différents ateliers de KOFERT: Description de l’atelier des utilités"
+  },
+  {
+    "id": "slide_11",
+    "slide": 11,
+    "module": "MODULE 1",
+    "section": "SULFURIQUE",
+    "text": "HV601 HV602 HV621 Filtre  à  air TV117 Tour de s é chage TV116 Moto soufflantes Four  Chaudi è res HP Convertisseur  Surch . 1B Ech. gaz/gaz chaud Ech. gaz/gaz froid Eco. 3B Tour HRS Tour finale     é co.4A/4C Chemin é e  4 3 2 1 Circuit de gaz"
+  },
+  {
+    "id": "slide_12",
+    "slide": 12,
+    "module": "MODULE 1",
+    "section": "SULFURIQUE",
+    "text": "Tour finale Tour de s é chage Vers le 2 é me   é tage de la tour HRS Bac de pompage commun Refroidisseur de la TS Refroidisseur d ’ acide     produit Vers la production HV635 Vers les dilueurs (forte humidit é ) Eau             de dilution Acide provenant du pr é chauffeur HRS Circuit acide"
+  },
+  {
+    "id": "slide_13",
+    "slide": 13,
+    "module": "MODULE 1",
+    "section": "SULFURIQUE",
+    "text": "L’atelier sulfurique se compose d’une seule ligne conçue  à fabriquer l’acide sulfurique à 98,5% (4200TMH/j) et de la vapeur à haute pression (60bars) ( 218T/h ) destinés principalement pour la fabrication de l'acide phosphorique et l’ é nergie électrique Les principales étapes de fabrication de H 2 SO 4   : S      +    O 2                         SO 2     +   Q 1  (combustion) SO 2   +     1/2O 2                  SO 3      +   Q 2  (conversion) SO 3   +     H 2 O                 H 2 SO 4  + Q 3   (absorption)   Description  de l’atelier sulfurique"
+  },
+  {
+    "id": "slide_15",
+    "slide": 15,
+    "module": "MODULE 1",
+    "section": "ENGRAIS",
+    "text": "Lavage des gaz Gaz    Recyclage liquide de lavage Cyclonage ATM Gaz Recyclage poussières Acide phosphorique Ammoniac gaz Ammoniac liquide Séchage Criblage   Refroidissement Enrobage Gaz      Chauds Recyclage produit Réaction Granulation Chargement et transport Hall de stockage 2x100 KT 79 j autonomie CIRCUIT  DE PROCEDE"
+  },
+  {
+    "id": "slide_16",
+    "slide": 16,
+    "module": "MODULE 1",
+    "section": "ENGRAIS",
+    "text": "Une ligne des engrais est composée des sections        suivantes: -Attaque: acide phosphorique 42% P2O5+ l’ammoniac gaz -Lavage des gaz -Granulation de la bouillie -Séchage du produit -Criblage +recyclage du refus  -Section de refroidissement -Enrobage du produit fini -Cyclonage (dépoussiérage) -Stockage et expédition"
+  },
+  {
+    "id": "slide_19",
+    "slide": 19,
+    "module": "MODULE 1",
+    "section": "Implantation du lot phosphorique",
+    "text": "L’usine  d'acide phosphorique à Jorf Lasfar ODI  P1est  conçue pour produire 450.000 t / an de P2O5 sous  forme  d'acide phosphorique par le processus de  di hydrate  Jacobs .   La production journalière  est de 1500 t / j (62,5 t / h)  avec un rendement de 95%. La totalité du  P2O5  produite est destinée pour la production des engrais (DAP).           INTROUCTION"
+  },
+  {
+    "id": "slide_21",
+    "slide": 21,
+    "module": "MODULE 1",
+    "section": "SCHEMA        DE                  PRINCIPE",
+    "text": "Epaississement REACTION CAP FILTRATION ACIDE 28% ACIDE 54% FSA Bassin froid LAVEUR DES FUMEES Gypse Pulpe TS : 53%     H2SO4 98.5% JPH   Eau brute de TED Bassin chaud TOUR DE REFROIDISSEMENT ENGRAIS STOCK  FSA 24% Acide phosphorique Eau froide Eau chaude Fumée FSA Bassin froid"
+  },
+  {
+    "id": "slide_22",
+    "slide": 22,
+    "module": "MODULE 1",
+    "section": "SCHEMA        DE                  PRINCIPE",
+    "text": "La fabrication de l’acide phosphorique a besoin des matières premieres suivantes: -Le phosphate humide 65% de solide,31,12% de P2O5 -L’acide sulfurique 98,5%,densité 1,81 -L’eau brute  A noter aussi que cette fabrication à besoin des autres produits comme: -La vapeur basse pression -L’energie éléctrique -L’air de service et instrument -Le floculant et anti-mousse -L’eau de mer     Matieres  premieres"
+  },
+  {
+    "id": "slide_23",
+    "slide": 23,
+    "module": "MODULE 1",
+    "section": "SCHEMA        DE                  PRINCIPE",
+    "text": "Elements Plage de variation Teneur moyenne  %P 2 O 5 30.89 – 31.46 31.12 BPL 67.30 – 68.75 68.0* %CaO 50.85 – 51.45 51.15 CaO/ P 2 O 5   1.64* %CO 2 6.20 – 7.00 6.50 %Fe 2 O 3 0.22 – 0.30 0.28 %Al 2 O 3 0.38 – 0.50 0.40 Al 2 O 3 /P 2 O 5   0.015* %  matieres organiques 0.19 – 0.25   %MgO 0.35 – 0.50 0.45 % Cl 0.10 – 0.03   %F 3.76 – 3.90   %SiO 2 2.20 – 2.80 2.50 %Na 2 O 0.77 – 0.91   %K 2 O 0.06 – 0.08   %SO 3 1.65 – 1.75 1.70 Divers   0.036* Consommation   H 2 SO 4   t/t P 2 O 5   3.06* Caractéristique chimiques du phosphate utilisé"
+  },
+  {
+    "id": "slide_24",
+    "slide": 24,
+    "module": "MODULE 1",
+    "section": "SCHEMA        DE                  PRINCIPE",
+    "text": "L’atelier  phosphorique se compose des unités suivantes:    *  602A  : Stockage, épaississement, et alimentation de la réaction en  pulpe.   *603A  : Réaction – filtration –  laveur des fumées .  *613A  : Stockage et clarification d’acide 28 %.   *604A:Concentration  acide 54 % et  distribution  des utilités.   *604B  :   production du FSA (Acide fluosilicique ).   * 614A  : Stockage et clarification d’acide  54%  . *625E : Tour de refroidissement des eaux de procédé.         DESCRIPTION"
+  },
+  {
+    "id": "slide_26",
+    "slide": 26,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "L’unité 602A  se compose des équipements suivants : -02 bacs agités  de réception de la  pulpe à partir du JPH: 602AAR02-BR02  de  capacité utile  2500m 3 par bac: (d=15m,ht=15m,hu=14,5m). -01 épaississeur (décanteur): 602AAR03  de  capacité utile  2200m3   (d=20m , h=5m , hauteur du cône = 06m). -02  bacs  d’alimentation de la réaction: 602AAR06-BR06 760 m3 par bac (d =10m, h= 08m,hauteur du cône=05m). -01 bac de récupération de l’eau de débordement du décanteur: 602AAR07 147m3 (d=05m,  ht /hu=08/07,5m). -01fosse de recuperation de la pulpe et l’eau: 602AAR01  de  capacité  10,6m3( ht/ hu = 02/1,7m, L=02,5 , l=02,5m). - D’un ensemble de  pompes  de transfert entre ces bacs  ou vers la  réaction ."
+  },
+  {
+    "id": "slide_27",
+    "slide": 27,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "Pulpe  : JPH           vers réacteur Epaississeur R02 602AP02 R07 R03 R06 Eau de  procédé vers la  tour de refroidissement R03 602AP05 602AP03 602AP07 602AP06 Floculant 188 m3/h 325t/h Ts =65 % D= 1,73 261m3/h399t/h Ts=53% D=1,53 SCHEMA DE PROCEDE"
+  },
+  {
+    "id": "slide_28",
+    "slide": 28,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "Description de l’ épaississeur  (602AAR03 )  L’épaississeur est un   décanteur  en  acier au carbone avec un  revêtement intérieur.  Les  principales composantes  de l’  épaississeur sont :        -Le groupe d’entrainement . -Le racleur qui permis l’entrainement du solide vers le cône de décharge. -Le puits et le  cône de  décharge. -Les  supports   qui sont  en acier au carbone. - La  passerelle  au dessus de l’épaississeur. -  La conduite d’alimentation en pulpe  placée  sous la passerelle du décanteur."
+  },
+  {
+    "id": "slide_29",
+    "slide": 29,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "FLOCULANT SUPPORTS GROUPE D’ENTRAINEMENT ALIMENTATION     EN PULPE  PASSERELLE RACLEUR CONE DE DECHARGE GOULOTTE  DE SOUVERSE EPAISSISSEUR (602AAR03)             PUIT               D’ALIMENTATION Principales composantes"
+  },
+  {
+    "id": "slide_30",
+    "slide": 30,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "ALIMENTATION  PULPE 53% SUPPORT RACLEUR CONE DE DECHARGE ALIMENTATION TANGENTIELLE EAU CLAIRE DE SURFACE 10% DE SOLIDE 53-55% DE  SOLIDE EPAISSISSEUR FLOCULANT Alimentation du puits"
+  },
+  {
+    "id": "slide_31",
+    "slide": 31,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "Puits d’alimentation   L’alimentation  de la pulpe vers le puits se fait de façon tangentielle afin de créer un écoulement en spirale qui crée l’agitation nécessaire pour bien mélanger la pulpe, l’eau de surface et le floculant dans le puits d’alimentation.    Bac principal Le bac principal  contient trois zones avec des solutions de différentes densité. La première zone contient la solution clarifiée à la surface, la deuxième, à mi-hauteur contient une solution de concentration intermédiaire et la troisième est la pulpe épaissie extraite vers la fosse au fond de l’épaississeur"
+  },
+  {
+    "id": "slide_32",
+    "slide": 32,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "PASSERELLE ZONE DE SOLUTION CLARIFIE ZONE DE CONCENTRATION INTERMIDIAIRE ZONE DE PULPE EPAISSIE EPAISSISSEUR   (602AAR03 ) ENTREE PULPE Zones de décantation"
+  },
+  {
+    "id": "slide_33",
+    "slide": 33,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "La  pulpe de  phosphate de 53 % de solide est  livrée à l’atelier  PAP  par le JPH  vers les  bacs de  réception 602AAR02 et 602ABR02, avec une possibilité d’alimenter directement les 02 bacs (AR06-BR06) de reprise de la pulpe vers la réaction. La  pulpe est pompée vers  l’épaississeur 602AAR03 où elle est mélangée  avec le floculant dans la conduite de la pulpe juste avant l’entrée du  puits. une circulation de pulpe du cône de décharge    par les pompes  602AAP05 - KP05 (débit=220m3 )pour  éviter un  sur-épaississement ou une baisse de la densité de  la pulpe (voir principe de fonctionnement de l’épaississeur ). DESCRIPTION  DU PROCEDE"
+  },
+  {
+    "id": "slide_34",
+    "slide": 34,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "La décantation à pour rôle d’augmenter le taux de solide de la pulpe de (53  à 65%)  par  gravitation  avec un  appoint de   floculant  ( csp :10-40 g/t de phosphate sec) et d’une concentration dans l’eau de 01 à  02 g/l de solution   pour pousser la décantation et une alimentation d’air de service dans la zone intermédiaire pour pousser la séparation de l’eau et du solide par poussée d’air vers le haut suivant le principe de variation de densité. La  sortie du puits d’alimentation se situe dans la zone intermédiaire. Les solides en suspension dans cette zone agissent comme un filtre. Les particules solides qui sortent du  puits  sont captées  par celles déjà  présentes dans cette zone. L’agglomération des solides  augmente  leur densité et  forme  des  flocs qui se décantent  vers  le fond du décanteur .                                                                                                             Décantation"
+  },
+  {
+    "id": "slide_36",
+    "slide": 36,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "Le solide est évacué vers le cône de décharge par un racleur entraine par  04 moteurs  électrique(0,121 t/mn)   et de puissance totale 30 kw(7,5 kw/moteur), la  pulpe atteint un taux de solide de 65% au niveau du cône de décharge puis refoulée  par les pompes  602AAP03-BP03  - KP03  ( 220  m3/h/ ppe )  vers  les bacs  602AAR06   -BR06 chaque bac est équipé  d’  un agitateur entrainé par 03 moteurs électrique  (0,485 t/mn ) et de puissance totale 22,5Kw (07,5Kw/moteur) et un couple max: 437000Nm, 1 ere  alarme 174800Nm , 2 eme  :240350Nm,3 eme  :393300Nm (arrêt de l’agitateur à 90% du couple max) et  à partir de ces bacs  la réaction est  alimentée  par les  pompes 602AAP06-BP06 -  KP06(137m3/h / ppe)  (02 en service et 01 à l’arrêt). Une circulation de pulpe  est assurée par les pompes 602AAP08-KP08 pour le bac A et 602 ABP08-LP08 pour le bac B  ( 250m3/h/ ppe ) une  en service  et l’autre à l’arrêt"
+  },
+  {
+    "id": "slide_37",
+    "slide": 37,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "L'eau est collectée dans une rigole supérieure et par débordement ( 74 m3/h en nominal) alimente le bac  (602AAR07) ce dernier peut être aussi alimente en eau soit  à partir  de TED ou du JPH. Des contrôles de la turbidité de l’eau soit au niveau du débordement de l’épaississeur ou au refoulement des pompes 602 AAP07 - 602AKP07 permet l’alimentation de la tour de refroidissement dans le cas où la turbidité de l’eau est inferieure à 100 ppm , dans le cas où la turbidité de l’eau dépasse cette valeur; le ref de la pompe en service est orienté vers la conduite d’évacuation de gypse avec isolement de l’alimentation du bac à partir du JPH si elle est origine du problème."
+  },
+  {
+    "id": "slide_38",
+    "slide": 38,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "dans ce cas il s’impose un remède dans le meilleur délai pour rétablir la marche normale sans perte d’eau et de phosphate. Il y a aussi possibilité de recyclage  d’eau vers les bacs de réception par les pompes 602AAP07- 602AKP07 (débit pompe = 170-250m3/h). La stabilité de marche de l’épaississeur en plus de la vigilance des conducteurs de l’installation impose aussi le respect et le contrôle des variantes suivantes: -Maintien constant du bilan massique du décanteur(E=S). -Contrôle permanant de la turbidité de l’eau de la sur verse qui  doit  être  inferieure à  100 ppm  et le taux de solide de la souverse à maintenir à 65% ."
+  },
+  {
+    "id": "slide_39",
+    "slide": 39,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "-La variation de la pression du lit de solide dans le cône ∆P= 0,23 bar ( 2,46 à 2,23 bars ). -La solution du floculant ( csp  - concentration et débit ainsi que les points d’introduction à modifier si nécessaire).  -Le couple max du racleur : 1763161N.m (-1 ere  alarme 705000 N.m - 2eme alarme 969400 – 3eme alarme 1586300 N.m arrêt du racleur à 90% du couple max). - L’alimentation en air de dilution. -La circulation (orientation vers le bas lorsque le taux de solide de la souverse baisse, et vers la partie supérieure lorsque le taux de solide augmente . NB: Toute les pompes sont à variateur de vitesse."
+  },
+  {
+    "id": "slide_40",
+    "slide": 40,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "- TS   : taux de solide en % massique. - Ds    :  densité  du solide=2,85. - Dp   : densité  de la pulpe . - De :  densité de  l’eau =1. Relation entre TS et la densité de la pulpe Mp = Ms + Me ( 1 ) Vp = Vs + Ve   ( 2 ) (2) Donne Mp / Dp = Ms / Ds + Me / De Donne Me= Mp- Ms Remplaçant (1) dans (2)  Mp/Dp= Ms/Ds +(Mp-Ms)/De Mp/Dp= Ms/Ds + Mp/De-Ms/De Mp/Dp-Mp / De =Ms/Ds –Ms / De Mb(1/Dp-1 /De) =Ms(1/Ds- 1/ De) TS=Ms/Mp= AN: TS =                                            1,85 .Dp.TS = 2,85.Dp – 2,85 Dp (2,85 - 1,85.TS ) = 2,85                 Dp =                     =     Ds. (Dp - De) Dp .(Ds -De)       2,85 (Dp -1)        Dp (2,85 -1)       2,85 2,85-1,85.TS     1    1 – 0,65.TS Dp=  1 1- 0,65.TS AN    :   pour TS = 65 %      Dp =  1,73"
+  },
+  {
+    "id": "slide_41",
+    "slide": 41,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "Chaines de régulation et asservissements de l’unité 602 (Epaississement ) CHAINES PRINCIPALES : a) Chaine de réglage de débit massique de la pulpe . Cette chaine est installée au niveau des circuits de transfert entre les bacs.  de l’unité 602 et l’alimentation du réacteur b) Chaine de régulation du floculant en fonction de la densité de la pulpe d’alimentation du thickener. c) Chaine de régulation du débit d’air de dilution avec la densité de la pulpe à l’entrée du thickener. d) Chaine de régulation de niveau dans le thickener et les bacs R06 et R07."
+  },
+  {
+    "id": "slide_42",
+    "slide": 42,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "fit X dit dit fah fi fal dal di hs fqi dal di DEBIT PULPE  Q ( M3/H ) DENSITE PULPE T/M3 SONIC DENSITE PULPE T/M3 RAYON ɤ SELECTEUR DEBIT MASSIQUE M=D*Q*S SIC POMPE DE TRANSFERT Chaine de réglage de débit massique de la pulpe                    avant  épaississeur"
+  },
+  {
+    "id": "slide_43",
+    "slide": 43,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "fit dit dit fah fal dal di dah hs fic sic dic dv di Commande des vannes  d’eau brute à l’aspiration des pompes P03/P05 et P06  Action sur la vitesse des pompes:P03/P05 et P06 DENSITE PULPE T/M3 SONIC DENSITE PULPE T/M3 RAYON  ɤ DEBIT PULPE  Q (M3/H) SELECTEUR DEBIT MASSIQUE M=D*Q*S Chaine de régulation de la densité de pulpe après épaississeur"
+  },
+  {
+    "id": "slide_44",
+    "slide": 44,
+    "module": "MODULE 1",
+    "section": "EPAISSISSEMENT UNITE 602",
+    "text": "PIT P I D PV PAH PAL PY PIC EV HS A Pression du fond thickener Réduction débit de la pompe  d’alimentation  du thickener Par action sur vanne ref des pompes P02    REGULATION DE LA PRESSION DU FOND THICKENER"
+  },
+  {
+    "id": "slide_48",
+    "slide": 48,
+    "module": "MODULE 2",
+    "section": "REACTON UNITE 603",
+    "text": "La réaction se compose de : a ) une  cuve  circulaire 603AM01 : de  capacité 2380m3  devisée en 09 compartiments (sans cloisons) . -anneau  externe (compartiments  1 à  7 ). - compartiment  central. - compartiment d'alimentation du  flash. - Compartiment des pompes de circulation . -  09 agitateurs  de bouillie: du 603AA01 au 603AA09   - 03 dilueurs d’acide sulfurique  603AAA14-603ABA14  et  603ACA14 . 02  pompes de circulation  603AAP01  et  603ABP01. 02 portes de visite."
+  },
+  {
+    "id": "slide_49",
+    "slide": 49,
+    "module": "MODULE 2",
+    "section": "REACTON UNITE 603",
+    "text": "-04 indicateurs de niveau radar (02 indicateurs dans le CP d’alimentation du flash,02 dans le CP n°01). -02 sondes de température,( 01dans le Compartiment d’alimentation du flash et 01 dans le CP n°04 ). NB : Les compartiments du réacteur circulaire ne sont pas séparés par des cloisons mais ceux de la cuve de maturation sont séparés par des cloisons . b)Une section de lavage des gaz: -Flash cooler   603AAD01 -01 précondenseur 603AAD02 -01 condenseur 603AAD03 -01 garde hydraulique 603AAR02 -01 pompe à vide 603AAC01et 01 séparateur AS01."
+  },
+  {
+    "id": "slide_50",
+    "slide": 50,
+    "module": "MODULE 2",
+    "section": "REACTON UNITE 603",
+    "text": "c)Une cuve de maturation 603AM02 : de capacité 860m3 divisée (par cloisons): - Compartiment garde hydraulique du flash. - 02 compartiments intermédiaires(N01et N02). - Un compartiment d’alimentation des filtres.  -04 agitateurs de 603AAA10 jusqu’au 603AAA13. -02 sorties DN350 pour alimentation des filtres (compartiment d’alimentation des filtres  )  . -01 sortie DN 150 pour alimentation des engrais (compartiment N°2). - 04 portes de visites (01 PV/ compartiment DN600). - 02 indicateurs de niveau (02CP filtres 02CP engrais )                                                      -01 sonde de température (CP filtre )."
+  },
+  {
+    "id": "slide_53",
+    "slide": 53,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Flash  cooler Prés condenseur Laveur condenseur Acide sulfurique Acide de retour Pulpe de Phosphate Eau de procéder Réacteur Bouillie vers filtre Eau vers tour de refroidissement Maturation Pompe de circulation Pompe à bouillie CIRCUIT DE LA REACTION  Pompe à vide 6 03AAC01  Gaz vers scrubber Eau vers  603AR22 6 03AP04 Eau venant du scrubber"
+  },
+  {
+    "id": "slide_54",
+    "slide": 54,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "- les principales réactions                                  Ca3 ( PO4)2   +    4H 3 PO 4            3Ca (H 2 PO 4 )2                            Ca  (H 2 PO 4 )2  +   H 2 SO 4  + H2O        (CaSO 4 , 2H 2 O) +  2H 3 PO 4                      La somme des deux réactions :                            Ca3  (PO 4 )2  +  3H 2 SO 4  +6H 2 O       3(CaSO 4  ,2H 2 O) +  2H 3 PO 4 +  Q (Chaleur)                       -  Les réactions secondaires                            CaF 2   + H 2 SO 4  + 2H 2 O        (CaSO 4 , 2H 2 O) + 2HF   (Acide fluorhydrique) \t                          La  silice SiO 2 \tréagit avec HF                                6HF    +   SiO 2             H2SiF 6    +   2H 2 O  (Acide hexafluosilicique) \t                        Na 2 O  et K 2 O réagit avec H 2 Sif 6  selon la réaction :                             Na 2 O  +  H 2 SiF 6          Na 2 SiF 6    +    H 2 O                             K 2 O   +   H 2 SiF 6            K 2 SiF 6    +  H 2 O \t                           - Autres  reactions  :                           CaCO 3      + H 2 SO 4  + H 2 O      (CaSO 4 , 2H 2 O) + CO 2                               2NaCl       +      H 2 SO 4        Na 2 SO 4  + 2HCl                            2KCl         +      H 2 SO 4          K 2 SO 4     +    2HCl                             H2O         +       SO3               H2SO4              REACTIONS"
+  },
+  {
+    "id": "slide_55",
+    "slide": 55,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Le  réacteur circulaire est alimenté  par: -La pulpe ( débit 325T/h=190m3/h TS=65%,d=1,727) dans  le compartiment n°1 par 03  conduites, il est alimenté aussi par  de l’acide  sulfurique provenant de l’atelier 601 (débit 199T/h=110m3/h ,C=98,5%,d=1,81). Avant l’introduction de l’acide sulfurique dans le réacteur circulaire il est dilué par  l’acide de retour  (456m3/h ,d=1,22-1,25)  au niveau de 03 dilueurs  à double enveloppe:( 603AAA14-603ABA14 - 603ACA14 ) montés dans les  compartiments ( N°03-04,N°05-06  et  N°06-07 ).  avec un rapport de dilution de 35% . Description   du procédé"
+  },
+  {
+    "id": "slide_56",
+    "slide": 56,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Les dilueurs ont un rôle primordial : ils assurent   une meilleure  dispersion de l’acide sulfurique en évitant les  surconcentrations locales .   Pour assurer une bonne attaque, les matières premières doivent être d’une proportionnalité bien déterminée.  Le procédé est basé sur l’attaque du phosphate par voie humide dans un milieu réactionnel agité pour produire l’acide phosphorique 28% et  du gypse dihydrate (CaSO4.2H2O) appelé phospho-gypse. Ce cristal peut prendre de différentes formes qui déterminent l’état de la filtration."
+  },
+  {
+    "id": "slide_57",
+    "slide": 57,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Zones de formation de gypse en fonction du P2O5 et la température Hémihydrate  et  anhydre stables CaSO4.1/2H2O et CaSO4 Hémihydrat instable  Caso4.1/2H2O Dihydrate   stable CaSO4.2H2O"
+  },
+  {
+    "id": "slide_58",
+    "slide": 58,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "La réaction du phosphate et de l’acide sulfurique est exothermique, elle dégage une quantité de chaleur élevée et une  autre quantité de chaleur dégagée par la dilution de l’acide sulfurique ;  par conséquent,  il s’impose un refroidissement de la bouillie  pour garder  la  température constante . Le  refroidissement de la bouillie  est assuré par un circuit d’assainissement composé des équipements suivants: -Flash cooler  603AAD01 . -Laveur  précondenseur 603AAD02 . -Laveur condenseur  603AAD03 -pompe à vide  603AAC01 ."
+  },
+  {
+    "id": "slide_59",
+    "slide": 59,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "La bouillie refoulée  du réacteur circulaire vers la base du flash par deux pompes de circulation  (603AAP01-603ABP01) (18000 m3/h ) subie un refroidissement par  dégagement de la vapeur d’eau et  les gaz  sous vide crée  au  niveau du flash ( 235-275 torrs),puis ils sont lavés dans le précondenseur 603AAD02 avec l’eau de procédé en circuit fermé  par  les pompes 603AAP04, 603AKP04 (800m3/h - T=65°c) (une en marche l’autre en arrêt) qui alimente aussi les bacs de lavage toiles 603AR22 des 02 filtres par un débit total(128-143m3/h-T65°c-d=1).  . Le précndenseur est équipé de 02 rampes en 02 étages de rangées de buses DN150 chaque étage porte 04 buses ."
+  },
+  {
+    "id": "slide_60",
+    "slide": 60,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Le niveau dans la garde hydraulique du precondenseur est maintenu constant par un appoint d’eau de  procedé équivalent  au  débit  sortant  à  partir du laveur des  fumées  scrubber :  603AAD07. le  lavage des  gaz et la condensation de l’eau  continu dans le condenseur  603AD03  par 02 rampes en 02 étages  la rampe supérieure porte une seule buse, celle inférieure est équipée de 04 buses de diamètre DN=300, ( débit=2200m3/h T=29°c) par l’eau provenant de la tour de  refroidissement.  L’eau chaude(T46°C) à la sortie  du  condenseur ainsi que l’eau de l’anneau liquide de la ppe à vide du flash sont orientées vers la tranchée de retour qui alimente la tour 625EAW01 pour refroidissement et retour pour utilisation."
+  },
+  {
+    "id": "slide_61",
+    "slide": 61,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "La bouillie formée dans le  réacteur circule du compartiment ( garde hydraulique du flash: CP maturation) vers l’anneau externe N°01 au N° 07  et ensuite passe au compartiment central puis vers le compartiment d’alimentation du flash où elle est reprise par les 02 pompes de circulation vers le bas du flash cooler en subissant un refroidissement et retour vers le compartiment garde hydraulique du flash. La bouillie dans le réacteur circulaire est agitée, et homogénéisée puis transférée par 09 agitateurs 603AA01au 603AA09 équipés de 02 rangées de pales et un dispositif pour casser les mousses qui sont générées dans la partie supérieure du réacteur."
+  },
+  {
+    "id": "slide_62",
+    "slide": 62,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Caractéristiques des agitateurs : AGITATEURS 403AA01-AA02 403AA03àAA07 403AA08-AA09 403AA10-AA11-AA12-AA13 Puissance Ins / abs kW 194/250 108/132 90/110 79/110 Vitesse de rotation t/mn 53 52 50 53 Diamètre des pales en mm 2280 2650 2610 2600 Débit de pompage m3/h min/actuel 30480/33606 58420/64060 58420/58175 54340/61655 Nb de rangé Des pales 02+un  dispositif casse-mousses 02+un  dispositif casse-mousses 02+un  dispositif casse-mousses 02 Hauteur des pales à partir   du   fond (1 er  rangée) en mm 1090 1090 1090 1090 Hauteur des pales à partir   du   fond (2 eme  rangée) en mm 2000 2000 2000 2300"
+  },
+  {
+    "id": "slide_63",
+    "slide": 63,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "La quantité de bouillie produite déborde dans la cuve de maturation par une gouttière dans le compartiment de la garde hydraulique de la jambe du flash ensuite vers le premier puis dans le deuxième compartiment et en phase final vers le dernier compartiment d’alimentation des  filtres . Un appoint de pulpe et d’acide sulfurique peut être utilisé dans le compartiment n°02 de la maturation pour ajustement si nécessaire des sulfates libres .   Un appoint de pulpe et d’acide sulfurique peut être utilisé dans le compartiment n°02 de la maturation pour ajustement si nécessaire des sulfates libres.  Une autre extraction des gaz du compartiment n°1 du réacteur circulaire et du dernier compartiment de la maturation subissent un lavage au niveau du laveur des fumées scrubber  603AAD07."
+  },
+  {
+    "id": "slide_64",
+    "slide": 64,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Le  niveau dans les 2 réacteurs est contrôlé dans le compartiment d’alimentation du flash,  et dans   le compartiment n°1 pour le réacteur  circulaire,  dans le  compartiment n°2  et dans le compartiment  d’alimentation du filtre pour la cuve de  maturation par 02 capteurs de niveau dans chaque compartiment qui fonctionnent séparément. La température de la bouillie est contrôlée par 2 sondes au niveau du réacteur circulaire ; une dans les compartiments d’alimentation du flash et l’autre dans le compartiment n°4 et pour la maturation, une sonde est installée au niveau du compartiment d’alimentation du filtre ."
+  },
+  {
+    "id": "slide_65",
+    "slide": 65,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "a)  La  température de la bouillie ( 78- 80°c ). b) La  densité de la bouillie (1,525-1,560 ). c) La  densité du filtrat bouillie (1,300-1,310 ). d) La  teneur du sulfate libre (25-27g/l du  filtrat). e) Le  taux de solide :(33-35%) conséquence  des  densités (bouillie et filtrat bouillie ). Les paramètres de  marche de la réaction"
+  },
+  {
+    "id": "slide_66",
+    "slide": 66,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Contrôle et réglage a)Température : - Contrôle:  La température dans le réacteur circulaire est contrôlée par les sondes :TE 032 (dans le CP n°4) , TE 106 (dans le CP d’alimentation du flash) et dans la maturation par la sonde TE 162 (dans le CP d’alimentation du filtre) et elles sont transmises en SDC par les (TIT 032, TIT 106 et TIT 162). - Réglage: Elle est réglée principalement par la variation du vide dans le flash cooler par ouverture ou fermeture de la vanne casse vide 603 PCV 192; tout en gardant ∆ T =2°c entre l’entrée et la sortie du flash(T° entrée flash 80°c ±2°c).Des confirmations locales par thermomètre sont nécessaires en cas de doute de l’indication en SDC."
+  },
+  {
+    "id": "slide_67",
+    "slide": 67,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "b) La densité de la bouillie (1,525-1,560 ) - Contrôle : La densité est contrôlée par pesée après tarage de la fiole et une bonne agitation d’un litre de bouillie au labo local, les échantillons sont pris du réacteur chaque heure. -  Réglage: Le réglage de la densité du bouillie se fait par ajout ou réduction du débit d’acide produit ( 28%) recyclé par action sur la vanne FV 832  au ref de la  ppe  603AP17. Pour une densité élevée on augmente le débit d’acide recycle vers l’asp de la ppe d’acide de retour 603AP18 par ouverture de la vanne FV 832, et pour une densité basse on procède à la correction par une action inverse."
+  },
+  {
+    "id": "slide_68",
+    "slide": 68,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "c) La densité du filtrat bouillie (1,300-1,310 ) - Contrôle: Après pesée et filtration de l’échantillon de bouillie au niveau du labo local on met 500cc du filtrat dans une éprouvette puis on mesure la densité par un densimètre bien étalonné qui représente la gamme de la densité désirée, la valeur lue sur la graduation du densimètre qui coïncide avec le niveau du liquide dans l’éprouvette (l’erreur sur le densimètre et la température de l’acide à prendre en considération pour définir la vraie valeur dans les condition de marche)."
+  },
+  {
+    "id": "slide_69",
+    "slide": 69,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "-Réglage:  Le réglage de la densité du filtrat  bouillie est  réalisé par l’eau de procédé à introduire en plus où en moins dans le réacteur respectivement en cas d’augmentation ou de diminution de la densité tout en agissant sur la fermeture où l’ouverture des vannes de  régulation.  - FV714A et FV814B: installées ref P09 du scrubber vers le 4eme lavage respectivement des filtres A et B -FV205 : installées au ref P07 vers la garde hydraulique 603AAR02 du précondenseur du flash cooler.  - Une densité élevée est réglée par un débit d’eau en plus vers le réacteur -Une densité inferieure est réglée par une réduction d’eau vers le réacteur."
+  },
+  {
+    "id": "slide_70",
+    "slide": 70,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "d) La teneur  des sulfates libres  (25-27g/l du filtrat ) - Contrôle: Le contrôle de la teneur des sulfates libres ( SO 4 ˭ ) dans le filtrat bouillie se fait au labo local par titrage du (Fb) 2cc par le chlorure de baryum (BaCl 2 )   0,2N, l’indicateur utilisé et le sulfonaso   III et l’acétone comme catalyseur, une fois le virage est atteint on procédé à la lecture de la tombée du burette dans un tableau où elles sont reportées les valeurs correspondantes réalisées par des essais à l’avance pour rendre pratique et facile la lecture du résultat trouvé. Réaction de titrage: BaCL2 + H2SO4        ↔       BaSO4 + 2HCl"
+  },
+  {
+    "id": "slide_71",
+    "slide": 71,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Réglage: Suivant la valeur de SO4˭en g/l trouvée on procède à une correction soit en plus où en moins par ajout où réduction du débit d’acide sulfurique au débit nominal de marche par fermeture où ouverture des vannes d’acide sulfurique:  (FV030-dilueur:AAA14)-(FV053-dilueur:ABA14)-(FV054-dilueur:ACA14). -Valeur supérieure à la consigne: réduction de débit d’acide sulfurique à la valeur désirée. -Valeur inferieure à la consigne: augmentation de débit d’acide sulfurique à la valeur désirée. Le temps de correction doit être respecté pour éviter toute perturbation de marche par mauvaise correction. Importan t:  des confirmations sont nécessaires en dehors de la marche normale pour redresser la situation et revenir à une marche stable."
+  },
+  {
+    "id": "slide_72",
+    "slide": 72,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Relation du temps de correction des sulfates libres Soient :  Vb  ,MB, DB:  volume,masse,densité  de bouillie.    Vfb,Mfb,Dfb :  volume,masse,densité  du filtrat bouillie.      Vs,Ms,Ds :  volume,masse,densité  du gypse. Vb  =  Vfb  + Vs        Vfb = Vb -Vs  remplaçant  Vb  et Vs par                     Vb =Mb /  Db  et Vs  =Ms /  Ds                               Vfb =Mb/ Db  – Ms /  Ds  remplaçant en suite Ms par Ms=  Ts *Mb                   Vfb =Mb /  Db  - ( Ts  . Mb)/ Ds                   Vfb = Vb  . Db  (1/ Db  – Ts / Ds ) = Vb (1-Ts.Db/ Ds ) Soient :∆C: la variation de sulfate libre dans la réaction            Vs : le volume d’H2SO4 à 100% dans la réaction VS=∆ C.Vfb /DH2SO4. 100/98,5                 Vs=∆ C.Vfb /1,015.DH2SO4"
+  },
+  {
+    "id": "slide_73",
+    "slide": 73,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Soient: Tc:  le temps de correction de la variation de la teneur des sulfates libres dans la réaction.           ∆Q( m3/h): la variation de débit d’acide sulfurique de correction (C ± M)                                          C: la consigne   M: la mesure Tc= Vs/∆Q (Tc en mn) Tc= ∆C.Vfb/1,015.DH2SO4/ ∆Q                 ∆C.Vfb/1,015.DH2SO4/ ∆Q/60 Tc= 60. ∆C.Vfb/1,015.DH2SO4/ ∆ Q AN pour ODI  :   réacteur circulaire : Tc=  60. ∆C.1856/1,015.1810. ∆Q  Tc =60.1,01 . ∆C/ ∆Q                              Tc=60 . ∆C/ ∆Q  réacteur  circulaire +maturation  :    Tc=60 . 2587/1837. ∆C/ ∆ Q                Tc  = 84. ∆C/ ∆Q"
+  },
+  {
+    "id": "slide_74",
+    "slide": 74,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "∆Q (en m3/h) Tc (en mn) pour le réacteur Circulaire seul Tc (en mn) pour le réacteur Circulaire + maturation 05 T= 12 . ∆C T= 16,8. ∆C 10 T= 6 . ∆C T=8,4 . ∆C 15 T= 4 . ∆C T= 5,6 . ∆C 20 T= 3 . ∆C T= 4,2 . ∆C 25 T= 2,4 . ∆C T= 3,36 . ∆C 30 T= 2 . ∆C T= 2,8 . ∆C 35 T= 1,7 . ∆C T= 2,4 . ∆C 40 T=1,5 . ∆C T= 2,1 . ∆C             Relation entre Tc,  ∆ C,  ∆Q    Conclusion : pour standardiser les correction des sulfates libres il est préférable que tous les opérateurs procèdent de la même façon"
+  },
+  {
+    "id": "slide_75",
+    "slide": 75,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "e) Le taux de solide :(33-35%)  -Contrôle: Le taux de solide dans la bouillie est contrôlé par la mesure de la densité de la bouillie et celle du filtrat bouillie, les valeurs trouvées sont reportées sur des abaques qui donnent la valeur désirée où par calcul suivant la formule suivante: - Réglage -Comme le taux de solide est une conséquence de Db et DFb et pour ne pas affecter la densité DFb son réglage se fait de la même façon que pour Db. NB: dans le cas où les deux densité varies dans le même sens, il est préférable de corriger avec l’eau ou bien avec l’eau et l’acide recyclé à la fois suivant les valeurs trouvées."
+  },
+  {
+    "id": "slide_76",
+    "slide": 76,
+    "module": "MODULE 2",
+    "section": "CUVE D’ ATTAQUE",
+    "text": "Le rendement de l’attaque à  JFC1(97%) dépond  de plusieurs  paramètres : -Teneur de l’acide sulfurique dans la bouillie. -Température du milieu réactionnel. -Teneur en P2O5 dans le réacteur. Il  dépend aussi  des  paramètres  liés à l’installation L’agitation dans le réacteur. -Le volume du réacteur (temps de séjour ). Les pertes en P2O5 dans la réaction sont de 02 types: -L’inattaqué: pour  causes principales  l’excès d’acide sulfurique ou une granulométrie  grossière.  -Le syncristallisé  du principalement  au manque d’acide sulfurique ou une granulométrie  fine     Le rendement de l’attaque (taux d’attaque)"
+  },
+  {
+    "id": "slide_78",
+    "slide": 78,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Séchage 603AP21 4 ème   Filtrat 3 ème  Filtrat 2 ème   Filtrat 1 er  Filtrat  l 603AP22 603AP20 603AP19 603AP18 603AP17 Evacuation de Gypse Eau de mer Eau Fraiche Acide de retour Eau de procédé B-F Vers pompe à vide Eau de procédé B-C Acide  produit Bouillie Acide faible Acide très faible Eau gypseuse Bac de L-T Bac d’eau gypseuse  presecteur S 05 D 10 R 22 R 21 Laveur Séparateur      Eau de procédé- SC  SCHEME DE PRINCIPE ATM"
+  },
+  {
+    "id": "slide_79",
+    "slide": 79,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "La  section filtration se compose de 02 lignes de filtration sous vide A et B, chaque ligne est constituée des équipements suivants : - Un  filtre rotatif  603AS02,  équipé de 30 cellules  basculantes  de  surface  totale  215m2 et utile de190m 2  de vitesse de rotation 06 à 30 t/h préconisée en marche entre 12 et 20 t/h, d’une  boite à  vide, d’une colonne centrale  d’une  couronne  dentée  et un ensemble d’entrainement (moteur-réducteur) - De  06 nacelles de distribution des fluides  : 02  de bouillie et 04 de lavage. -Une  rampe de lavage  toiles.    PRINCIPAUX  EQUIPEMENTS DE LA FILTRATION"
+  },
+  {
+    "id": "slide_80",
+    "slide": 80,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "- 02 trémies : une d’ évacuation de gypse et une autre de lavage toiles. - Un ensemble de pompes ( 09) pour circulation des fluides y compris la pompe à vide et la pompe puisard et la pompe de bouillie. - 02  ventilateurs:603AC04  pour séchage toiles après lavage et  603AC05  pour soufflage des toiles après évacuation du gypse. - 02 séparateurs  603AS03  pour séparation des goulettes de séchage toiles et  603AS05  pour séparation des goulettes des gaz de la filtration. -01  laveur condenseur  603AD10. -02 bacs: 603AR21 et 603AR22(eau gypseuse et LT) ."
+  },
+  {
+    "id": "slide_81",
+    "slide": 81,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "NB:  Cette description concerne une seule ligne (L A).  La filtration de la bouillie  et une opération qui consiste à séparer le gypse de  l’acide produit de titre 28% par  l’intermédiaire d’un filtre rotatif sous vide  (210-240 torrs)  équipé des toiles filtrantes en polypropylène ( mono-fil)  . La  bouillie formée au niveau de l’attaque est reprise vers le filtre par la pompe  603AAP02  à  vitesse  variable  à partir de la maturation (compartiment du filtre)  suivant le régime de marche . Le débit de bouillie par filtre est( 507 t/h -324 m 3 /h )    DESCRIPTION  DU PROCEDE"
+  },
+  {
+    "id": "slide_82",
+    "slide": 82,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Le premier contact de la bouillie avec le filtre forme une couche de gypse support de la filtration d’épaisseur  60 à  65 mm. La bouillie est  répartie au niveau du filtre par 02 nacelles tout en formant une épaisseur uniforme de gâteau de gypse au niveau  des cellules . L a  couche formée sert comme support de la filtration dans tous les secteurs. Le premier filtrat riche en  impuretés et de solide  est  orienté vers l’aspiration de la pompe 603AP18 d’acide de retour vers la réaction."
+  },
+  {
+    "id": "slide_83",
+    "slide": 83,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Après  formation du gâteau, commence la filtration de l’acide  fort 28%  pompé vers l’unité de stockage 6 13A  par l’intermédiaire de la pompe  603AAP17  ( débit=118T – 90 m 3 /h -T=74°c -TS=1%). Une  vanne de régulation est installée sur la conduite de refoulement pour assurer un recyclage de l’acide fort produit 28% vers l’aspiration de la pompe d’acide de retour  603AP18 en  cas de nécessité de correction de la densité  de la  bouillie dans le réacteur ."
+  },
+  {
+    "id": "slide_84",
+    "slide": 84,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Le  P2O5 résiduelle dans le gypse subi un premier lavage  avec  l’acide  faible refoulé  par la pompe  603AAP19 , recueilli  après passage à travers le filtre par  la pompe  603AAP18  et refoulé vers le réacteur comme acide de  retour (  débit = 286T/h  228m 3 /h - T=60  à  65°c – d=1,220 à 1,250 ) . Le gypse subi un deuxième lavage par l’acide très faible par la pompe  603AAP20  et recueilli à l’aspiration de la pompe  603AAP19  comme acide faible.   Ensuite un  troisième lavage par l’eau gypseuse refoulée par la pompe  603AAP21  à partir du bac  603AAR21."
+  },
+  {
+    "id": "slide_85",
+    "slide": 85,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Un quatrième lavage par l’eau fraiche provenant du laveur des gaz (scrubber -  603AAD07) (débit=55m 3 /h-  d=1-T=34°c). Le  3eme et 4eme lavage sont recueillis dans un seul compartiment de la boite à vide comme acide très  faible de densité=1,010  à l’aspiration  de la pompe  603AAP20.  A la fin du cycle de la filtration le gypse est extrait par basculement des cellules soufflées du bas par de l’air  refoulé  par le ventilateur  603AAC05 le gypse chute dans  une trémie  puis   pulpé par l’eau de mer de débit 870m 3 /h (15% de solide)."
+  },
+  {
+    "id": "slide_86",
+    "slide": 86,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Ensuite   les toiles sont lavées à l’eau chaude (60 à  65°c ) par la pompe  603AAP22   à partir du bac  603AAR22 , recueilli comme eau gypseuse  dans  le bac 403AAR21  ce dernier est alimenté par un appoint  d’eau  de procédé du précondenseur des gaz du  flash (débit entre 64 – 72 m 3 /h- T=65°c) . Le bac de lavage toiles 603AR22 est alimenté par l’eau brute  de TED, et le retour d’eau de  récupération des  éffluents    du bac de l’unité  613AAR01 et il est  aussi alimenté par la  vapeur basse pression  mélangée à l’eau dans un réchauffeur  en amont du bac. Un circuit d’acide sulfurique est installé pour appoint  en cas de lavage de la ligne ."
+  },
+  {
+    "id": "slide_87",
+    "slide": 87,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "La liaison entre la table filtrante en rotation et la boite à vide fixe se fait par des flexibles armés dans lesquels s’écoulent les filtrats des acides et des eaux de lavage qui sont séparés dans la boite à vide. Le  gaz  sortie de la  boite à vide passe à travers un séparateur  603AAS05 les  goulettes acidulées de la souverse rejoignent l’aspiration de la pompe d’acide de retour  603AAP18.  les gaz sortie séparateur  subissent un  lavage à contre courant  au niveau du condenseur  603AAD10  par l’eau de procédé de débit 90m 3 /h, T=29°c venant de la tour de refroidissement ."
+  },
+  {
+    "id": "slide_88",
+    "slide": 88,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Et par une garde hydraulique en U l’eau à la sortie et celle de l’anneau liquide de la pompe à vide 603AAC06 sont évacuées par une tranchée vers le bassin chaud de la tour 625EAW05 pour refroidissement et retour pour utilisation. Les  gaz incondensables sont  extraits de la partie supérieure du laveur et sont aspirés  par la pompe à vide  603AC06 débit ( 3,8T/h =3643m 3 /h)T=43°c,   puis  refoulés vers le collecteur d’alimentation du laveur  des fumées (scrubber ). Les gaz extraits par le ventilateur de séchage toiles ,de la section filtration et du bac de lavage toiles 603AR22 sont évacués vers le laveur de fumées."
+  },
+  {
+    "id": "slide_89",
+    "slide": 89,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Et par une garde hydraulique en U l’eau à la sortie et celle de l’anneau liquide de la pompe à vide 603AAC06 sont évacuées par une tranchée vers le bassin chaud de la tour 625EAW05 pour refroidissement et retour pour utilisation. Les  gaz incondensables sont  extraits de la partie supérieure du laveur et sont aspirés  par la pompe à vide  603AC06 débit ( 3,8T/h =3643m 3 /h)T=43°c,   puis  refoulés vers le collecteur d’alimentation du laveur  des fumées (scrubber ). Les gaz extraits par le ventilateur de séchage toiles ,de la section filtration et du bac de lavage toiles 603AR22 sont évacués vers le laveur de fumées."
+  },
+  {
+    "id": "slide_90",
+    "slide": 90,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Qualité du phosphate  Composition chimique  Profil granulométrique   Degré de variation par rapport au  profil standard  Teneur en P2O5  Teneur en impuretés :  CaO, F - , C organique, SO3, SiO2, Fe2O3, Al2O3, MgO, Na2O …  etc   ,  Éléments en trace Caractérisation  : Impact  :  Capacité de production  Consommations spécifiques des matières premières  Consommations spécifiques des utilités  Qualité de l’acide phosphorique produit FACTEURS  AGISSANT SUR  LES PERFORMANCES"
+  },
+  {
+    "id": "slide_91",
+    "slide": 91,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Le rendement  global PRINCIPEAUX  INDICATEURS DE PERFORMANCES   Rendement  de récupération du P2O5 P2O5 Phosphate P2O5 Acide Phosphorique produit Pertes chimiques :  P2O5 soluble;  P2O5 inattaqué  P2O5 syncristallisé Pertes physiques  Processus  de fabrication RC =   1- P2O5 gypse P2O5 phosphate X 100 RI =       P2O5 produit P2O5 phosphate X 100"
+  },
+  {
+    "id": "slide_92",
+    "slide": 92,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Relation  principale du rendement chimique  Rc= P2O5 acide produit / P2O5 phosphate  P2O5 acide produit = P2O5 phosphate – P2O5 gypse donc: Rc =  P2O5 phosphate – P2O5 gypse  /  P2O5 phosphate  Rc = 1- P2O5 gypse / P2O5 phosphate % CaOph =Q CaO ph/ Qph          QCaOph= %CaOph.Qph  (1) %CaO gy =  QCaOgy/ Qgy           QCaOgy= %CaOgy.Qgy    (2) %P2O5Ph = QP2O5ph/ Qph          QP2O5ph=%P2O5ph.Qph (3) %P2O5 gy = Q P2O5gy/ Qgy         QP2O5gy= %P2O5gy.Qgy (4) Et comme QCaOph = QCaOgy  (1) Et (2)                 Q gy/ Qph  = %CaOph/%CaOgy (3) Et (4)                 Qgy.QP2O5gy/QP2O5ph =Qph. %P2O5ph/%P2O5gy   donne: P2O5gy/P2O5ph= %P2O5gy.CaOph/%P2O5ph.CaOgy  donc le rendement chimique: Rc =  1    -    %P2O5gy . %CaOph / %P2O5ph . %CaOgy"
+  },
+  {
+    "id": "slide_93",
+    "slide": 93,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Le rendement de la filtration dépond des paramètres suivants: -La qualité de cristallisation en milieu de la réaction (porosité). -Epaisseur du gâteau (débit de bouillie) . -Répartition de la bouillie dans le filtre. -La vitesse du filtre. -Le vide dans le filtre. -La viscosité de la bouillie, d’acide et de l’eau de lavage. -La température de filtration. -Le débit d’eau de lavage du gâteau du gypse. -Lavage toiles filtrantes. - Etat des toiles filtrantes."
+  },
+  {
+    "id": "slide_94",
+    "slide": 94,
+    "module": "MODULE 2",
+    "section": "SECTION FILTRATION UNITE 603",
+    "text": "Les pertes en P2O5 dans la  filtration(SE) Peut être aussi la conséquence: -De l’état des toiles:  *Encrassement-déchirures-etc… -Un mauvais lavage toiles *Réglage de l’écran de lavage *Température basse d’eau de lavage toiles -D’une teneur en P2O5 élevée -De la dégradation des paramètres de marche en particulier les sulfates libres et la température dans les réacteurs.  Le rendement de la filtration à  KOFERT  est de l’ordre 98% Le rendement globale de l’attaque – filtration est de l’ordre 95 %."
+  },
+  {
+    "id": "slide_97",
+    "slide": 97,
+    "module": "MODULE 3",
+    "section": "STOCKAGE  ACIDE  28%  UNITE 613",
+    "text": "613AR11 613AR12 613AR13 613AE01 613AP17 613AP11 613AP12 613AS01 613AP13 Vers unité 604 612AP13 28% de l’unité 603 Filtration  Vers unité 607       Engrais Eau de la tour 625E Retour d’eau vers la tour SCHEMA  DE  PROCEDE Vers réacteur circulaire"
+  },
+  {
+    "id": "slide_98",
+    "slide": 98,
+    "module": "MODULE 3",
+    "section": "STOCKAGE  ACIDE  28%  UNITE 613",
+    "text": "Le stockage d’acide 28% se  compose de  02 lignes  A et B . NB:  Etude d’une seule ligne. Les  principaux équipements d’une ligne  sont: -Un bac desursaturateur 613AAR13  agité, de  2032m 3  -Un  refroidisseur  d'acide 613AAE01,de 360  t /  h -Un  décanteur d’acide  613AAR11  de capacité1475 m 3 -Un bac intermédiaire  613AAR12  agité de capacité  1643  m 3 ,  alimentant  la CAP et l’atelier engrais en acide 28 %.  -Un bac  613AAR01  agité pour récupération des eaux de lavage de capacité 1188 m 3 -Un répartiteur  613AAS01  pour orientation de l’acide et les eaux de lavage. -Un ensemble de pompes pour transfert des acides et des boues. -Un puisard  613AR03  équipé d’un agitateur  613AA01  et une pompe  613AP02. Principaux équipements"
+  },
+  {
+    "id": "slide_99",
+    "slide": 99,
+    "module": "MODULE 3",
+    "section": "STOCKAGE  ACIDE  28%  UNITE 613",
+    "text": "CARACTERISTIQUES TECHNIQUES DES BACS ET AGTATEURS Puissance KW Vitesse de rotation Tr  / min H total/H utile En mm Diamètre En mm Volume utile   m3 613AAR11 2,2 / 1,5 0,12 8500/8330 15000 1475 613AAR12 12,7 / 16 16 9800/9300 15000 1643 613AAR13 16,4 / 19,8 15,97 12000 15000 2032 613AAR01 10 80 11000/10000 12000 1188 613AAR03 1,3 64 2000/1700 L=2500 l=1965 08,35 Nb   de tubes/ Longueur (mm) Diamètre ext des tubes en mm Epaisseur En mm Surface d’échange m2 Coef de transfert Kcal/h.m2.°c Chaleur échangée Kcal/h 550/5650 50,8 6,35 495,83 645/366 2880000 Echangeur d’acide 28% 613 AE01"
+  },
+  {
+    "id": "slide_100",
+    "slide": 100,
+    "module": "MODULE 3",
+    "section": "STOCKAGE  ACIDE  28%  UNITE 613",
+    "text": "L’acide  28% en P2O5, 1à 2% en solide et de  T=74°c   produit par les 02 filtres est sursaturé en sels refoulé par la pompe  603AAP17  vers le desursaturateur  613AAR13  où il subit un premier  refroidissement naturel  et à partir de celui-ci il est pompé vers le refroidisseur  613AAE01  par la  pompe 613AAP15 où  il subit un deuxième  refroidissement à contre courant par l’eau de procédé provenant de la tour de refroidissement de débit 288m 3 , T°25/échangeur   , la température  d’acide sortie échangeur est de 40°c   cette chute de T°, a permis une déssursaturation des sels en solution  .  DESCRIPTION  DU PROCEDE"
+  },
+  {
+    "id": "slide_101",
+    "slide": 101,
+    "module": "MODULE 3",
+    "section": "STOCKAGE  ACIDE  28%  UNITE 613",
+    "text": "Le débit d’acide à la sortie du refroidisseur est répartit en deux alimentation : vers le décanteur  613AAR11(118T/h  40°c) et en circuit fermé vers le  déssursaturateur 613AAR13 (242T/h  40°c) ensuite il est repris par la pompe  613AAP17  vers le répartiteur  613AAS01 , qui alimente à son tour le décanteur  613AAR11.  décantation par gravitation, le solide décante au fond du décanteur raclé par le racleur vers la sortie puis il est repris par la pompe à boues  613AAP11,soit  en circuit fermé vers le décanteur si la teneur en solide est basse, soit en circuit ouvert vers la réaction si la densité est supérieure à 1,440,  Ts = 20 à 25% ,débit nominal = 5,5m 3 /h.  (débit total  =  11m 3 /h )"
+  },
+  {
+    "id": "slide_102",
+    "slide": 102,
+    "module": "MODULE 3",
+    "section": "STOCKAGE  ACIDE  28%  UNITE 613",
+    "text": "L’acide  clair est recueilli en haut du  décanteur dans une gouttière circulaire puis  déborde dans le bac intermédiaire  613AAR12  à partir  du quel  la CAP  est alimenté en  acide 28%  clarifié (109m3/h = 40T de P2O5/h  par la pompe 6 13AAP12  et les engrais ( DAP) par 59m3/h = 21Tde  P2O5/h )  par  la  pompe 613AAP14. Les eaux de lavage de la filtration et de la CAP sont récupérées dans le bac des effluents 613AAR01 et seront recyclées suivant les besoins vers les déférents points d’utilisation , en particulier les lignes de la filtration."
+  },
+  {
+    "id": "slide_104",
+    "slide": 104,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "E01 R06 R09 R08 EAU DE PROCEDER   D01 E02 S 02 D02 D04 D03 Pompe à vide C01 S04 P03 P05 P06 P12 P04 ACIDE 54% Vapeur FSA  vers  stock Vers  bassin  chaud Acide 28% Fumée R03 EAU DE PROCEDE SCHEMA DE PRINCIPE Vers bac à condensat EAU DE PROCEDE Vapeur vers éjecteur CO2 Anti-mousse C03"
+  },
+  {
+    "id": "slide_105",
+    "slide": 105,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "La  concentration se compose de 03  lignes:  604JA - 604KA - 604LA , de production journalière  400 t de P2O5 / j / échelon. Principaux équipements qui constituent une ligne de concentration sont : -un échangeur tubulaire  604AE02. - Un échangeur  604AE01  (chauffage acide 28%). - Un bouilleur  604AD01 . -Une pompe  de circulation  604AP04 -Un séparateur  604AS01 . -un condenseur  604AD02  (production  FSA acide fort) -Un  condenseur 604AD04  (production FSA acide faible) PRINCIPAUX EQUIPEMENTS"
+  },
+  {
+    "id": "slide_106",
+    "slide": 106,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "Repère Nbre de tubes Longueur en mm Diamètre externe en mm Diamètre interne en mm Épaisseur en mm Surface d’échange en m2 Coef   d’échange en Kcal/h-m2-°c  Propre/ en service 604AE01 55 5200 50,8 38,1 6,35 45,64 748 / 366 604AE02 909 6000 50,8 38,1 6,35 870,41 986,65 / 488"
+  },
+  {
+    "id": "slide_107",
+    "slide": 107,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "-Un condenseur  604AD03 - Gardes hydrauliques  604AR06 -604AR09  et  604AR08 . - Un éjecteur  604AC02. -Un petit condenseur 604AC03. -Une pompe à vide  604AC01 . - Un séparateur des gaz  604AS04 . -Un ballon à condensat  604AR03 . - Un ensemble de pompes de transfert des fluides.   -Une station de désurchauffe : *Un désurchauffeur 604AD04,un dévisiculeur 604 AS05 -Un bac à condensat 604AR08. -Une station d’anti-mousse"
+  },
+  {
+    "id": "slide_108",
+    "slide": 108,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "La concentration est alimentée par de l’acide de 28% clarifié de l’unité 613A,après chauffage de 40°C jusqu’à 70°c dans un échangeur 604AE01 par les condensats sortie de l’échangeur 604AE02. Elle consiste sur l’évaporation sous vide de l’eau et d’autre corps volatils contenus dans l’acide phosphorique, un appoint d’anti-mousses injecté dans l’acide 28% qui alimente l’échelon juste à la sortie de l’échangeur pour réduire les mousses dans le bouilleur et éviter les entrainements de P2O5 vers la station de FSA.  Principe de fonctionnement"
+  },
+  {
+    "id": "slide_109",
+    "slide": 109,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "Cette opération s’effectue de manière continue et en un seul étage, (sous vide 75 torrs et T=82°c)dans le bouilleur  604AD01,associé  à une pompe de circulation  604AP04  assurant un fort débit de recirculation de  11160 m 3 /h  vers l’entrée de l’échangeur  604AE02 .  La vapeur BP de pression  05  bars et de  T=179°c  provenant de la centrale thermique alimente la station de détente désurchauffe pour produire une vapeur  BP de pression 02 bars et de T°=133°c. Cette vapeur désurchauffée alimente l’échangeur tubulaire par la partie supérieure  de débit 39T/h  ."
+  },
+  {
+    "id": "slide_110",
+    "slide": 110,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "L’échange entre l’acide circulant à l’intérieur des tubes et la vapeur dans le calendre  à l’extérieure des tubes produisant un transfert de chaleur nécessaire pour chauffage de l’acide en circulation dans l’échangeur tout en augmentant sa température de 03°c . La vapeur après échange se transforme en condensats à la  sortie de l’échangeur tubulaire  puis passe  par un ballon à condensat  604AR03,et repris  par la pompe  604AP03  vers le refroidisseur des condensats  604AE01 .  Un premier contrôle de la conductivité des condensats à la sortie du  ballon à  condensat et un deuxième contrôle à la sortie de l’échangeur de chauffage acide 28 %."
+  },
+  {
+    "id": "slide_111",
+    "slide": 111,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "Les  gaz sortant du bouilleur vers le séparateur  604AS02,où il y a une séparation liquide gaz, les gouttelettes d’acide sont récupérées  en bas vers l’aspiration de la pompe d’acide produit  604AP05.Les gaz et la vapeur d’eau s’échappent  sous vide de la partie  inferieure  du  séparateur par une colonne à l’intérieur ensuite ils  entrent dans le premier condenseur  604AD02 où ils subissent un lavage par l’eau de procédé à contre courant et en circuit fermé par 03 rangées de 04 buses chacune par 604AP05 (débit  de 912 m 3 /h  ;T=49°c)une dérivation prise  au  ref  de  la pompe comme production du FSA( 9.5m 3 /h = 12 T/h et de densité  1.27) vers  l’installation de production et de stockage  du  FSA."
+  },
+  {
+    "id": "slide_112",
+    "slide": 112,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "Les  gaz à la sortie du 604AD02  entre dans le condenseur  604AD04  pour subir un 2eme  lavage de même principe que dans 604AD02 par  la pompe  604AP12  avec une circulation de 900m 3 /h  T=46°C et de  densité 1,15 une dérivation prise au ref de la ppe (débit 13m 3 /h: faible FSA) est recyclé  vers la garde hydraulique  604AR06 .  . Les gaz sortant subissent un 3eme lavage dans le condenseur  604AD03  avec un débit d’eau de procédé 2200m 3 /h  ,T=29°c  provenant de la tour de refroidissement ,la sortie d’eau du laveur alimente une garde hydraulique  604AR08  qui déborde dans la tranchée de retour vers la tour de refroidissement."
+  },
+  {
+    "id": "slide_113",
+    "slide": 113,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "Les gaz sortant du condenseur entre dans un éjecteur de  vapeur basse pression 05 bars T=172°c,  puis dans le petit condenseur où il sont  lavées à contre courant par 03 rangées d’une seule buse par rangée (débit  d’eau de procédé 200m 3 /h  et  de  T=29°c ) provenant de la tour de refroidissement,  et les gaz  incondensables  sont  extraits  par la pompe à vide  604AC01  vers le séparateur  604AS04  puis vers le laveur des fumées scrubber .   L’eau de l’anneau liquide de la pompe à vide est acheminée vers la garde hydraulique  604AR08 puis vers la tranchée de retour."
+  },
+  {
+    "id": "slide_114",
+    "slide": 114,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "Si  la conductivité est  conforme  ,  les condensats sont  orientées vers le bac à condensat 604AR08 et dans le cas contraire (conductivité non conforme) les condensat sont orientées vers le bac  des effluents  613AAR01. A la sortie de l’échangeur il y a une entrée d’ acide 28% mélangé à l’acide 54% qui alimente en circulation le bouilleur où il se produit l’évaporation d’eau.  L’acide  concentré  à  une température  82°c  80 torrs passe  par la colonne barométrique de production vers la pompe  604AP05  (débit 18  m 3 /h d=1,65 à 1,72)  qui le refoule vers le répartiteur  614AAS02  du stockage d’acide 54 %. NB: le niveau dans le bouilleur est maintenu constant par la colonne de production."
+  },
+  {
+    "id": "slide_115",
+    "slide": 115,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "Pendant le cycle de production d’un échelon, l’échangeur d’acide  604AAE02 s’encrasse progressivement et l’échange se dégrade ce qui engendre une augmentation de pression et de température d’où une chute de débit à l’entrée de l’échangeur, pour palier à ce problème il est nécessaire d’ouvrir la vanne de vapeur à l’entrée de l’échangeur pour revenir au débit  de vapeur de la marche initiale. Les causes principales de l’encrassement des échangeurs sont les suivantes: -Acide 28% riche en impureté. -Mauvaise circulation (débit faible). -T° trop élevée de vapeur à l’entrée de  l’échangeur. -Cycle de production non respecté. -Mauvais lavage de l’échelon."
+  },
+  {
+    "id": "slide_116",
+    "slide": 116,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "A la fin du cycle de production ou suite à une situation d’encrassement prématuré de l’échangeur on procède à un arrêt  périodique ou forcé de l’échelon. La vidange de l’échelon se fait par la pompe 604AP07(400m 3 /h) vers le bac 614AR12/AR13. Après fin de la vidange de l’échelon on procède au lavage de la boucle et des circuits d’acide 54% et 28% à  l’eau  chaude (débit100-200 m 3 /h T= 82-84°c)  et l’acide sulfurique (C= 02 à 05%) jusqu’au désencrassement de l’échangeur. L’opération de lavage se fait pendant 04 à 06 h en circuit ouvert de la partie basse de la pipe entrée échangeur par  la pompe d’évacuation  604AP07 en refoulant l’eau de lavage  vers le  bac de récupération 613AAR01,après un cycle de production de 168h ."
+  },
+  {
+    "id": "slide_117",
+    "slide": 117,
+    "module": "MODULE 3",
+    "section": "CONCENTRATION       ACIDE  54 %    UNITE 604",
+    "text": "IL est aussi recommandé de laver et désencrasser le toit et les parois du bouilleur DO1 et les parois et toit du séparateur S02.  Le lavage peut se faire de 02 façons:  -Soit par l’installation d’un réchauffeur d’eau brute par la vapeur basse pression avec une alimentation directement de la boucle en eau chaude. -Soit par chauffage de l’eau  en circulation par la pompe 604AP04 dans l’échangeur tubulaire et par la vapeur basse pression; dans ce cas on procède au remplissage de la boucle avec l’eau brute tout en gardant un débit d’alimentation continu jusqu’à la fin de lavage."
+  },
+  {
+    "id": "slide_119",
+    "slide": 119,
+    "module": "MODULE 3",
+    "section": "PRODUCTION  FSA UNITE 604B",
+    "text": "331 M3 331 M3 88 M3 1300 M3 614AP34  Bac de production 614AR14 Vers évacuation de gypse Bac de stockage 604BAR11 Vers évacuation de gypse 6 04BAP10 604BAP01 Bac de réception 604BAR01 Bac de réception 604BBR01 604J 604K 604L CIRCUIT  DE  PRODUCTION STOCKAGE ET EXPEDITION DE FSA Production : 12 T/H =9.5M3/H par échelon  Densité       : 1,27   TS               : 0,5 % P2O5          : 0 % Température : 49 °C  Teneur FSA :  24%       Matériaux des bacs :  Acier en Carbonne revêtu en caoutchouc"
+  },
+  {
+    "id": "slide_120",
+    "slide": 120,
+    "module": "MODULE 3",
+    "section": "PRODUCTION  FSA UNITE 604B",
+    "text": "Le  gaz sortie  bouilleur 604AD01 est  riche en fluore et  en silice  sous forme de gaz HF et SiO2 absorbés après un lavage par l’eau de procédé dans le premier condenseur en donnant un acide fluosilicique  H2SiF6  selon la réaction suivante : 6HF+SiO2                    H2SiF6  +2H2O L’acide fluosilicique  formé dans le 1 er  condenseur de la ligne de concentration  9.5 M3/h, densité 1, 27, T 49°c  par une circulation avec appoint d’acide fluosilicique de faible teneur provenant du 2eme condenseur dont la garde hydraulique est alimentée aussi par les condensats produites dans la gaine des gaz d’alimentation de l’épurateur des fumées.     DESCRIPTION  DU PROCEDE DE FSA"
+  },
+  {
+    "id": "slide_121",
+    "slide": 121,
+    "module": "MODULE 3",
+    "section": "PRODUCTION  FSA UNITE 604B",
+    "text": "L’acide fluosilicique produit (24%)  est refoulé par   la pompe  604AP06  qui alimente en parallèle les bacs de réception  604AAR01  et  604BBR01  (capacité 331 m 3 / bac) et le bac de stockage  604 BAR11(capacité  88m 3 ).  La  pompe  604AP10  installée au pied des 02 bacs de réception alimente elle aussi en parallèle le bac de stockage  604BAR11et  le bac de production  614AR14  de capacité 1300m 3 , ce  dernier  alimente par  la  pompe  614AP34  le camion en cas d’expédition où le rejet de gypse en cas  de manque de l’expédition ou blocage par  niveau haut  dans les bacs de  l’unité  FSA. Avec une autre possibilité d’alimenter par la pompe 604BAP01 l’évacuation de gypse à partir du bac de stockage 604BAR11."
+  },
+  {
+    "id": "slide_123",
+    "slide": 123,
+    "module": "MODULE 3",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "614AR13 614AR12 614AR03 614AP21 614AP13 614AS01 614AP03 6 14AP33 VERS REACTEUR Mélange acide 54%+bouillie VERS  PRENEUTRALIZEUR Vers unité  613 Acide 54% VERS  PRENEUTRALIZEUR bouillie 614AP01 Production des échelons Boues 54% SCHEMA DE PRINCIPE"
+  },
+  {
+    "id": "slide_124",
+    "slide": 124,
+    "module": "MODULE 3",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "Le stockage d’acide 54%  se compose de 02 lignes A et B. Les principaux équipements d’une ligne de stockage acide 54% sont: -Un décanteur  614AR13 . -Un bac de stockage acide clarifié  614AR12 . -Un répartiteur  614AS01 . -Un bac de stockage FSA  614  AR14. -Un bac d’alimentation atelier engrais  614  AR03. -Un puisard agité  614AR01  (récupération des effluents) -Un ensemble de pompes de transfert des  fluides.           PRINCIPAUX  EQUIPEMENTS"
+  },
+  {
+    "id": "slide_125",
+    "slide": 125,
+    "module": "MODULE 3",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "Bacs Puissance agitateur en KW Vitesse de rotation Agitateur  En Tr  / min H totale/H utile du bac En mm Diamètre du bac En mm Volume du bac m3 414AAR03 16,4 15,9 9500 Totale 13800 1346 414AAR12 54,2 /67,5 13,2 9500 Totale 22500 3578 414AAR13 2,2/1,5 0,09 8000 Totale 26500 4412 414AAR01 1,3/2 64 L=2500    l=2000      H=2000 ------- 9,4   Il se compose de 02 lignes A et B. Les principaux équipements d’une ligne de stockage acide 54% sont: -Un décanteur  614AR13 . -Un bac de stockage acide clarifié  614AR12 . -Un répartiteur  614AS01 . -Un bac de stockage FSA  614  AR14. -Un bac d’alimentation atelier engrais  614  AR03. -Un puisard agité  614AR01  (récupération des effluents) -Un ensemble de pompes de transfert des fluides .          PRINCIPAUX  EQUIPEMENTS 604AAR12 604AAR13 604AAR01 604AAR03"
+  },
+  {
+    "id": "slide_126",
+    "slide": 126,
+    "module": "MODULE 3",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "L’acide  54% produit par les 03 lignes  de concentration alimentent par  les pompes 604  AP05  un répartiteur  614AS01  puis soit le décanteur  614AR13 , soit le bac  614AR12.Ces  02 bacs sont en communication par un collecteur au pied et à partir de ce dernier la pompe  614AP21  refoule vers le bac  614  AR03 ou vers les engrais.  Dans  le  bac6s’effectue  un mélange d’acide 54% non clarifié avec un débit  de 06 m 3 /h de bouillie destiné pour alimenter la ligne des engrais par la pompe  614AP03.          DESCRIPTION  DE L’INSTALLATION"
+  },
+  {
+    "id": "slide_127",
+    "slide": 127,
+    "module": "MODULE 3",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "Les boues 54% sont raclées vers le cône de décharge du décanteur par le racleur  614ABA13  et soutirées par la pompe à boues  614AP13 , soit en circuit fermé (si la densité est faible), soit en circuit ouvert vers le répartiteur  613AS01 ou vers le bac d’acide qui alimente les engrais 614AR03 (densité élevée).   Le  remplissage des boucles des  échelons en acide 54% pour démarrage après un arrêt se fait  à  partir du bac 614AR12 ou du décanteur 614AR13 par la pompe 614 AP01(débit 150 à 400 m 3 /h)."
+  },
+  {
+    "id": "slide_129",
+    "slide": 129,
+    "module": "MODULE 4",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "EPURATEUR  DE FUMEES  (SCRUBBER)                           UNITE 603"
+  },
+  {
+    "id": "slide_130",
+    "slide": 130,
+    "module": "MODULE 4",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "Elle  se compose de : - Un laveur des fumées.  -Gaine d’assainissement des gaz. -Pompes de transfert des fluides . -Une cheminée.  -un ventilateur 603AC03. -Rampes de rangées de buses d’alimentation en eau. -03 bassin de récupération d’eau 603AR05-R06-R07. -Une hôte d’ entrée des gaz. -Des rangées de garnissage -Un dévisiculeur à la sortie des gaz EPURATION DE  FUMEES"
+  },
+  {
+    "id": "slide_131",
+    "slide": 131,
+    "module": "MODULE 4",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "Laveur de fumées – Principales composantes   Le laveur des fumées, de configuration horizontale, est constitué d’un ensemble de pulvérisateurs, de garnissages et de dévésiculeur placés à l’intérieur du corps du laveur. La circulation des gaz est assurée par un ventilateur raccordé à une cheminée."
+  },
+  {
+    "id": "slide_132",
+    "slide": 132,
+    "module": "MODULE 4",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "Laveur de fumées (comparaison ODI- ligne E )  Dimension ODI P1 Ligne E Longueur 09 m 09 m Largeur 6,75 m 4,5  m Hauteur 03 m 03 m Diamètre sortie 1,2 m 1,2 m Nb  de rampes 05  05 Nb de rongée/rampe 06 04"
+  },
+  {
+    "id": "slide_133",
+    "slide": 133,
+    "module": "MODULE 4",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "Fumée   réaction  Bac production FSA  Neutralisation Concentration Filtration Pompes  à vide filtration Pompes à  vide concentration 603AD08 603AP09 603AP24   603AC03 603AP07 603AR05 Vers  4eme lavage des filtres 603AR06 603AD07 603AR07 Pompe à vide flush Eau brute SCHEMA DE PRINCIPE  Vers garde  hydraulique du  précondenseur         R02 Atm Alimentation en eau de  La tour de refroidissement"
+  },
+  {
+    "id": "slide_134",
+    "slide": 134,
+    "module": "MODULE 4",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "L’installation  d’épuration de  fumées   est  conçue  pour minimiser les émissions des gaz de fluor  lors de la fabrication d’acide phosphorique ,  Il reçoit les gaz  dégagés des équipements suivant: -Du  compartiment n°:1 du réacteur  circulaire  et du  dernier compartiment  de la  maturation -Des plates forme des  filtres  603AAS02 et 03ABS02.  -Des  gardes hydrauliques  604AR06  et  604AR09  des 03 échelons de la  concentration. -Des  Bacs de FSA  604BBR01,604BAR11- 614AAR11 -De toutes les pompes à vide de la réaction, de la filtration et de la concentration.       PRINCIPE  DE  FONCTIONNEMENT"
+  },
+  {
+    "id": "slide_135",
+    "slide": 135,
+    "module": "MODULE 4",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "L’épurateur de fumée fonctionne sous vide  (-150mm  H2O à l’entrée et  -400  mm H2O à la  sortie), Il   est alimenté  en  eau de la tour de refroidissement et un appoint d ’eau brute de TED . Un  1 er  lavage  des gaz s’effectue  dans le collecteur  à l’entrée par un débit  (77m 3 /h T=52°c,d = 1,15 )  Les condensats dans le collecteur sont récupérés par la pompe  603AP23  comme acide fluosilicique de faible teneur(T=52°c,d=1,15) refoulées vers les 03 gardes hydrauliques  604AR09  des condenseurs  604AD04  des 03 échelons J,K,L  . Les  gaz  sont ensuite  lavés  dans  la hôte ( 166m 3 /h  T=52°c d=1,15)  ,  dans le premier compartiment  , et dans  le 2eme compartiment  (2*370m 3 /h  T=52°c  d=1,15) par  La  P07qui refoule  aussi une quantité d’eau vers  la garde hydraulique du précondenseur du flash (120m 3 /h T=52°c d=1)."
+  },
+  {
+    "id": "slide_136",
+    "slide": 136,
+    "module": "MODULE 4",
+    "section": "STOCKAGE                  ACIDE 54%",
+    "text": "le  lavage continu  dans le 3eme compartiment par la pompe  603AP24  (370m3/h T=41°C d=1,15) et dans le 4 eme  compartiment  ( 370m3/h  T=31-33°c)  par  la pompe P09 qui alimente aussi le 4eme lavage des deux filtres par un débit total ( 110-120 m3/h T=31- 33°c); La rampe du 5 eme  compartiment  est alimentée par  l’eau fraiche( brute ) à partir de TED  (15m3/h T=23°c d=1 ). Les gaz ainsi lavés sont  aspirés par la pompe à vide  603AAC03 vers l’ ATM ( débit  106,6  t/h,96000m3/h) et par une différence de pression(-150mmH2Oà - 400mmH2O  , T= 40°C  d=0,00111). NB : -   Chaque compartiment se compose d’une rampe de 06 rangées  de 03  buses  chacune.       -  Le lavage dans la hôte et  le 1 er   compartiment se fait à contre courant, et du 2eme au 5 eme  compartiment se fait à co-courant."
+  },
+  {
+    "id": "slide_138",
+    "slide": 138,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "Bassin chaud Bassin froid      Tour de refroidissement Echangeurs EAP01 EAP02 Filtration CAP Réaction Scrubber  142 m3/h PPe  à vide Flash PPes à vide CAP PPes à vide Filtration JPH 90m3/h T32°c Thickener 74m3/h T32°c TED 200 m3/h T25°c ? ? ?              108M3/h CAP:  7320 m3/h T41°C (total) Condenseurs  CAP: 3*2400=7200m3/h Att-Filtra: 2523 m3/h T42°c (total) Condenseur  : Flash:2200m3/h Condenseurs :filtres:2*90=180m3/h 6000m3/h T35°c Scrubber 120m3/h T25°c Echangeurs  28%570m3/h T25°C 9843m3/hT29°c SCHEMA DE  PRINCIPE CIRCULATION D’EAU Echangeurs d’acide 28% 570m3 T35°C Eau condensée  :                                                 Annaux liquides des ppes à vide  - Condenseur du Flash :           =  43m3/h             - ppe à vide du flash :               = 34m3/h - Condenseurs des filtres : 2*3 = 6m3/h                - ppes à vide des filtres : 2*30 =  60m3/h - Condenseurs CAP :         3*31=93m3/h                - ppes à vide CAP :            3*9 = 27m3/h Evaporation152 m3/h 2000m3 900m3"
+  },
+  {
+    "id": "slide_139",
+    "slide": 139,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "Pour  réduire la consommation d’eau de mer, on utilise un processus de recyclage des eaux utilisées pour le refroidissement ou la condensation au niveau des  déférents  équipements de l’atelier phosphorique, une installation de  refroidissement s’impose   : tour de refroidissement  625EAW01 . La tour de refroidissement se compose des équipements  suivants  : -06 ventilateurs de refroidissement  (625EC01 ) -06 pompes de circulation d’eau. -02 bassins  625EAR01  et  625EAR02 . -07 refroidisseurs à plaques en parallèle  (625EAE01  au  625EGE01 ) INTRODUCTION"
+  },
+  {
+    "id": "slide_140",
+    "slide": 140,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "La tour  a  pour rôle de refroidir tous les eaux utilisées   dans  l’atelier phosphorique  : -Des  condenseurs et précondenseurs de la CAP  -Des  condenseurs de la filtration. -Du  condenseur des gaz de flash. -D’eau des  anneaux liquide  des pompes  à vide. -D’eau  de refroidissement d’acide 28%. Les eaux  utilisées chaudes  sont recyclées vers le bassin chaud  625EAR01  de capacité 900 m3 puis  par l’intermédiaire des  pompes  625EAP01- 625EBP01et (la 625EKP01: réserve) alimentent  suivant la capacité des installations  un collecteur qui débite dans les (07) échangeurs  à plaques  montés en parallèle (625EAE01  au  625EGE01).    Principe  de  fonctionnement"
+  },
+  {
+    "id": "slide_141",
+    "slide": 141,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "où  elles subissent  un refroidissement par l’eau du bassin froid de capacité 2000m3 refoulée par les pompes  625EAP02  –EBP02-et EKP02 des dérivations au refoulement de ces pompes en amont de l’échangeur  alimentent directement le laveur des  fumées  et les échangeurs d’acide  28%( T =29°c ).   L’eau chaude refroidie à 29°c rejoint à la sortie des échangeurs  un collecteur de distribution qui alimente les équipements suivants: -La réaction : (condenseur du flash + pompe à vide). -La filtration: (condenseurs + pompes à vide). -La concentration:(condenseurs + pompes à vide). -Scrubber."
+  },
+  {
+    "id": "slide_142",
+    "slide": 142,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "L’eau froide qui s’est chauffée quitte les  échangeurs à  plaques à une température de 35°c en se mélangeant  avec l’eau chaude  sortie des  échangeurs d’acide 28%  de même température sont recyclées  vers la tour où  elles se sont pulvérisées et refroidies   à contre-courant  par l’air ambiant aspiré de l’atmosphère et refoulé par les  ventilateurs  (625EAC01-625EFC01 )  . Le bassin froid est alimenté aussi en plus de l’eau refroidie par un appoint d’eau  brute de TED  (108m3/h  T= 25°c) et de JPH+épaississement ( 90m3/h+74m3/h  T=33°C).    un débit d’environ 18000 m3/h  circule  dans la  tour.   Des filtres sont installés en amont des échangeurs à plaques pour les protéger de toute usure par les  débris  provenant de l’eau ou de l’air ."
+  },
+  {
+    "id": "slide_143",
+    "slide": 143,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "Un démarrage de n’importe quelle installation, nécessite les préparatifs suivants: 1- Disponibilité de l’installation 2- Disponibilité des matières premières 3- Disponibilité de l’énergie et d’autres produits entrants dans la production 4- Contrôle et nettoyage de l'intérieur des bacs  5-Désaccoupler les moteurs aux équipements entrainés 6-Vérifier la fixation : moteurs- châssis -palles des agitateurs-turbines des pompes 7-Essais à vide  et sens de rotation des moteurs 8-Essais à vide des agitateurs accouplés 9-Essais à vides des pompes accouplées    Préparatifs  de démarrage"
+  },
+  {
+    "id": "slide_144",
+    "slide": 144,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "Si tous les essais à vide sont  concluants (sens de rotation, ampérages conformes etc..) fermer  les portes de visites,  s’assurer de la consignation et    procéder  à l’accouplement de tous les équipements tout en rinçant tous les circuits  par  priorité (manchettes démontées ou crépines installées à l’aspiration  des pompes avant le  rinçage); On procède aux essais en charge à l’eau tout en relevant l’ampérage, le sens de rotation et les anomalies détectées . Pour les circuits de vapeur Il faut faire la chasse de toutes les conduites isolées des appareils d’utilisation. En fin de cette opération arrêter la vapeur , purger les circuits et procéder aux raccordements. Avant tout démarrage en charge il faut aligner et orienter les circuits."
+  },
+  {
+    "id": "slide_145",
+    "slide": 145,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "Le principe d’un bilan matière : les entrées = sorties  Si on prend par exemple un bilan de P2O5 Ex : Pour une entrée de phosphate sec de 100T/h et un titre de 31% de P2O5  1-Calculer la sortie de P2O5 dans l’acide produit sachant que le rendement de l’installation est de 95% 2-Calculer la quantité d’acide produit pour un titre de 28%. 3-Calculer les pertes en P2O5 dans le gypse. 4-Trouver la quantité d’eau évaporée pour concentrer l’acide de 28% à 54%. La  réaction utilise une pulpe de phosphate, 5- calculer la quantité d’eau pour obtenir un taux de solide de 65% de la  pulpe     NOTION  DE BILAN MATIERE"
+  },
+  {
+    "id": "slide_146",
+    "slide": 146,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "1- Q P2O5 acide = Q PH* Titre P2O5 PH * Rd AN :   2- Q d’acide produite =QP2O5/ titre P2O5 acide AN : Q d’acide produite = 29,45/0,28 = 105,18T/h Q P2O5 acide = 100*0,31*0,95 = 29,45T/h        Réponses"
+  },
+  {
+    "id": "slide_147",
+    "slide": 147,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "3-Pertes  de P2O5 dans le gypse: QP2O5 gypse                QP2O5gypse  = QP2O5PH- QP2O5  acide AN : QP2O5gypse  =  31-29,45=  1,55T/h"
+  },
+  {
+    "id": "slide_148",
+    "slide": 148,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "4-Quantite  d’eau évaporée: Qev Q28%- Q54% = Qev Qev = (QP2O5ac28%/titre ac28%) –(QP2O5ac54%/titre ac54%) NB  : QP205ac28% = QP2O5ac 54% ( QP2O5 produite) Qev  =QP2O5produite (1/titre ac28% -  1/titre ac54%) Qve  =    29,45( 1/0,28 -1/0,54) AN: Qev=29,45*1,719 = 50,65 T/h"
+  },
+  {
+    "id": "slide_149",
+    "slide": 149,
+    "module": "MODULE 4",
+    "section": "Tour de   refroidissement  UNITE 625E",
+    "text": "5-Calcul de La quantité d’eau  Qs +Qe = Qp = Ts * Qp  avec   Qs =Ts * Qp Qe= Qs /Ts –Qs Qe= Qs(1/Ts-1) AN: Qe = 100(1/0,65 – 1)=53,85m3/h"
+  }
+]

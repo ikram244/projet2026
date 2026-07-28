@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Connexion — Plateforme PAP</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { display: flex; min-height: 100vh; }
+
+  .left {
+    flex: 1;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 50px 0 50px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; }
+  .logo img { height: 34px; }
+  .logo span { font-weight: bold; font-size: 15px; color: #1a3a2a; }
+
+  .left h1 { font-size: 24px; line-height: 1.35; color: #1a3a2a; margin-bottom: 16px; max-width: 460px; }
+  .divider { width: 60px; height: 3px; background: #2e8b4f; margin-bottom: 18px; }
+  .left p { color: #6b6b6b; font-size: 13px; max-width: 440px; margin-bottom: 28px; line-height: 1.5; }
+
+  .feature { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; max-width: 440px; }
+  .feature .icon {
+    width: 30px; height: 30px; min-width: 30px; border-radius: 50%;
+    background: #eafaf0; color: #2e8b4f; display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .feature .title { font-weight: bold; font-size: 14px; color: #1a3a2a; margin-bottom: 2px; }
+  .feature .desc { font-size: 12.5px; color: #888; line-height: 1.4; }
+
+  .photo-wrap {
+    margin-top: auto;
+    position: relative;
+    width: 100%;
+    height: 260px;
+  }
+  .photo-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .tri-dark {
+    position: absolute; left: 0; bottom: 0;
+    width: 0; height: 0;
+    border-left: 240px solid #0b3d24;
+    border-top: 260px solid transparent;
+  }
+  .tri-light {
+    position: absolute; left: 0; bottom: 0;
+    width: 0; height: 0;
+    border-left: 160px solid #3fae5f;
+    border-top: 180px solid transparent;
+    opacity: 0.85;
+  }
+  .dots {
+    position: absolute; left: 12px; bottom: 12px;
+    width: 70px; height: 40px;
+    background-image: radial-gradient(#ffffff 1.5px, transparent 1.5px);
+    background-size: 10px 10px;
+    opacity: 0.5;
+    z-index: 2;
+  }
+
+  .right { flex: 1; display: flex; align-items: center; justify-content: center; background: #ffffff; }
+  .card { width: 380px; }
+  .card-icon {
+    width: 56px; height: 56px; background: #eafaf0; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px;
+  }
+  .card h2 { text-align: center; margin-bottom: 6px; color: #1a3a2a; }
+  .card .sub { text-align: center; color: #777; font-size: 13px; margin-bottom: 25px; }
+
+  label { display: block; margin: 15px 0 6px; font-size: 14px; color: #333; }
+  input[type=email], input[type=password] {
+    width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;
+  }
+  button {
+    width: 100%; margin-top: 25px; padding: 12px; background: #1a6b3a; color: white;
+    border: none; border-radius: 6px; font-size: 15px; cursor: pointer;
+  }
+  button:hover { background: #14532c; }
+  .error { color: #c0392b; font-size: 13px; margin-top: 10px; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="left">
+  <div class="logo">
+    <span>🌿 OCP</span>
+  </div>
+
+  <h1>Plateforme Intelligente PAP – Prédiction de la Densité de l'Acide Phosphorique</h1>
+  <div class="divider"></div>
+  <p>Solution digitale avancée pour la supervision, la prédiction et l'optimisation du processus de production de l'acide phosphorique à l'Atelier PAP – OCP.</p>
+
+  <div class="feature">
+    <div class="icon">✓</div>
+    <div>
+      <div class="title">Supervision en temps réel</div>
+      <div class="desc">Suivez en direct les mesures et paramètres clés de l'unité de production.</div>
+    </div>
+  </div>
+  <div class="feature">
+    <div class="icon">📈</div>
+    <div>
+      <div class="title">Prédiction &amp; Ajustements</div>
+      <div class="desc">Prédisez la densité cible et obtenez les ajustements recommandés par nos modèles intelligents.</div>
+    </div>
+  </div>
+  <div class="feature">
+    <div class="icon">💬</div>
+    <div>
+      <div class="title">Assistant intelligent</div>
+      <div class="desc">Posez vos questions à l'assistant Cofert en Français, Anglais ou Darija et obtenez des réponses instantanées.</div>
+    </div>
+  </div>
+
+  <div class="photo-wrap">
+    <img src="{{ url_for('static', filename='img/photologin.jpeg') }}" alt="Usine">
+    <div class="tri-dark"></div>
+    <div class="tri-light"></div>
+    <div class="dots"></div>
+  </div>
+</div>
+
+<div class="right">
+  <form class="card" method="POST" action="/login">
+    <div class="card-icon">🔒</div>
+    <h2>Bienvenue</h2>
+    <div class="sub">Connectez-vous à votre espace</div>
+
+    <label>Email</label>
+    <input type="email" name="email" placeholder="example@ocpgroup.ma" required>
+
+    <label>Mot de passe</label>
+    <input type="password" name="password" placeholder="••••••••" required>
+
+    <button type="submit">Se connecter</button>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+  </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Correction de la densité — Plateforme PAP</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { display: flex; min-height: 100vh; background: #f5f7f6; }
+
+  .sidebar {
+    width: 260px; background: #0b3d24; color: white; padding: 25px 0; display: flex; flex-direction: column;
+  }
+  .sidebar .brand { display: flex; align-items: center; gap: 10px; padding: 0 25px 25px; }
+  .sidebar .brand .badge {
+    width: 34px; height: 34px; background: #2e8b4f; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; font-weight: bold;
+  }
+  .sidebar .brand div small { display: block; font-size: 11px; opacity: 0.7; }
+  .nav-section { padding: 15px 25px 8px; font-size: 11px; letter-spacing: 1px; opacity: 0.55; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 11px 25px; font-size: 14px;
+    color: #d8e8de; text-decoration: none; cursor: pointer;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); }
+  .nav-item.active { background: #14532c; color: white; border-right: 3px solid #3fae5f; }
+
+  .main { flex: 1; padding: 30px 40px; }
+  .topbar h1 { font-size: 22px; color: #1a3a2a; }
+  .topbar .sub { font-size: 13px; color: #888; margin: 4px 0 25px; max-width: 700px; }
+
+  .panel {
+    background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+  }
+  .panel-title { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: bold; color: #1a3a2a; margin-bottom: 18px; }
+  .panel-title .num {
+    width: 22px; height: 22px; background: #2e8b4f; color: white; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 12px;
+  }
+
+  .row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .field label { display: block; font-size: 12.5px; color: #555; margin-bottom: 6px; }
+  .field select, .field input {
+    width: 100%; padding: 9px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; background: #fafafa;
+  }
+
+  .param-card {
+    border: 1px solid #eee; background: #fbfbfb; border-radius: 8px; padding: 14px; position: relative;
+  }
+  .param-card .name { font-weight: bold; font-size: 13.5px; color: #1a3a2a; }
+  .param-card .desc { font-size: 11.5px; color: #888; margin-bottom: 8px; }
+  .param-card input { width: 100%; padding: 7px 8px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; margin-bottom: 8px; }
+  .toggle-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #555; }
+  .switch { position: relative; width: 34px; height: 18px; }
+  .switch input { display: none; }
+  .slider {
+    position: absolute; inset: 0; background: #ccc; border-radius: 20px; cursor: pointer; transition: 0.2s;
+  }
+  .slider::before {
+    content: ""; position: absolute; width: 14px; height: 14px; left: 2px; top: 2px;
+    background: white; border-radius: 50%; transition: 0.2s;
+  }
+  .switch input:checked + .slider { background: #2e8b4f; }
+  .switch input:checked + .slider::before { transform: translateX(16px); }
+
+  .btn-primary {
+    width: 100%; margin-top: 18px; padding: 13px; background: #1a6b3a; color: white;
+    border: none; border-radius: 6px; font-size: 14px; cursor: pointer;
+  }
+  .btn-primary:hover { background: #14532c; }
+  .btn-danger {
+    padding: 12px 18px; background: white; color: #c0392b; border: 1px solid #c0392b;
+    border-radius: 6px; font-size: 13px; cursor: pointer;
+  }
+  .btn-outline {
+    flex: 1; padding: 12px; background: #1a6b3a; color: white; border: none;
+    border-radius: 6px; font-size: 13px; cursor: pointer;
+  }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  th { text-align: left; font-size: 11.5px; color: #888; padding: 8px 6px; border-bottom: 1px solid #eee; }
+  td { padding: 10px 6px; font-size: 13.5px; border-bottom: 1px solid #f2f2f2; color: #333; }
+  .ecart-up { color: #2e8b4f; }
+  .ecart-down { color: #c0392b; }
+  .empty-msg { color: #999; font-size: 13px; padding: 20px 0; text-align: center; }
+
+  .actions-row { display: flex; gap: 12px; margin-top: 16px; align-items: center; }
+  .refuse-input {
+    flex: 2; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;
+  }
+
+  .status-cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 20px; }
+  .status-card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+  .status-card .label { font-size: 12px; color: #888; margin-bottom: 6px; }
+  .status-card .val { font-size: 18px; font-weight: bold; color: #1a3a2a; }
+
+  .error-msg { color: #c0392b; font-size: 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="brand">
+    <div class="badge">P</div>
+    <div>Plateforme PAP<small>OCP Group — Atelier</small></div>
+  </div>
+  <div class="nav-section">SUIVI</div>
+  <a class="nav-item" href="/dashboard">📊 Tableau de bord</a>
+  <a class="nav-item" href="#">🧪 Mesures laboratoire</a>
+  <a class="nav-item" href="#">📁 Fichiers &amp; rapports</a>
+  <a class="nav-item" href="#">📈 Graphiques</a>
+  <div class="nav-section">INTELLIGENCE</div>
+  <a class="nav-item active" href="/correction">🎯 Prédiction &amp; ajustements</a>
+  <a class="nav-item" href="#">🕒 Historique prédictions</a>
+  <a class="nav-item" href="#">💬 Chatbot assistant</a>
+  <div class="nav-section">SYSTÈME</div>
+  <a class="nav-item" href="#">⚙️ Administration</a>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <h1>Correction de la densité — assistant opérateur</h1>
+    <div class="sub">Entrez la densité mesurée en laboratoire et la densité cible : le modèle calcule directement les valeurs de consigne des 6 paramètres process à appliquer, sans itérations manuelles.</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="num">1</span> Échelon &amp; densités</div>
+    <div class="row3">
+      <div class="field">
+        <label>Échelon</label>
+        <select id="echelon">
+          <option value="J">J</option>
+          <option value="K">K</option>
+          <option value="L">L</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Densité mesurée (labo, actuelle)</label>
+        <input type="number" id="densite_actuelle" placeholder="1613">
+      </div>
+      <div class="field">
+        <label>Densité cible</label>
+        <input type="number" id="densite_cible" placeholder="1650">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="num">2</span> Paramètres actuels &amp; variables à optimiser</div>
+    <div class="row3" style="grid-template-columns: repeat(3,1fr); row-gap:20px;">
+
+      <div class="param-card">
+        <div class="name">TIC223</div>
+        <div class="desc">T° sortie échangeur · °C</div>
+        <input type="number" id="TIC_sortie_ech" value="83.03">
+        <div class="toggle-row">
+          <label class="switch"><input type="checkbox" id="opt_TIC_sortie_ech" checked><span class="slider"></span></label> optimiser
+        </div>
+      </div>
+
+      <div class="param-card">
+        <div class="name">TI244</div>
+        <div class="desc">T° entrée échangeur · °C</div>
+        <input type="number" id="TI_entree_ech" value="78.76">
+        <div class="toggle-row">
+          <label class="switch"><input type="checkbox" id="opt_TI_entree_ech" checked><span class="slider"></span></label> optimiser
+        </div>
+      </div>
+
+      <div class="param-card">
+        <div class="name">PI226</div>
+        <div class="desc">Pression calandre · bar</div>
+        <input type="number" id="PI_calendre" value="0.79">
+        <div class="toggle-row">
+          <label class="switch"><input type="checkbox" id="opt_PI_calendre" checked><span class="slider"></span></label> optimiser
+        </div>
+      </div>
+
+      <div class="param-card">
+        <div class="name">PI228</div>
+        <div class="desc">Pression boucle · bar</div>
+        <input type="number" id="PI_boucle" value="2.12">
+        <div class="toggle-row">
+          <label class="switch"><input type="checkbox" id="opt_PI_boucle" checked><span class="slider"></span></label> optimiser
+        </div>
+      </div>
+
+      <div class="param-card">
+        <div class="name">PI246</div>
+        <div class="desc">Vide séparateur · mmHg</div>
+        <input type="number" id="PI_separateur" value="95.2">
+        <div class="toggle-row">
+          <label class="switch"><input type="checkbox" id="opt_PI_separateur" checked><span class="slider"></span></label> optimiser
+        </div>
+      </div>
+
+      <div class="param-card">
+        <div class="name">FIC258</div>
+        <div class="desc">Débit acide 54% sortie · m³/h</div>
+        <input type="number" id="prod_sortie_54" value="19.12">
+        <div class="toggle-row">
+          <label class="switch"><input type="checkbox" id="opt_prod_sortie_54" checked><span class="slider"></span></label> optimiser
+        </div>
+      </div>
+
+    </div>
+
+    <button class="btn-primary" onclick="calculerCorrection()">Calculer la correction</button>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <div class="panel">
+    <strong style="font-size:14px; color:#1a3a2a;">Ajustements proposés</strong>
+    <table id="resultTable">
+      <thead>
+        <tr><th>Variable</th><th>Valeur actuelle</th><th>Nouvelle consigne</th><th>Écart</th></tr>
+      </thead>
+      <tbody id="resultBody"></tbody>
+    </table>
+    <div class="empty-msg" id="emptyMsg">Cliquez sur « Calculer la correction ».</div>
+
+    <div class="actions-row" id="actionsRow" style="display:none;">
+      <button class="btn-outline">Valider et Appliquer la correction</button>
+      <input class="refuse-input" placeholder="Motif du refus (raison si refusé)...">
+      <button class="btn-danger">Refuser la correction</button>
+    </div>
+  </div>
+
+  <div class="status-cards">
+    <div class="status-card"><div class="label">Densité Prédite (Réglage Actuel)</div><div class="val" id="densPredAvant">—</div></div>
+    <div class="status-card"><div class="label">Densité Prédite (Après Correction)</div><div class="val" id="densPredApres">—</div></div>
+    <div class="status-card"><div class="label">Écart Final (Correction – Cible)</div><div class="val" id="ecartFinal">—</div></div>
+    <div class="status-card"><div class="label">Biais Modèle/Terrain</div><div class="val" id="biaisModele">—</div></div>
+  </div>
+</div>
+
+<script>
+const PARAM_KEYS = ["TIC_sortie_ech", "TI_entree_ech", "PI_calendre", "PI_boucle", "PI_separateur", "prod_sortie_54"];
+
+const LABELS = {
+  TIC_sortie_ech: "TIC223",
+  TI_entree_ech: "TI244",
+  PI_calendre: "PI226",
+  PI_boucle: "PI228",
+  PI_separateur: "PI246",
+  prod_sortie_54: "FIC258",
+};
+
+async function calculerCorrection() {
+  const errorEl = document.getElementById('errorMsg');
+  errorEl.innerText = '';
+
+  const params = {};
+  PARAM_KEYS.forEach(k => params[k] = parseFloat(document.getElementById(k).value));
+
+  const variables_a_optimiser = PARAM_KEYS.filter(k => document.getElementById('opt_' + k).checked);
+
+  const densite_actuelle = parseFloat(document.getElementById('densite_actuelle').value);
+  const densite_cible = parseFloat(document.getElementById('densite_cible').value);
+
+  if (isNaN(densite_actuelle) || isNaN(densite_cible)) {
+    errorEl.innerText = "Renseigne la densité mesurée et la densité cible.";
+    return;
+  }
+
+  const payload = {
+    echelon: document.getElementById('echelon').value,
+    densite_mesuree: densite_actuelle,
+    densite_cible: densite_cible,
+    params: params,
+    variables_a_optimiser: variables_a_optimiser,
+  };
+
+  let data;
+  try {
+    const res = await fetch('/api/correction', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    data = await res.json();
+  } catch (e) {
+    errorEl.innerText = "Erreur réseau : " + e.message;
+    return;
+  }
+
+  if (data.error) {
+    errorEl.innerText = data.error;
+    return;
+  }
+
+  const tbody = document.getElementById('resultBody');
+  tbody.innerHTML = '';
+  PARAM_KEYS.forEach(k => {
+    const avant = data.params_actuels[k];
+    const apres = data.params_corriges[k];
+    const ecart = data.deltas[k];
+    const cls = ecart >= 0 ? 'ecart-up' : 'ecart-down';
+    tbody.innerHTML += `<tr>
+      <td>${LABELS[k]}</td>
+      <td>${avant.toFixed(2)}</td>
+      <td>${apres.toFixed(2)}</td>
+      <td class="${cls}">${ecart >= 0 ? '▲' : '▼'} ${ecart.toFixed(2)}</td>
+    </tr>`;
+  });
+
+  document.getElementById('emptyMsg').style.display = 'none';
+  document.getElementById('actionsRow').style.display = 'flex';
+
+  document.getElementById('densPredAvant').innerText = data.densite_predite_actuelle + ' kg/m³';
+  document.getElementById('densPredApres').innerText = data.densite_predite_apres_correction + ' kg/m³';
+  document.getElementById('ecartFinal').innerText = data.ecart_final + ' kg/m³';
+  document.getElementById('biaisModele').innerText = data.biais_modele + ' kg/m³';
+}
+</script>
+
+</body>
+</html>

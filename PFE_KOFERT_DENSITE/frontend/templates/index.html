@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>KOFERT — Correction de densité</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="wrap">
+  <div class="tag-eyebrow">UNITE 604 — BOUCLE DE CONCENTRATION 54%</div>
+  <h1>Correction de la densité — assistant opérateur</h1>
+  <p class="sub">
+    Entrez la densité mesurée en laboratoire et la densité cible : le modèle calcule
+    directement les valeurs de consigne des 6 paramètres process à appliquer,
+    sans itérations manuelles.
+  </p>
+
+  <div class="panel">
+    <h2><span class="n">1</span>Échelon &amp; densités</h2>
+    <div class="grid">
+      <div class="field">
+        <label>Échelon</label>
+        <select id="echelon">
+          <option value="J">J</option>
+          <option value="K">K</option>
+          <option value="L">L</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Densité mesurée (labo, actuelle)</label>
+        <input type="number" id="densMesuree" value="1618" step="1">
+      </div>
+      <div class="field">
+        <label>Densité cible</label>
+        <input type="number" id="densCible" value="1625" step="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2><span class="n">2</span>Paramètres actuels &amp; variables à optimiser</h2>
+    <div class="param-grid" id="paramGrid"></div>
+
+    <button class="optimize-btn" id="optimizeBtn">Calculer la correction</button>
+    <div class="error-banner" id="errorBanner"></div>
+
+    <h2 style="margin-top:26px;">Ajustements proposés</h2>
+    <table>
+      <thead>
+        <tr><th>Variable</th><th>Valeur actuelle</th><th>Nouvelle consigne</th></tr>
+      </thead>
+      <tbody id="resultsBody">
+        <tr><td colspan="3"><div class="empty-state">Cliquez sur « Calculer la correction ».</div></td></tr>
+      </tbody>
+    </table>
+
+    <div class="summary-row">
+      <div class="summary-item">Densité prédite (réglage actuel) : <b id="predActuelle">—</b></div>
+      <div class="summary-item">Densité prédite après correction : <b id="predCorrigee">—</b></div>
+      <div>
+        <span class="summary-item">Écart final (prédiction − cible)&nbsp;</span>
+        <span class="ecart-value" id="ecartFinal">—</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">
+    Le modèle recale automatiquement sa prédiction sur la dernière mesure labo
+    (biais terrain/modèle) avant de calculer la correction.
+    Appelle <span class="footnote-tag">POST /api/correction</span>.
+  </p>
+</div>
+
+<script>
+const TAGS = {
+  TIC_sortie_ech: { label:"TIC223", desc:"T° sortie échangeur", unit:"°C" },
+  TI_entree_ech:  { label:"TI244",  desc:"T° entrée échangeur", unit:"°C" },
+  PI_calendre:    { label:"PI226",  desc:"Pression calandre",   unit:"bar" },
+  PI_boucle:      { label:"PI228",  desc:"Pression boucle",     unit:"bar" },
+  PI_separateur:  { label:"PI246",  desc:"Vide séparateur",     unit:"mm Hg" },
+  prod_sortie_54: { label:"FIC250", desc:"Débit acide 54% sortie", unit:"m³/h" },
+};
+const ORDER = Object.keys(TAGS);
+
+// Valeurs par défaut (moyennes échelon J) - remplacées si l'opérateur les modifie.
+const DEFAULTS = {
+  TIC_sortie_ech: 83.03, TI_entree_ech: 78.76, PI_calendre: 0.79,
+  PI_boucle: 2.12, PI_separateur: 95.20, prod_sortie_54: 19.12,
+};
+
+let activeVars = new Set(ORDER);
+
+function renderParamGrid(){
+  const grid = document.getElementById('paramGrid');
+  grid.innerHTML = "";
+  ORDER.forEach(k => {
+    const t = TAGS[k];
+    const card = document.createElement('div');
+    card.className = 'param-card' + (activeVars.has(k) ? '' : ' inactive');
+    card.innerHTML = `
+      <label>${t.label} <span class="unit">${t.desc} · ${t.unit}</span></label>
+      <input type="number" step="0.01" id="param_${k}" value="${DEFAULTS[k]}">
+      <div class="chip-toggle" data-key="${k}">
+        <input type="checkbox" ${activeVars.has(k) ? 'checked' : ''}> optimiser
+      </div>`;
+    grid.appendChild(card);
+  });
+  grid.querySelectorAll('.chip-toggle').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const k = el.dataset.key;
+      if (e.target.tagName !== 'INPUT') {
+        const cb = el.querySelector('input');
+        cb.checked = !cb.checked;
+      }
+      if (el.querySelector('input').checked) activeVars.add(k); else activeVars.delete(k);
+      el.closest('.param-card').classList.toggle('inactive', !activeVars.has(k));
+    });
+  });
+}
+
+function getCurrentParams(){
+  const params = {};
+  ORDER.forEach(k => params[k] = parseFloat(document.getElementById(`param_${k}`).value));
+  return params;
+}
+
+function showError(msg){
+  const el = document.getElementById('errorBanner');
+  if (!msg) { el.style.display = 'none'; return; }
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+async function computeCorrection(){
+  showError(null);
+  const btn = document.getElementById('optimizeBtn');
+  btn.disabled = true;
+  btn.textContent = "Calcul en cours…";
+
+  const payload = {
+    echelon: document.getElementById('echelon').value,
+    densite_mesuree: parseFloat(document.getElementById('densMesuree').value),
+    densite_cible: parseFloat(document.getElementById('densCible').value),
+    params: getCurrentParams(),
+    variables_a_optimiser: Array.from(activeVars),
+  };
+
+  try {
+    const resp = await fetch('/api/correction', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { showError(data.error || "Erreur serveur."); return; }
+    renderResults(data);
+  } catch (err) {
+    showError("Impossible de contacter l'API (/api/correction). Le serveur Flask est-il lancé ?");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Calculer la correction";
+  }
+}
+
+function renderResults(data){
+  const body = document.getElementById('resultsBody');
+  body.innerHTML = "";
+  ORDER.forEach(k => {
+    const t = TAGS[k];
+    const cur = data.params_actuels[k];
+    const isActive = data.variables_optimisees.includes(k);
+    const tr = document.createElement('tr');
+    if (!isActive){
+      tr.innerHTML = `
+        <td><span class="var-name">${t.label}</span><span class="var-tag">non optimisé</span></td>
+        <td class="val-current">${cur.toFixed(2)}</td>
+        <td class="val-current">—</td>`;
+      body.appendChild(tr);
+      return;
+    }
+    const nv = data.params_corriges[k];
+    const d = data.deltas[k];
+    const arrowClass = d > 0 ? 'arrow-up' : (d < 0 ? 'arrow-down' : '');
+    const arrow = d > 0 ? '▲' : (d < 0 ? '▼' : '—');
+    tr.innerHTML = `
+      <td><span class="var-name">${t.label}</span><span class="var-tag">${t.desc} · ${t.unit}</span></td>
+      <td class="val-current">${cur.toFixed(2)}</td>
+      <td><span class="val-new"><span class="${arrowClass}">${arrow}</span>${nv.toFixed(2)}<span class="delta">(${d>=0?'+':''}${d.toFixed(2)})</span></span></td>`;
+    body.appendChild(tr);
+  });
+
+  document.getElementById('predActuelle').textContent = data.densite_predite_actuelle;
+  document.getElementById('predCorrigee').textContent = data.densite_predite_apres_correction;
+  const ecartEl = document.getElementById('ecartFinal');
+  ecartEl.textContent = data.ecart_final;
+  ecartEl.className = 'ecart-value' + (Math.abs(data.ecart_final) > 1.5 ? ' bad' : '');
+}
+
+document.getElementById('optimizeBtn').addEventListener('click', computeCorrection);
+renderParamGrid();
+</script>
+</body>
+</html>
