@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Chatbot — Plateforme PAP</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { display: flex; min-height: 100vh; background: #f5f7f6; }
+
+  .sidebar {
+    width: 260px; background: #0b3d24; color: white; padding: 25px 0; display: flex; flex-direction: column;
+  }
+  .sidebar .brand { display: flex; align-items: center; gap: 10px; padding: 0 25px 25px; }
+  .sidebar .brand .badge {
+    width: 34px; height: 34px; background: #2e8b4f; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; font-weight: bold;
+  }
+  .sidebar .brand div small { display: block; font-size: 11px; opacity: 0.7; }
+  .nav-section { padding: 15px 25px 8px; font-size: 11px; letter-spacing: 1px; opacity: 0.55; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 11px 25px; font-size: 14px;
+    color: #d8e8de; text-decoration: none; cursor: pointer;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); }
+  .nav-item.active { background: #14532c; color: white; border-right: 3px solid #3fae5f; }
+
+  .main { flex: 1; display: flex; flex-direction: column; padding: 30px 40px; }
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .topbar h1 { font-size: 20px; color: #1a3a2a; }
+  .topbar .sub { font-size: 12.5px; color: #888; margin-top: 3px; }
+  .lang-select { border: 1px solid #ddd; border-radius: 6px; padding: 6px 10px; font-size: 13px; background: white; }
+
+  .chat-panel {
+    flex: 1; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .chat-header { padding: 16px 20px; border-bottom: 1px solid #f0f0f0; font-weight: bold; color: #1a3a2a; }
+
+  .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+
+  .msg-row { display: flex; gap: 10px; align-items: flex-end; }
+  .msg-row.user { flex-direction: row-reverse; }
+  .avatar {
+    width: 30px; height: 30px; border-radius: 50%; background: #0b3d24; color: white;
+    display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;
+  }
+  .msg-row.user .avatar { background: #2e8b4f; }
+  .bubble {
+    max-width: 65%; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5;
+    background: #0b3d24; color: white; border-bottom-left-radius: 2px;
+  }
+  .msg-row.user .bubble { background: #eafaf0; color: #1a3a2a; border-bottom-left-radius: 12px; border-bottom-right-radius: 2px; }
+  .msg-time { font-size: 10.5px; color: #aaa; margin-top: 4px; text-align: right; }
+  .msg-row.user .msg-time { text-align: left; }
+
+  .chat-input-row {
+    display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-top: 1px solid #f0f0f0;
+  }
+  .chat-input-row input {
+    flex: 1; padding: 11px 14px; border: 1px solid #ddd; border-radius: 20px; font-size: 14px; outline: none;
+  }
+  .send-btn {
+    width: 40px; height: 40px; border-radius: 50%; background: #1a6b3a; color: white; border: none;
+    cursor: pointer; font-size: 16px;
+  }
+  .send-btn:hover { background: #14532c; }
+  .typing { font-size: 12.5px; color: #999; padding: 0 20px 10px; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="brand">
+    <div class="badge">P</div>
+    <div>Plateforme PAP<small>OCP Group — Atelier</small></div>
+  </div>
+  <div class="nav-section">SUIVI</div>
+  <a class="nav-item" href="/dashboard">📊 Tableau de bord</a>
+  <a class="nav-item" href="#">🧪 Mesures laboratoire</a>
+  <a class="nav-item" href="#">📁 Fichiers &amp; rapports</a>
+  <a class="nav-item" href="#">📈 Graphiques</a>
+  <div class="nav-section">INTELLIGENCE</div>
+  <a class="nav-item" href="/correction">🎯 Prédiction &amp; ajustements</a>
+  <a class="nav-item" href="#">🕒 Historique prédictions</a>
+  <a class="nav-item active" href="/chatbot">💬 Chatbot assistant</a>
+  <div class="nav-section">SYSTÈME</div>
+  <a class="nav-item" href="/administration">⚙️ Administration</a>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div>
+      <h1>Chatbot — Interface Utilisateur</h1>
+      <div class="sub">Plateforme intelligente PAP — Prédiction de la densité de l'acide phosphorique</div>
+    </div>
+    <select class="lang-select">
+      <option>FR</option>
+      <option>EN</option>
+      <option>Darija</option>
+    </select>
+  </div>
+
+  <div class="chat-panel">
+    <div class="chat-header">Assistant Chatbot PAP</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg-row">
+        <div class="avatar">🤖</div>
+        <div>
+          <div class="bubble">Bonjour ! Comment puis-je vous aider aujourd'hui concernant le processus de production de l'acide phosphorique ?</div>
+          <div class="msg-time">--:--</div>
+        </div>
+      </div>
+    </div>
+    <div class="typing" id="typingIndicator" style="display:none;">L'assistant écrit...</div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Écrivez votre message..." onkeydown="if(event.key==='Enter') envoyerMessage();">
+      <button class="send-btn" onclick="envoyerMessage()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let history = [];
+
+function heureActuelle() {
+  const d = new Date();
+  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+
+function ajouterMessage(texte, role) {
+  const container = document.getElementById('chatMessages');
+  const row = document.createElement('div');
+  row.className = 'msg-row' + (role === 'user' ? ' user' : '');
+  row.innerHTML = `
+    <div class="avatar">${role === 'user' ? '🧑' : '🤖'}</div>
+    <div>
+      <div class="bubble"></div>
+      <div class="msg-time">${heureActuelle()}</div>
+    </div>
+  `;
+  row.querySelector('.bubble').innerText = texte;
+  container.appendChild(row);
+  container.scrollTop = container.scrollHeight;
+}
+
+function extraireReponse(data) {
+  const cles = ['reponse', 'answer', 'response', 'text', 'message'];
+  for (const k of cles) {
+    if (typeof data[k] === 'string') return data[k];
+  }
+  return JSON.stringify(data);
+}
+
+async function envoyerMessage() {
+  const input = document.getElementById('chatInput');
+  const question = input.value.trim();
+  if (!question) return;
+
+  ajouterMessage(question, 'user');
+  history.push({ role: 'user', content: question });
+  input.value = '';
+
+  document.getElementById('typingIndicator').style.display = 'block';
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: question, history: history })
+    });
+    const data = await res.json();
+
+    document.getElementById('typingIndicator').style.display = 'none';
+
+    if (data.erreur) {
+      ajouterMessage("Erreur : " + data.erreur, 'bot');
+      return;
+    }
+
+    const reponse = extraireReponse(data);
+    ajouterMessage(reponse, 'bot');
+    history.push({ role: 'assistant', content: reponse });
+
+  } catch (e) {
+    document.getElementById('typingIndicator').style.display = 'none';
+    ajouterMessage("Erreur réseau : " + e.message, 'bot');
+  }
+}
+</script>
+
+</body>
+</html>
