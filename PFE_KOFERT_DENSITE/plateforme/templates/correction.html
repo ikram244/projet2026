@@ -220,9 +220,9 @@
     <div class="empty-msg" id="emptyMsg">Cliquez sur « Calculer la correction ».</div>
 
     <div class="actions-row" id="actionsRow" style="display:none;">
-      <button class="btn-outline">Valider et Appliquer la correction</button>
+      <button class="btn-outline" onclick="validerCorrection()">Valider et Appliquer la correction</button>
       <input class="refuse-input" placeholder="Motif du refus (raison si refusé)...">
-      <button class="btn-danger">Refuser la correction</button>
+      <button class="btn-danger" onclick="refuserCorrection()">Refuser la correction</button>
     </div>
   </div>
 
@@ -246,6 +246,8 @@ const LABELS = {
   prod_sortie_54: "FIC258",
 };
 
+let derniereCorrection = null; // stocke le dernier résultat calculé, pour Valider/Refuser
+
 async function calculerCorrection() {
   const errorEl = document.getElementById('errorMsg');
   errorEl.innerText = '';
@@ -257,6 +259,7 @@ async function calculerCorrection() {
 
   const densite_actuelle = parseFloat(document.getElementById('densite_actuelle').value);
   const densite_cible = parseFloat(document.getElementById('densite_cible').value);
+  const echelon = document.getElementById('echelon').value;
 
   if (isNaN(densite_actuelle) || isNaN(densite_cible)) {
     errorEl.innerText = "Renseigne la densité mesurée et la densité cible.";
@@ -264,7 +267,7 @@ async function calculerCorrection() {
   }
 
   const payload = {
-    echelon: document.getElementById('echelon').value,
+    echelon: echelon,
     densite_mesuree: densite_actuelle,
     densite_cible: densite_cible,
     params: params,
@@ -289,6 +292,17 @@ async function calculerCorrection() {
     return;
   }
 
+  // on garde tout ce qu'il faut pour l'enregistrement (Valider/Refuser)
+  derniereCorrection = {
+    echelon, densite_cible, densite_mesuree: densite_actuelle,
+    params_actuels: data.params_actuels,
+    params_corriges: data.params_corriges,
+    densite_predite_actuelle: data.densite_predite_actuelle,
+    densite_predite_apres_correction: data.densite_predite_apres_correction,
+    ecart_final: data.ecart_final,
+    ecart_avant: data.densite_predite_actuelle - densite_cible,
+  };
+
   const tbody = document.getElementById('resultBody');
   tbody.innerHTML = '';
   PARAM_KEYS.forEach(k => {
@@ -311,6 +325,74 @@ async function calculerCorrection() {
   document.getElementById('densPredApres').innerText = data.densite_predite_apres_correction + ' kg/m³';
   document.getElementById('ecartFinal').innerText = data.ecart_final + ' kg/m³';
   document.getElementById('biaisModele').innerText = data.biais_modele + ' kg/m³';
+}
+
+async function enregistrerPrediction() {
+  const res = await fetch('/api/predictions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      echelon: derniereCorrection.echelon,
+      densite_cible: derniereCorrection.densite_cible,
+      densite_mesuree: derniereCorrection.densite_mesuree,
+      params_actuels: derniereCorrection.params_actuels,
+      densite_predite: derniereCorrection.densite_predite_actuelle,
+      ecart: derniereCorrection.ecart_avant,
+    })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Erreur enregistrement prédiction.");
+  return data.prediction_id;
+}
+
+async function enregistrerAjustement(predictionId, etat, motif) {
+  const res = await fetch(`/api/predictions/${predictionId}/ajustement`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      etat: etat,
+      motif: motif || null,
+      params_corriges: derniereCorrection.params_corriges,
+      densite_predite_apres_correction: derniereCorrection.densite_predite_apres_correction,
+      densite_cible_apres_correction: derniereCorrection.densite_cible,
+      ecart_final: derniereCorrection.ecart_final,
+      etat_du_modele: "Recalé sur Labo",
+    })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Erreur enregistrement ajustement.");
+  return data;
+}
+
+async function validerCorrection() {
+  if (!derniereCorrection) return;
+  try {
+    const predictionId = await enregistrerPrediction();
+    await enregistrerAjustement(predictionId, "APPLIQUEE", null);
+    alert("Correction appliquée et enregistrée dans l'historique.");
+    document.getElementById('actionsRow').style.display = 'none';
+    derniereCorrection = null;
+  } catch (e) {
+    alert("Erreur : " + e.message);
+  }
+}
+
+async function refuserCorrection() {
+  if (!derniereCorrection) return;
+  const motif = document.querySelector('.refuse-input').value.trim();
+  if (!motif) {
+    alert("Le motif du refus est obligatoire.");
+    return;
+  }
+  try {
+    const predictionId = await enregistrerPrediction();
+    await enregistrerAjustement(predictionId, "REFUSEE", motif);
+    alert("Correction refusée et enregistrée dans l'historique.");
+    document.getElementById('actionsRow').style.display = 'none';
+    derniereCorrection = null;
+  } catch (e) {
+    alert("Erreur : " + e.message);
+  }
 }
 </script>
 

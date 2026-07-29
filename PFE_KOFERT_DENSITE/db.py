@@ -140,3 +140,89 @@ if __name__ == "__main__":
         print("\n❌ Échec des tests. Vérifiez que WampServer est démarré.")
         print("   - Vérifiez que l'icône Wamp est verte dans la barre des tâches")
         print("   - Vérifiez que MySQL est en cours d'exécution")
+
+def create_conversation(utilisateur_id, titre="Nouvelle conversation"):
+    """Crée une nouvelle conversation et retourne son id"""
+    query = "INSERT INTO conversations_chatbot (utilisateur_id, titre) VALUES (%s, %s)"
+    return execute_query(query, (utilisateur_id, titre))
+
+
+def get_conversations(utilisateur_id):
+    """Liste les conversations d'un utilisateur, les plus récentes en premier"""
+    query = """
+        SELECT id, titre, date FROM conversations_chatbot
+        WHERE utilisateur_id = %s ORDER BY date DESC
+    """
+    return execute_query(query, (utilisateur_id,), fetch_all=True)
+
+
+def get_messages(conversation_id):
+    """Récupère tous les messages d'une conversation, dans l'ordre"""
+    query = """
+        SELECT expediteur, contenu, date FROM messages_chatbot
+        WHERE conversation_id = %s ORDER BY date ASC
+    """
+    return execute_query(query, (conversation_id,), fetch_all=True)
+
+
+def add_message(conversation_id, expediteur, contenu):
+    """Ajoute un message (expediteur = 'user' ou 'bot')"""
+    query = """
+        INSERT INTO messages_chatbot (conversation_id, expediteur, contenu)
+        VALUES (%s, %s, %s)
+    """
+    return execute_query(query, (conversation_id, expediteur, contenu))
+
+
+def update_titre_conversation(conversation_id, titre):
+    """Met a jour le titre d'une conversation (ex: a partir du premier message)"""
+    query = "UPDATE conversations_chatbot SET titre = %s WHERE id = %s"
+    return execute_query(query, (titre, conversation_id))
+
+def delete_conversation(conversation_id):
+    """Supprime une conversation (les messages sont supprimes en cascade)"""
+    query = "DELETE FROM conversations_chatbot WHERE id = %s"
+    return execute_query(query, (conversation_id,))
+
+def create_connaissance(utilisateur_id, categorie, titre, contenu, mots_cles=None):
+    """Cree une nouvelle entree dans la base de connaissance du chatbot"""
+    query = """
+        INSERT INTO base_connaissance (utilisateur_id, categorie, titre, contenu, mots_cles)
+        VALUES (%s, %s, %s, %s, %s)
+    """
+    return execute_query(query, (utilisateur_id, categorie, titre, contenu, mots_cles))
+
+
+def get_connaissances():
+    """Liste toutes les entrees, les plus recentes en premier"""
+    query = """
+        SELECT bc.id, bc.categorie, bc.titre, bc.contenu, bc.mots_cles,
+               bc.date_creation, bc.date_modification,
+               u.nom, u.prenom
+        FROM base_connaissance bc
+        JOIN utilisateurs u ON u.id = bc.utilisateur_id
+        ORDER BY bc.date_creation DESC
+    """
+    return execute_query(query, fetch_all=True)
+
+
+def update_connaissance(connaissance_id, categorie, titre, contenu, mots_cles=None):
+    """Met a jour une entree existante"""
+    query = """
+        UPDATE base_connaissance
+        SET categorie=%s, titre=%s, contenu=%s, mots_cles=%s
+        WHERE id=%s
+    """
+    return execute_query(query, (categorie, titre, contenu, mots_cles, connaissance_id))
+
+
+def delete_connaissance(connaissance_id):
+    """Supprime une entree"""
+    query = "DELETE FROM base_connaissance WHERE id = %s"
+    return execute_query(query, (connaissance_id,))
+
+
+def get_all_connaissances_texte():
+    """Retourne toutes les entrees (categorie, titre, contenu) pour injection dans le chatbot"""
+    query = "SELECT categorie, titre, contenu FROM base_connaissance ORDER BY date_creation DESC"
+    return execute_query(query, fetch_all=True)

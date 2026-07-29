@@ -9,23 +9,30 @@ Chatbot echelons/KOFERT -- appele en tool-use les VRAIES fonctions du projet :
 Les 6 parametres process (echelons J/K/L) : TIC_sortie_ech, TI_entree_ech,
 PI_calendre, PI_boucle, PI_separateur, prod_sortie_54 (debit de sortie acide 54%).
 
-Deux couches de connaissances :
+Trois couches de connaissances :
   1) KB generale (model/knowledge/kofert_kb.json) : texte du support de
      formation KOFERT, indexe en TF-IDF.
   2) Regles operationnelles (model/knowledge/regles_echelons.json) : seuils
      et procedures precises, injectees telles quelles dans le system prompt.
+  3) Corrections admin (table SQL base_connaissance) : instructions/corrections
+     ajoutees par l'administrateur via l'interface de gestion, chargees a
+     chaque requete et injectees en priorite absolue.
 
 Gratuit, via Groq (cloud, cle API sans carte bancaire, aucune ressource
 locale requise).
 
 Prerequis :
   1) Compte gratuit sur https://console.groq.com + cle sur console.groq.com/keys
-  2) Variable d'environnement GROQ_API_KEY
-  3) pip install groq
+  2) Variable d'environnement GROQ_API_KEY (dans un fichier .env a la racine)
+  3) pip install groq python-dotenv
 """
 import json
 import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -33,6 +40,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import predict_service
 import correction_service
 from predict_service import FEATURES
+from db import get_all_connaissances_texte
 
 from groq import Groq
 
@@ -51,7 +59,7 @@ _rules = None
 def _get_client():
     global _client
     if _client is None:
-        _client = Groq()  # lit GROQ_API_KEY dans l'environnement
+        _client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
     return _client
 
 
@@ -72,6 +80,17 @@ def _load_rules():
         with open(KNOWLEDGE_DIR / "regles_echelons.json", encoding="utf-8") as f:
             _rules = json.load(f)
     return _rules
+
+
+def _load_admin_corrections():
+    """Charge les corrections/instructions admin depuis la base SQL,
+    a chaque appel (pas de cache), pour que les changements soient
+    pris en compte immediatement par tous les utilisateurs."""
+    try:
+        rows = get_all_connaissances_texte()
+    except Exception:
+        rows = None
+    return rows or []
 
 
 def retrieve(question: str, top_k: int = 4) -> list:
@@ -188,6 +207,18 @@ def answer(question: str, history: list = None) -> dict:
     if chunks:
         context = "\n\n".join(f"[Slide {c['slide']} - {c.get('section') or ''}] {c['text']}" for c in chunks)
         system_prompt += f"\n\nExtraits pertinents du support de formation KOFERT :\n{context}"
+
+    corrections = _load_admin_corrections()
+    if corrections:
+        corrections_txt = "\n".join(
+            f"- [{c['categorie'] or 'Général'}] {c['titre']} : {c['contenu']}" for c in corrections
+        )
+        system_prompt += (
+            "\n\nCorrections et instructions de l'administrateur (SOURCE DE VERITE ABSOLUE -- "
+            "en cas de conflit avec toute autre information ci-dessus, y compris les regles "
+            "operationnelles ou le support de formation, applique TOUJOURS ces corrections) :\n"
+            + corrections_txt
+        )
 
     messages = [{"role": "system", "content": system_prompt}]
     messages.extend(history or [])

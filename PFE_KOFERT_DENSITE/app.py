@@ -1,12 +1,17 @@
+from api_knowledge_route import knowledge_bp
+
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_cors import CORS
 from werkzeug.security import check_password_hash
+from functools import wraps
 
 from db import get_connection
 from api_correction_route import correction_bp
 from api_predict_route import predict_bp
 from api_chat_route import chat_bp
 from api_admin_route import admin_bp
+from api_history_route import history_bp
 
 app = Flask(
     __name__,
@@ -20,6 +25,8 @@ app.register_blueprint(predict_bp)
 app.register_blueprint(correction_bp)
 app.register_blueprint(chat_bp)
 app.register_blueprint(admin_bp)
+app.register_blueprint(history_bp)
+app.register_blueprint(knowledge_bp)
 
 
 @app.route("/")
@@ -75,10 +82,29 @@ def chatbot_page():
     return render_template("chat.html")
 
 
+@app.route("/historique-corrections")
+def historique_page():
+    return render_template("historique.html")
+
+
+def admin_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if session.get("user_role") != "ADMIN":
+            return redirect(url_for("dashboard"))
+        return f(*args, **kwargs)
+    return wrapper
+
+
 @app.route("/administration")
+@admin_required
 def administration_page():
     return render_template("admin_users.html")
 
+@app.route("/administration/base-connaissance")
+@admin_required
+def base_connaissance_page():
+    return render_template("base_connaissance.html")
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

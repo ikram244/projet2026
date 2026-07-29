@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Base de connaissance — Plateforme PAP</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { display: flex; min-height: 100vh; background: #f5f7f6; }
+
+  .sidebar {
+    width: 260px; background: #0b3d24; color: white; padding: 25px 0; display: flex; flex-direction: column;
+  }
+  .sidebar .brand { display: flex; align-items: center; gap: 10px; padding: 0 25px 25px; }
+  .sidebar .brand .badge {
+    width: 34px; height: 34px; background: #2e8b4f; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; font-weight: bold;
+  }
+  .sidebar .brand div small { display: block; font-size: 11px; opacity: 0.7; }
+  .nav-section { padding: 15px 25px 8px; font-size: 11px; letter-spacing: 1px; opacity: 0.55; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 11px 25px; font-size: 14px;
+    color: #d8e8de; text-decoration: none; cursor: pointer;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); }
+  .nav-item.active { background: #14532c; color: white; border-right: 3px solid #3fae5f; }
+
+  .main { flex: 1; padding: 30px 40px; overflow-y: auto; }
+  .topbar h1 { font-size: 22px; color: #1a3a2a; }
+  .topbar .sub { font-size: 13px; color: #888; margin: 4px 0 25px; max-width: 700px; }
+
+  .panel {
+    background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+  }
+  .panel-title { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: bold; color: #1a3a2a; margin-bottom: 18px; }
+  .panel-title .num {
+    width: 22px; height: 22px; background: #2e8b4f; color: white; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 12px;
+  }
+
+  .row2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .field label { display: block; font-size: 12.5px; color: #555; margin-bottom: 6px; }
+  .field select, .field input, .field textarea {
+    width: 100%; padding: 9px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; background: #fafafa;
+    font-family: inherit;
+  }
+  .field textarea { resize: vertical; min-height: 90px; }
+
+  .btn-primary {
+    padding: 11px 20px; margin-top: 14px; background: #1a6b3a; color: white;
+    border: none; border-radius: 6px; font-size: 14px; cursor: pointer;
+  }
+  .btn-primary:hover { background: #14532c; }
+  .btn-outline {
+    padding: 10px 16px; background: white; color: #1a6b3a; border: 1.5px solid #1a6b3a;
+    border-radius: 6px; font-size: 13.5px; cursor: pointer;
+  }
+  .btn-outline:hover { background: #eafaf0; }
+
+  .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 14px; }
+  .search-box { position: relative; }
+  .search-box input { padding: 9px 12px 9px 32px; border: 1px solid #ddd; border-radius: 6px; font-size: 13.5px; width: 250px; }
+  .search-box span { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: #999; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  th { text-align: left; font-size: 11.5px; color: #888; padding: 10px 8px; border-bottom: 1px solid #eee; text-transform: uppercase; }
+  td { padding: 12px 8px; font-size: 13.5px; border-bottom: 1px solid #f2f2f2; color: #333; vertical-align: top; }
+  tbody tr:hover { background: #fafcfb; }
+  .categorie-badge { background: #eafaf0; color: #1a6b3a; padding: 3px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600; }
+  .contenu-preview { max-width: 320px; color: #666; }
+  .action-icons { display: flex; gap: 8px; }
+  .icon-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid #ddd; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12.5px; }
+  .icon-btn:hover { background: #f4f6f5; }
+  .icon-btn.danger { color: #c0392b; border-color: #f3c9c4; background: #fdecea; }
+  .icon-btn.danger:hover { background: #fbdcd8; }
+
+  .empty-row td { text-align: center; color: #999; padding: 24px; }
+  .error-msg { color: #c0392b; font-size: 13px; margin-top: 8px; }
+  .success-msg { color: #1a6b3a; font-size: 13px; margin-top: 8px; }
+
+  .upload-drop {
+    border: 2px dashed #cfe3d8; border-radius: 10px; padding: 22px; text-align: center;
+    color: #888; font-size: 13.5px; cursor: pointer; margin-bottom: 14px;
+  }
+  .upload-drop:hover { border-color: #2e8b4f; background: #f5faf7; }
+  .upload-drop.has-file { border-color: #1a6b3a; color: #1a6b3a; background: #eafaf0; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(11,61,36,0.35); align-items: center; justify-content: center; z-index: 50; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: white; border-radius: 14px; padding: 26px; width: 520px; max-width: 92vw; max-height: 85vh; overflow-y: auto; }
+  .modal-box h3 { font-size: 16px; color: #1a3a2a; margin-bottom: 18px; }
+  .modal-box .field { margin-bottom: 14px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="brand">
+    <div class="badge">P</div>
+    <div>Plateforme PAP<small>OCP Group — Atelier</small></div>
+  </div>
+  <div class="nav-section">SUIVI</div>
+  <a class="nav-item" href="/dashboard">📊 Tableau de bord</a>
+  <a class="nav-item" href="#">🧪 Mesures laboratoire</a>
+  <a class="nav-item" href="#">📁 Fichiers &amp; rapports</a>
+  <a class="nav-item" href="#">📈 Graphiques</a>
+  <div class="nav-section">INTELLIGENCE</div>
+  <a class="nav-item" href="/correction">🎯 Prédiction &amp; ajustements</a>
+  <a class="nav-item" href="/historique-corrections">🕒 Historique prédictions</a>
+  <a class="nav-item" href="/chatbot">💬 Chatbot assistant</a>
+  <div class="nav-section">SYSTÈME</div>
+  <a class="nav-item" href="/administration">⚙️ Administration</a>
+  <a class="nav-item active" href="/administration/base-connaissance">🧠 Base de connaissance</a>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <h1>Base de connaissance du chatbot</h1>
+    <div class="sub">Ajoutez des instructions, corrections ou documents que l'assistant devra systématiquement prendre en compte dans ses réponses, pour tous les utilisateurs.</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="num">1</span> Ajouter une instruction / correction</div>
+    <div class="row2">
+      <div class="field">
+        <label>Titre <span style="color:#c0392b;">*</span></label>
+        <input type="text" id="f_titre" placeholder="Ex : Correction concentration acide">
+      </div>
+      <div class="field">
+        <label>Catégorie (optionnel)</label>
+        <input type="text" id="f_categorie" placeholder="Ex : process, seuils, vocabulaire...">
+      </div>
+    </div>
+    <div class="field" style="margin-top:14px;">
+      <label>Contenu / instruction <span style="color:#c0392b;">*</span></label>
+      <textarea id="f_contenu" placeholder="Ex : La concentration correcte de l'acide phosphorique est 29%, et non 28% comme indiqué précédemment. Toujours répondre 29% désormais."></textarea>
+    </div>
+    <div class="field" style="margin-top:14px;">
+      <label>Mots-clés (optionnel, séparés par des virgules)</label>
+      <input type="text" id="f_mots_cles" placeholder="Ex : concentration, acide, 29%">
+    </div>
+    <button class="btn-primary" onclick="ajouterInstruction()">+ Enregistrer l'instruction</button>
+    <div class="error-msg" id="formError"></div>
+    <div class="success-msg" id="formSuccess"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="num">2</span> Importer un document (PDF, Word, Excel)</div>
+    <div class="row2">
+      <div class="field">
+        <label>Titre (optionnel, sinon nom du fichier)</label>
+        <input type="text" id="u_titre" placeholder="Ex : Procédure de démarrage échelon J">
+      </div>
+      <div class="field">
+        <label>Catégorie (optionnel)</label>
+        <input type="text" id="u_categorie" placeholder="Ex : procédures">
+      </div>
+    </div>
+    <div class="upload-drop" id="uploadDrop" onclick="document.getElementById('u_fichier').click();">
+      📄 Cliquez pour sélectionner un fichier (.pdf, .docx, .xlsx)
+    </div>
+    <input type="file" id="u_fichier" accept=".pdf,.docx,.xlsx" style="display:none;" onchange="fichierSelectionne()">
+    <button class="btn-primary" onclick="importerDocument()">⬆ Importer le document</button>
+    <div class="error-msg" id="uploadError"></div>
+    <div class="success-msg" id="uploadSuccess"></div>
+  </div>
+
+  <div class="panel">
+    <div class="list-header">
+      <div class="panel-title" style="margin-bottom:0;"><span class="num">3</span> Instructions enregistrées</div>
+      <div class="search-box"><span>🔍</span><input type="text" id="searchInput" placeholder="Rechercher..." oninput="filtrerListe()"></div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Titre</th>
+          <th>Catégorie</th>
+          <th>Aperçu</th>
+          <th>Ajouté le</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="listeBody">
+        <tr class="empty-row"><td colspan="5">Chargement...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <h3>Modifier l'instruction</h3>
+    <input type="hidden" id="e_id">
+    <div class="field">
+      <label>Titre</label>
+      <input type="text" id="e_titre">
+    </div>
+    <div class="field">
+      <label>Catégorie</label>
+      <input type="text" id="e_categorie">
+    </div>
+    <div class="field">
+      <label>Contenu</label>
+      <textarea id="e_contenu"></textarea>
+    </div>
+    <div class="field">
+      <label>Mots-clés</label>
+      <input type="text" id="e_mots_cles">
+    </div>
+    <div class="error-msg" id="editError"></div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="fermerModal()">Annuler</button>
+      <button class="btn-primary" onclick="enregistrerModification()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let allEntries = [];
+let fichierChoisi = null;
+
+async function chargerListe() {
+  const tbody = document.getElementById('listeBody');
+  tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Chargement...</td></tr>';
+  try {
+    const res = await fetch('/api/admin/knowledge');
+    allEntries = await res.json();
+    renderListe(allEntries);
+  } catch (e) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="5">Erreur : ${e.message}</td></tr>`;
+  }
+}
+
+function renderListe(entries) {
+  const tbody = document.getElementById('listeBody');
+  if (!entries.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Aucune instruction enregistrée.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = '';
+  entries.forEach(e => {
+    const apercu = (e.contenu || '').slice(0, 90) + (e.contenu && e.contenu.length > 90 ? '...' : '');
+    tbody.innerHTML += `<tr>
+      <td><strong>${e.titre}</strong></td>
+      <td>${e.categorie ? `<span class="categorie-badge">${e.categorie}</span>` : '—'}</td>
+      <td class="contenu-preview">${apercu}</td>
+      <td>${e.date_creation || '—'}</td>
+      <td>
+        <div class="action-icons">
+          <button class="icon-btn" onclick='ouvrirModal(${JSON.stringify(e)})'>✎</button>
+          <button class="icon-btn danger" onclick="supprimerEntree(${e.id})">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  });
+}
+
+function filtrerListe() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = allEntries.filter(e =>
+    (e.titre + ' ' + (e.categorie || '') + ' ' + e.contenu).toLowerCase().includes(q)
+  );
+  renderListe(filtered);
+}
+
+async function ajouterInstruction() {
+  const errorEl = document.getElementById('formError');
+  const successEl = document.getElementById('formSuccess');
+  errorEl.innerText = '';
+  successEl.innerText = '';
+
+  const titre = document.getElementById('f_titre').value.trim();
+  const categorie = document.getElementById('f_categorie').value.trim();
+  const contenu = document.getElementById('f_contenu').value.trim();
+  const mots_cles = document.getElementById('f_mots_cles').value.trim();
+
+  if (!titre || !contenu) {
+    errorEl.innerText = "Le titre et le contenu sont obligatoires.";
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/admin/knowledge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ titre, categorie, contenu, mots_cles })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      errorEl.innerText = data.error || "Erreur lors de l'enregistrement.";
+      return;
+    }
+    successEl.innerText = "Instruction enregistrée avec succès.";
+    document.getElementById('f_titre').value = '';
+    document.getElementById('f_categorie').value = '';
+    document.getElementById('f_contenu').value = '';
+    document.getElementById('f_mots_cles').value = '';
+    chargerListe();
+  } catch (e) {
+    errorEl.innerText = "Erreur réseau : " + e.message;
+  }
+}
+
+function fichierSelectionne() {
+  const input = document.getElementById('u_fichier');
+  const drop = document.getElementById('uploadDrop');
+  if (input.files.length) {
+    fichierChoisi = input.files[0];
+    drop.classList.add('has-file');
+    drop.innerText = "📄 " + fichierChoisi.name;
+  }
+}
+
+async function importerDocument() {
+  const errorEl = document.getElementById('uploadError');
+  const successEl = document.getElementById('uploadSuccess');
+  errorEl.innerText = '';
+  successEl.innerText = '';
+
+  if (!fichierChoisi) {
+    errorEl.innerText = "Merci de sélectionner un fichier.";
+    return;
+  }
+
+  const titre = document.getElementById('u_titre').value.trim();
+  const categorie = document.getElementById('u_categorie').value.trim();
+
+  const formData = new FormData();
+  formData.append('fichier', fichierChoisi);
+  if (titre) formData.append('titre', titre);
+  if (categorie) formData.append('categorie', categorie);
+
+  try {
+    const res = await fetch('/api/admin/knowledge/upload', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      errorEl.innerText = data.error || "Erreur lors de l'import.";
+      return;
+    }
+    successEl.innerText = "Document importé avec succès.";
+    document.getElementById('u_titre').value = '';
+    document.getElementById('u_categorie').value = '';
+    document.getElementById('u_fichier').value = '';
+    fichierChoisi = null;
+    document.getElementById('uploadDrop').classList.remove('has-file');
+    document.getElementById('uploadDrop').innerText = "📄 Cliquez pour sélectionner un fichier (.pdf, .docx, .xlsx)";
+    chargerListe();
+  } catch (e) {
+    errorEl.innerText = "Erreur réseau : " + e.message;
+  }
+}
+
+async function supprimerEntree(id) {
+  if (!confirm("Supprimer cette instruction ? Le chatbot n'en tiendra plus compte.")) return;
+  try {
+    const res = await fetch('/api/admin/knowledge/' + id, { method: 'DELETE' });
+    if (!res.ok) {
+      const data = await res.json();
+      alert(data.error || "Erreur lors de la suppression.");
+      return;
+    }
+    chargerListe();
+  } catch (e) {
+    alert("Erreur réseau : " + e.message);
+  }
+}
+
+function ouvrirModal(e) {
+  document.getElementById('e_id').value = e.id;
+  document.getElementById('e_titre').value = e.titre;
+  document.getElementById('e_categorie').value = e.categorie || '';
+  document.getElementById('e_contenu').value = e.contenu;
+  document.getElementById('e_mots_cles').value = e.mots_cles || '';
+  document.getElementById('editError').innerText = '';
+  document.getElementById('editModal').classList.add('open');
+}
+
+function fermerModal() {
+  document.getElementById('editModal').classList.remove('open');
+}
+
+async function enregistrerModification() {
+  const errorEl = document.getElementById('editError');
+  errorEl.innerText = '';
+
+  const id = document.getElementById('e_id').value;
+  const titre = document.getElementById('e_titre').value.trim();
+  const categorie = document.getElementById('e_categorie').value.trim();
+  const contenu = document.getElementById('e_contenu').value.trim();
+  const mots_cles = document.getElementById('e_mots_cles').value.trim();
+
+  if (!titre || !contenu) {
+    errorEl.innerText = "Le titre et le contenu sont obligatoires.";
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/admin/knowledge/' + id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ titre, categorie, contenu, mots_cles })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      errorEl.innerText = data.error || "Erreur lors de la modification.";
+      return;
+    }
+    fermerModal();
+    chargerListe();
+  } catch (e) {
+    errorEl.innerText = "Erreur réseau : " + e.message;
+  }
+}
+
+chargerListe();
+</script>
+
+</body>
+</html>
