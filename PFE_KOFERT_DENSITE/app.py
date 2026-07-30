@@ -1,6 +1,3 @@
-from api_knowledge_route import knowledge_bp
-
-
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_cors import CORS
 from werkzeug.security import check_password_hash
@@ -12,6 +9,9 @@ from api_predict_route import predict_bp
 from api_chat_route import chat_bp
 from api_admin_route import admin_bp
 from api_history_route import history_bp
+from api_knowledge_route import knowledge_bp
+from api_mesures_route import mesures_bp
+from api_notifications_route import notifications_bp
 
 app = Flask(
     __name__,
@@ -27,7 +27,8 @@ app.register_blueprint(chat_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(history_bp)
 app.register_blueprint(knowledge_bp)
-
+app.register_blueprint(mesures_bp)
+app.register_blueprint(notifications_bp)
 
 @app.route("/")
 def login():
@@ -101,10 +102,25 @@ def admin_required(f):
 def administration_page():
     return render_template("admin_users.html")
 
+
 @app.route("/administration/base-connaissance")
 @admin_required
 def base_connaissance_page():
     return render_template("base_connaissance.html")
+
+
+@app.route("/mesures-laboratoire")
+def mesures_laboratoire():
+    return render_template("mesures_laboratoire.html")
+
+
+
+@app.route("/historique-mesures-laboratoire")
+def historique_mesures_page():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    return render_template("historique_mesures.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

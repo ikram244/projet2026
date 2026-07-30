@@ -133,6 +133,7 @@ def create_ajustement(prediction_id):
     return jsonify({"ajustement_id": new_id, "etat": etat}), 201
 
 
+
 @history_bp.route("/api/predictions/historique", methods=["GET"])
 def historique():
     conn = get_connection()
@@ -142,8 +143,13 @@ def historique():
         SELECT
             p.id AS prediction_id, p.echelon, p.densite_cible, p.densite_mesuree,
             p.densite_predite, p.ecart, p.date_prediction,
+            p.temperature_entree, p.temperature_sortie, p.pression_boucle,
+            p.pression_calandre, p.depression, p.debit_sortie,
             u.nom, u.prenom,
             a.id AS ajustement_id, a.etat, a.motif, a.etat_du_modele,
+            a.nouveau_temperature_entree, a.nouveau_temperature_sortie,
+            a.nouveau_pression_boucle, a.nouveau_pression_calandre,
+            a.nouveau_depression, a.nouveau_debit_sortie,
             a.densite_predite_apres_correction, a.ecart_final, a.date_ajustement
         FROM predictions_modele p
         JOIN utilisateurs u ON u.id = p.utilisateur_id

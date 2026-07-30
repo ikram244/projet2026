@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Saisie des mesures de densité — Plateforme PAP</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { display: flex; min-height: 100vh; background: #f5f7f6; }
+
+  .sidebar {
+    width: 260px; background: #0b3d24; color: white; padding: 25px 0; display: flex; flex-direction: column;
+  }
+  .sidebar .brand { display: flex; align-items: center; gap: 10px; padding: 0 25px 25px; }
+  .sidebar .brand .badge {
+    width: 34px; height: 34px; background: #2e8b4f; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; font-weight: bold;
+  }
+  .sidebar .brand div small { display: block; font-size: 11px; opacity: 0.7; }
+  .nav-section { padding: 15px 25px 8px; font-size: 11px; letter-spacing: 1px; opacity: 0.55; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 11px 25px; font-size: 14px;
+    color: #d8e8de; text-decoration: none; cursor: pointer;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); }
+  .nav-item.active { background: #14532c; color: white; border-right: 3px solid #3fae5f; }
+
+  .main { flex: 1; padding: 30px 40px; overflow-y: auto; position: relative; }
+  .topbar h1 { font-size: 22px; color: #1a3a2a; }
+  .topbar .sub { font-size: 13px; color: #888; margin: 4px 0 25px; }
+
+  .panel {
+    background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+  }
+  .panel-title { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .panel-title .icon {
+    width: 40px; height: 40px; background: #eafaf0; border-radius: 10px; display: flex;
+    align-items: center; justify-content: center; font-size: 18px;
+  }
+  .panel-title h2 { font-size: 15px; color: #1a3a2a; }
+  .panel-title .desc { font-size: 12px; color: #888; margin-top: 2px; }
+
+  .row-echelon { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 20px; margin-bottom: 18px; align-items: end; }
+  .row2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 18px; }
+  .field label { display: block; font-size: 12.5px; color: #555; margin-bottom: 6px; font-weight: 500; }
+  .field input, .field select {
+    width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; background: #fafafa;
+  }
+  .field input:focus, .field select:focus { outline: none; border-color: #2e8b4f; background: white; }
+
+  .etat-toggle-wrap label { display: block; font-size: 12.5px; color: #555; margin-bottom: 6px; font-weight: 500; }
+  .etat-toggle-btn {
+    width: 100%; padding: 10px 12px; border: none; border-radius: 20px; font-size: 13px; font-weight: 700;
+    cursor: pointer; color: white; transition: background 0.15s;
+  }
+  .etat-toggle-btn.arret { background: #c0392b; }
+  .etat-toggle-btn.fonctionnel { background: #2e8b4f; }
+
+  .info-box {
+    background: #eafaf0; border-radius: 8px; padding: 12px 16px; font-size: 12.5px; color: #1a3a2a;
+    display: flex; align-items: center; gap: 10px; margin: 16px 0; flex: 1;
+  }
+  .actions-row { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  .btn-outline-reset {
+    padding: 11px 18px; background: white; border: 1.5px solid #ddd; border-radius: 6px; font-size: 13.5px;
+    cursor: pointer; color: #444; font-weight: 500;
+  }
+  .btn-outline-reset:hover { background: #f4f6f5; }
+  .btn-primary {
+    padding: 11px 20px; background: #1a6b3a; color: white; border: none; border-radius: 6px;
+    font-size: 13.5px; cursor: pointer; font-weight: 600; margin-left: auto;
+  }
+  .btn-primary:hover { background: #14532c; }
+
+  .error-msg { color: #c0392b; font-size: 13px; margin-top: 8px; }
+  .success-msg { color: #1a6b3a; font-size: 13px; margin-top: 8px; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  th { text-align: left; font-size: 11px; color: #888; padding: 10px 8px; border-bottom: 1px solid #eee; text-transform: uppercase; }
+  td { padding: 12px 8px; font-size: 13.5px; border-bottom: 1px solid #f2f2f2; color: #333; }
+  tbody tr:hover { background: #fafcfb; }
+  .empty-row td { text-align: center; color: #999; padding: 24px; }
+
+  .etat-badge { padding: 3px 10px; border-radius: 14px; font-size: 11px; font-weight: 700; color: white; }
+  .etat-badge.arret { background: #c0392b; }
+  .etat-badge.fonctionnel { background: #2e8b4f; }
+
+  .readonly-notice {
+    background: #fff6e0; border-radius: 8px; padding: 12px 16px; font-size: 12.5px; color: #8a6d00;
+    margin-bottom: 18px;
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="brand">
+    <div class="badge">P</div>
+    <div>Plateforme PAP<small>OCP Group — Atelier</small></div>
+  </div>
+  <div class="nav-section">SUIVI</div>
+  <a class="nav-item" href="/dashboard">📊 Tableau de bord</a>
+  <a class="nav-item active" href="/mesures-laboratoire">🧪 Mesures laboratoire</a>
+  <a class="nav-item" href="/historique-mesures-laboratoire">📋 Historique mesures labo</a>
+  <a class="nav-item" href="#">📁 Fichiers &amp; rapports</a>
+  <a class="nav-item" href="#">📈 Graphiques</a>
+  <div class="nav-section">INTELLIGENCE</div>
+  <a class="nav-item" href="/correction">🎯 Prédiction &amp; ajustements</a>
+  <a class="nav-item" href="/historique-corrections">🕒 Historique prédictions</a>
+  <a class="nav-item" href="/chatbot">💬 Chatbot assistant</a>
+  <div class="nav-section">SYSTÈME</div>
+  <a class="nav-item" href="/administration">⚙️ Administration</a>
+  <a class="nav-item" href="/administration/base-connaissance">🧠 Base de connaissance</a>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <h1>Saisie des mesures de densité</h1>
+    <div class="sub">Saisie des mesures de densité — Suivi de la production d'acide phosphorique.</div>
+  </div>
+
+  {% if session.get('user_role') != 'TECHNICIEN_LABO' %}
+  <div class="readonly-notice">
+    👁 Vous consultez cette page en lecture seule. Seul un technicien laboratoire peut saisir une nouvelle mesure.
+  </div>
+  {% endif %}
+
+  {% if session.get('user_role') == 'TECHNICIEN_LABO' %}
+  <div class="panel">
+    <div class="panel-title">
+      <div class="icon">🧪</div>
+      <div>
+        <h2>Nouveau relevé de mesure</h2>
+        <div class="desc">Remplissez le formulaire ci-dessous avec les informations de l'échantillon.</div>
+      </div>
+    </div>
+
+    <div class="row-echelon">
+      <div class="field">
+        <label>Date de prélèvement *</label>
+        <input type="date" id="f_date">
+      </div>
+      <div class="field">
+        <label>Heure de prélèvement *</label>
+        <input type="time" id="f_heure">
+      </div>
+      <div class="field">
+        <label>Échelon / Point de prélèvement *</label>
+        <select id="f_echelon">
+          <option value="">Sélectionnez un échelon</option>
+          <option value="J">Échelon J</option>
+          <option value="K">Échelon K</option>
+          <option value="L">Échelon L</option>
+        </select>
+      </div>
+      <div class="field etat-toggle-wrap">
+        <label>État échelon</label>
+        <button type="button" class="etat-toggle-btn fonctionnel" id="etatToggleBtn" onclick="toggleEtatEchelon()">FONCTIONNEL</button>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>ACP 29% Entrée (Densité)</label>
+        <input type="number" step="0.01" id="f_densite29" placeholder="Densité (kg/m³)">
+      </div>
+      <div class="field">
+        <label>ACP 54% Sortie (Densité)</label>
+        <input type="number" step="0.01" id="f_densite54" placeholder="Densité (kg/m³)">
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <div class="info-box">ℹ️ Les mesures sont enregistrées et envoyées automatiquement à la salle de contrôle après validation.</div>
+      <button class="btn-outline-reset" onclick="resetForm()">↻ Réinitialiser</button>
+      <button class="btn-primary" onclick="enregistrerMesure()">📨 Enregistrer &amp; Envoyer</button>
+    </div>
+    <div class="error-msg" id="formError"></div>
+    <div class="success-msg" id="formSuccess"></div>
+  </div>
+  {% endif %}
+
+  <div class="panel">
+    <div class="panel-title" style="margin-bottom:14px;">
+      <div class="icon">📋</div>
+      <div>
+        <h2>Dernières mesures saisies</h2>
+        <div class="desc">Historique des relevés effectués par l'ensemble des techniciens.</div>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Heure</th>
+          <th>Échelon</th>
+          <th>État</th>
+          <th>Densité ACP 29%</th>
+          <th>Densité ACP 54%</th>
+          <th>Saisi par</th>
+        </tr>
+      </thead>
+      <tbody id="mesuresBody">
+        <tr class="empty-row"><td colspan="7">Chargement...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Cloche de notifications -->
+<div id="notifBell" style="position:fixed; top:20px; right:30px; z-index:100;">
+  <button id="notifBtn" style="width:44px; height:44px; border-radius:50%; border:none; background:#2e8b4f; color:white; font-size:18px; cursor:pointer; position:relative; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+    🔔
+    <span id="notifDot" style="display:none; position:absolute; top:2px; right:2px; width:12px; height:12px; background:#c0392b; border-radius:50%; border:2px solid white;"></span>
+  </button>
+  <div id="notifPanel" style="display:none; position:absolute; top:52px; right:0; width:340px; max-height:400px; overflow-y:auto; background:white; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.15); padding:10px;">
+    <div style="font-size:13px; font-weight:bold; color:#1a3a2a; padding:6px 8px;">Notifications</div>
+    <div id="notifList"></div>
+  </div>
+</div>
+
+<style>
+  @keyframes blink-red { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  #notifDot.blinking { animation: blink-red 1s infinite; }
+  .notif-item { padding: 10px 8px; border-bottom: 1px solid #f0f0f0; font-size: 12.5px; color: #333; }
+  .notif-item:last-child { border-bottom: none; }
+  .notif-empty { padding: 16px 8px; color: #999; font-size: 12.5px; text-align: center; }
+</style>
+
+<script>
+let etatEchelonActuel = 'FONCTIONNEL';
+
+function toggleEtatEchelon() {
+  const btn = document.getElementById('etatToggleBtn');
+  if (etatEchelonActuel === 'FONCTIONNEL') {
+    etatEchelonActuel = 'ARRET';
+    btn.textContent = 'AR';
+    btn.classList.remove('fonctionnel');
+    btn.classList.add('arret');
+  } else {
+    etatEchelonActuel = 'FONCTIONNEL';
+    btn.textContent = 'FONCTIONNEL';
+    btn.classList.remove('arret');
+    btn.classList.add('fonctionnel');
+  }
+}
+
+async function chargerMesures() {
+  const tbody = document.getElementById('mesuresBody');
+  try {
+    const res = await fetch('/api/mesures', { cache: 'no-store' });
+    const rows = await res.json();
+
+    if (!rows.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Aucune mesure enregistrée.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = '';
+    rows.forEach(r => {
+      const etat = r.etat_echelon || 'FONCTIONNEL';
+      const etatClass = etat === 'ARRET' ? 'arret' : 'fonctionnel';
+      const etatLabel = etat === 'ARRET' ? 'AR' : 'OK';
+      tbody.innerHTML += `<tr>
+        <td>${r.date_prelevement}</td>
+        <td>${r.heure_prelevement}</td>
+        <td>${r.echelon}</td>
+        <td><span class="etat-badge ${etatClass}">${etatLabel}</span></td>
+        <td>${r.densite_entree_29 ?? '—'}</td>
+        <td>${r.densite_sortie_54 ?? '—'}</td>
+        <td>${r.prenom} ${r.nom}</td>
+      </tr>`;
+    });
+  } catch (e) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="7">Erreur : ${e.message}</td></tr>`;
+  }
+}
+
+async function enregistrerMesure() {
+  const errorEl = document.getElementById('formError');
+  const successEl = document.getElementById('formSuccess');
+  errorEl.innerText = '';
+  successEl.innerText = '';
+
+  const date_prelevement = document.getElementById('f_date').value;
+  const heure_prelevement = document.getElementById('f_heure').value;
+  const echelon = document.getElementById('f_echelon').value;
+  const densite_entree_29 = document.getElementById('f_densite29').value;
+  const densite_sortie_54 = document.getElementById('f_densite54').value;
+
+  if (!date_prelevement || !heure_prelevement || !echelon) {
+    errorEl.innerText = "Date, heure et échelon sont obligatoires.";
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/mesures', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        date_prelevement, heure_prelevement, echelon,
+        densite_entree_29: densite_entree_29 ? parseFloat(densite_entree_29) : null,
+        densite_sortie_54: densite_sortie_54 ? parseFloat(densite_sortie_54) : null,
+        etat_echelon: etatEchelonActuel,
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      errorEl.innerText = data.error || "Erreur lors de l'enregistrement.";
+      return;
+    }
+    successEl.innerText = "Mesure enregistrée avec succès.";
+    resetForm();
+    chargerMesures();
+  } catch (e) {
+    errorEl.innerText = "Erreur réseau : " + e.message;
+  }
+}
+
+function resetForm() {
+  document.getElementById('f_date').value = '';
+  document.getElementById('f_heure').value = '';
+  document.getElementById('f_echelon').value = '';
+  document.getElementById('f_densite29').value = '';
+  document.getElementById('f_densite54').value = '';
+  etatEchelonActuel = 'FONCTIONNEL';
+  const btn = document.getElementById('etatToggleBtn');
+  if (btn) {
+    btn.textContent = 'FONCTIONNEL';
+    btn.classList.remove('arret');
+    btn.classList.add('fonctionnel');
+  }
+}
+
+chargerMesures();
+
+let notifPreviousCount = 0;
+
+async function checkNotifications() {
+  try {
+    const res = await fetch('/api/notifications/count', { cache: 'no-store' });
+    const data = await res.json();
+    const dot = document.getElementById('notifDot');
+    if (data.count > 0) {
+      dot.style.display = 'block';
+      dot.classList.add('blinking');
+    } else {
+      dot.style.display = 'none';
+      dot.classList.remove('blinking');
+    }
+  } catch (e) { /* silencieux */ }
+}
+
+async function ouvrirNotifications() {
+  const panel = document.getElementById('notifPanel');
+  const isOpen = panel.style.display === 'block';
+  if (isOpen) {
+    panel.style.display = 'none';
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/notifications', { cache: 'no-store' });
+    const rows = await res.json();
+    const list = document.getElementById('notifList');
+
+    if (!rows.length) {
+      list.innerHTML = '<div class="notif-empty">Aucune notification.</div>';
+    } else {
+      list.innerHTML = rows.map(n => `<div class="notif-item"><strong>${n.date_creation}</strong><br>${n.message}</div>`).join('');
+    }
+
+    panel.style.display = 'block';
+
+    await fetch('/api/notifications/marquer-lues', { method: 'POST' });
+    document.getElementById('notifDot').style.display = 'none';
+    document.getElementById('notifDot').classList.remove('blinking');
+  } catch (e) {
+    console.error("Erreur notifications :", e);
+  }
+}
+
+document.getElementById('notifBtn').addEventListener('click', ouvrirNotifications);
+
+checkNotifications();
+setInterval(checkNotifications, 8000);
+</script>
+
+</body>
+</html>

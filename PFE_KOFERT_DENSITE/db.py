@@ -226,3 +226,112 @@ def get_all_connaissances_texte():
     """Retourne toutes les entrees (categorie, titre, contenu) pour injection dans le chatbot"""
     query = "SELECT categorie, titre, contenu FROM base_connaissance ORDER BY date_creation DESC"
     return execute_query(query, fetch_all=True)
+
+
+def create_mesure(utilisateur_id, echelon, date_prelevement, heure_prelevement, densite_entree_29, densite_sortie_54, etat_echelon='FONCTIONNEL'):
+    """Cree une nouvelle mesure labo"""
+    query = """
+        INSERT INTO mesures_labo
+            (utilisateur_id, echelon, date_prelevement, heure_prelevement, densite_entree_29, densite_sortie_54, etat_echelon)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """
+    return execute_query(query, (utilisateur_id, echelon, date_prelevement, heure_prelevement, densite_entree_29, densite_sortie_54, etat_echelon))
+
+
+def get_mesures(limit=200):
+    """Liste les mesures labo, les plus recentes en premier"""
+    query = """
+        SELECT m.id, m.echelon, m.date_prelevement, m.heure_prelevement,
+               m.densite_entree_29, m.densite_sortie_54, m.etat_echelon, m.date_saisie,
+               u.nom, u.prenom
+        FROM mesures_labo m
+        JOIN utilisateurs u ON u.id = m.utilisateur_id
+        ORDER BY m.date_prelevement DESC, m.heure_prelevement DESC
+        LIMIT %s
+    """
+    return execute_query(query, (limit,), fetch_all=True)
+
+
+def get_mesures_filtrees(date_debut=None, date_fin=None, echelon=None):
+    """Recupere les mesures selon filtres date/echelon, pour export Excel et graphiques"""
+    conditions = []
+    params = []
+    if date_debut:
+        conditions.append("m.date_prelevement >= %s")
+        params.append(date_debut)
+    if date_fin:
+        conditions.append("m.date_prelevement <= %s")
+        params.append(date_fin)
+    if echelon and echelon != "all":
+        conditions.append("m.echelon = %s")
+        params.append(echelon)
+
+    where_clause = ("WHERE " + " AND ".join(conditions)) if conditions else ""
+    query = f"""
+        SELECT m.echelon, m.date_prelevement, m.heure_prelevement,
+               m.densite_entree_29, m.densite_sortie_54, m.etat_echelon,
+               u.nom, u.prenom
+        FROM mesures_labo m
+        JOIN utilisateurs u ON u.id = m.utilisateur_id
+        {where_clause}
+        ORDER BY m.date_prelevement ASC, m.heure_prelevement ASC
+    """
+    return execute_query(query, tuple(params), fetch_all=True)
+
+
+def get_derniere_densite_cible(echelon=None):
+    """Recupere la derniere densite cible saisie en page Correction, pour un echelon donne ou toutes"""
+    if echelon:
+        query = """
+            SELECT densite_cible FROM predictions_modele
+            WHERE echelon = %s ORDER BY date_prediction DESC LIMIT 1
+        """
+        return execute_query(query, (echelon,), fetch_one=True)
+    query = """
+        SELECT densite_cible FROM predictions_modele
+        ORDER BY date_prediction DESC LIMIT 1
+    """
+    return execute_query(query, fetch_one=True)
+
+
+def create_alertes_pour_tous_sauf_stagiaire(message, exclure_utilisateur_id=None):
+    """Cree une notification pour chaque utilisateur sauf role STAGIAIRE"""
+    query_users = "SELECT id FROM utilisateurs WHERE role != 'STAGIAIRE'"
+    users = execute_query(query_users, fetch_all=True)
+    if not users:
+        return False
+
+    query_insert = """
+        INSERT INTO alertes (utilisateur_id, type, message, niveau)
+        VALUES (%s, 'INFO', %s, 'INFO')
+    """
+    for u in users:
+        if exclure_utilisateur_id and u["id"] == exclure_utilisateur_id:
+            continue
+        execute_query(query_insert, (u["id"], message))
+    return True
+
+
+def get_notifications(utilisateur_id, limit=20):
+    """Liste les notifications d'un utilisateur, les plus recentes en premier"""
+    query = """
+        SELECT id, message, niveau, est_lue, date_creation
+        FROM alertes
+        WHERE utilisateur_id = %s
+        ORDER BY date_creation DESC
+        LIMIT %s
+    """
+    return execute_query(query, (utilisateur_id, limit), fetch_all=True)
+
+
+def count_notifications_non_lues(utilisateur_id):
+    """Compte les notifications non lues d'un utilisateur"""
+    query = "SELECT COUNT(*) AS total FROM alertes WHERE utilisateur_id = %s AND est_lue = 0"
+    row = execute_query(query, (utilisateur_id,), fetch_one=True)
+    return row["total"] if row else 0
+
+
+def marquer_notifications_lues(utilisateur_id):
+    """Marque toutes les notifications d'un utilisateur comme lues"""
+    query = "UPDATE alertes SET est_lue = 1, date_lecture = NOW() WHERE utilisateur_id = %s AND est_lue = 0"
+    return execute_query(query, (utilisateur_id,))

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Historique de mesures labo — Plateforme PAP</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { display: flex; min-height: 100vh; background: #f5f7f6; }
+
+  .sidebar {
+    width: 260px; background: #0b3d24; color: white; padding: 25px 0; display: flex; flex-direction: column;
+  }
+  .sidebar .brand { display: flex; align-items: center; gap: 10px; padding: 0 25px 25px; }
+  .sidebar .brand .badge {
+    width: 34px; height: 34px; background: #2e8b4f; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; font-weight: bold;
+  }
+  .sidebar .brand div small { display: block; font-size: 11px; opacity: 0.7; }
+  .nav-section { padding: 15px 25px 8px; font-size: 11px; letter-spacing: 1px; opacity: 0.55; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 11px 25px; font-size: 14px;
+    color: #d8e8de; text-decoration: none; cursor: pointer;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); }
+  .nav-item.active { background: #14532c; color: white; border-right: 3px solid #3fae5f; }
+
+  .main { flex: 1; padding: 30px 40px; overflow-y: auto; position: relative; }
+  .topbar h1 { font-size: 22px; color: #1a3a2a; }
+  .topbar .sub { font-size: 13px; color: #888; margin: 4px 0 0; max-width: 650px; }
+
+  .filters-row { display: flex; align-items: flex-end; gap: 14px; margin: 20px 0; flex-wrap: wrap; }
+  .filters-row .field label { display:block; font-size: 12px; color: #555; margin-bottom: 5px; }
+  .filters-row input, .filters-row select {
+    padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13.5px; background: white;
+  }
+  .btn-export, .btn-graphique {
+    padding: 10px 18px; color: white; border: none; border-radius: 6px;
+    font-size: 13.5px; cursor: pointer; font-weight: 600;
+  }
+  .btn-export { background: #1a6b3a; margin-left: auto; }
+  .btn-export:hover { background: #14532c; }
+  .btn-graphique { background: #2e6da4; }
+  .btn-graphique:hover { background: #24547f; }
+  .btn-graphique.actif { background: #14532c; }
+
+  .panel {
+    background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+  }
+  .panel h3 { font-size: 14px; color: #1a3a2a; margin-bottom: 8px; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  th { text-align: left; font-size: 10.5px; color: #888; padding: 8px 6px; border-bottom: 1px solid #eee; text-transform: uppercase; }
+  td { padding: 10px 6px; font-size: 12.5px; border-bottom: 1px solid #f2f2f2; color: #333; }
+  tr.row-arret { background: #fdecea; }
+  tbody tr:hover { background: #fafcfb; }
+  .empty-row td { text-align: center; color: #999; padding: 24px; }
+
+  .etat-badge { padding: 3px 10px; border-radius: 14px; font-size: 10.5px; font-weight: 700; color: white; }
+  .etat-badge.arret { background: #c0392b; }
+  .etat-badge.fonctionnel { background: #2e8b4f; }
+
+  #graphiquesPanel { display: none; }
+  .graphiques-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-wrap { position: relative; height: 240px; }
+  .chart-explain {
+    font-size: 12px; color: #55655c; margin: 10px 0 14px; line-height: 1.55;
+    background: #f5f7f6; border-radius: 8px; padding: 10px 14px; border-left: 3px solid #2e8b4f;
+  }
+  .chart-explain strong { color: #1a3a2a; }
+  .legend-row { display: flex; gap: 14px; font-size: 11.5px; color: #666; margin-top: 6px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="brand">
+    <div class="badge">P</div>
+    <div>Plateforme PAP<small>OCP Group — Atelier</small></div>
+  </div>
+  <div class="nav-section">SUIVI</div>
+  <a class="nav-item" href="/dashboard">📊 Tableau de bord</a>
+  <a class="nav-item" href="/mesures-laboratoire">🧪 Mesures laboratoire</a>
+  <a class="nav-item active" href="/historique-mesures-laboratoire">📋 Historique mesures labo</a>
+  <a class="nav-item" href="#">📁 Fichiers &amp; rapports</a>
+  <a class="nav-item" href="#">📈 Graphiques</a>
+  <div class="nav-section">INTELLIGENCE</div>
+  <a class="nav-item" href="/correction">🎯 Prédiction &amp; ajustements</a>
+  <a class="nav-item" href="/historique-corrections">🕒 Historique prédictions</a>
+  <a class="nav-item" href="/chatbot">💬 Chatbot assistant</a>
+  <div class="nav-section">SYSTÈME</div>
+  <a class="nav-item" href="/administration">⚙️ Administration</a>
+  <a class="nav-item" href="/administration/base-connaissance">🧠 Base de connaissance</a>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <h1>Historique de mesures labo</h1>
+    <div class="sub">Historique complet des relevés de densité ACP 29% et ACP 54%, avec filtres par date/heure, export Excel et graphiques d'évolution.</div>
+  </div>
+
+  <div class="filters-row">
+    <div class="field">
+      <label>Date début</label>
+      <input type="date" id="filterDateDebut" onchange="rafraichir()">
+    </div>
+    <div class="field">
+      <label>Date fin</label>
+      <input type="date" id="filterDateFin" onchange="rafraichir()">
+    </div>
+    <div class="field">
+      <label>Échelon</label>
+      <select id="filterEchelon" onchange="rafraichir()">
+        <option value="all">Tous les échelons</option>
+        <option value="J">Échelon J</option>
+        <option value="K">Échelon K</option>
+        <option value="L">Échelon L</option>
+      </select>
+    </div>
+    <button class="btn-graphique" id="btnGraphique" onclick="toggleGraphique()">📊 Graphique</button>
+    <button class="btn-export" onclick="exporterExcel()">⬇ Exporter en Excel</button>
+  </div>
+
+  <div class="panel">
+    <h3>Tableau des mesures</h3>
+    <div class="chart-explain">
+      Ce tableau liste tous les relevés de laboratoire correspondant aux filtres sélectionnés ci-dessus. Les lignes surlignées en <strong>rouge</strong> indiquent un échelon marqué <strong>à l'arrêt (AR)</strong> au moment du prélèvement.
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Heure</th>
+          <th>Échelon</th>
+          <th>État</th>
+          <th>Densité ACP 29%</th>
+          <th>Densité ACP 54%</th>
+          <th>Saisi par</th>
+        </tr>
+      </thead>
+      <tbody id="mesuresBody">
+        <tr class="empty-row"><td colspan="7">Chargement...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="graphiquesPanel">
+    <div class="graphiques-grid">
+      <div class="panel">
+        <h3>Évolution ACP 29% (entrée)</h3>
+        <div class="chart-explain" id="explain29">
+          Ce graphique montre la <strong>densité mesurée en laboratoire</strong> à l'entrée, dans l'ordre chronologique des prélèvements.
+        </div>
+        <div class="chart-wrap"><canvas id="chart29"></canvas></div>
+        <div class="legend-row" id="legend29"></div>
+      </div>
+      <div class="panel">
+        <h3>Évolution ACP 54% (sortie)</h3>
+        <div class="chart-explain" id="explain54">
+          Même principe que ci-dessus, mais pour la densité mesurée en <strong>sortie</strong> de production (acide à 54%).
+        </div>
+        <div class="chart-wrap"><canvas id="chart54"></canvas></div>
+        <div class="legend-row" id="legend54"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cloche de notifications -->
+<div id="notifBell" style="position:fixed; top:20px; right:30px; z-index:100;">
+  <button id="notifBtn" style="width:44px; height:44px; border-radius:50%; border:none; background:#2e8b4f; color:white; font-size:18px; cursor:pointer; position:relative; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+    🔔
+    <span id="notifDot" style="display:none; position:absolute; top:2px; right:2px; width:12px; height:12px; background:#c0392b; border-radius:50%; border:2px solid white;"></span>
+  </button>
+  <div id="notifPanel" style="display:none; position:absolute; top:52px; right:0; width:340px; max-height:400px; overflow-y:auto; background:white; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.15); padding:10px;">
+    <div style="font-size:13px; font-weight:bold; color:#1a3a2a; padding:6px 8px;">Notifications</div>
+    <div id="notifList"></div>
+  </div>
+</div>
+
+<style>
+  @keyframes blink-red { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  #notifDot.blinking { animation: blink-red 1s infinite; }
+  .notif-item { padding: 10px 8px; border-bottom: 1px solid #f0f0f0; font-size: 12.5px; color: #333; }
+  .notif-item:last-child { border-bottom: none; }
+  .notif-empty { padding: 16px 8px; color: #999; font-size: 12.5px; text-align: center; }
+</style>
+
+<script>
+let allMesures = [];
+let chart29Instance = null;
+let chart54Instance = null;
+let graphiqueVisible = false;
+
+const COULEURS_ECHELON = { J: '#1a6b3a', K: '#c0392b', L: '#2e6da4' };
+
+function getFiltered() {
+  const dateDebut = document.getElementById('filterDateDebut').value;
+  const dateFin = document.getElementById('filterDateFin').value;
+  const echelon = document.getElementById('filterEchelon').value;
+
+  return allMesures.filter(m => {
+    if (echelon !== 'all' && m.echelon !== echelon) return false;
+    if (dateDebut && m.date_prelevement < dateDebut) return false;
+    if (dateFin && m.date_prelevement > dateFin) return false;
+    return true;
+  }).sort((a, b) => {
+    const ta = a.date_prelevement + ' ' + a.heure_prelevement;
+    const tb = b.date_prelevement + ' ' + b.heure_prelevement;
+    return ta.localeCompare(tb);
+  });
+}
+
+function renderTable(rows) {
+  const tbody = document.getElementById('mesuresBody');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Aucune mesure trouvée pour ces filtres.</td></tr>';
+    return;
+  }
+  const rowsDesc = [...rows].reverse();
+  tbody.innerHTML = '';
+  rowsDesc.forEach(r => {
+    const etat = r.etat_echelon || 'FONCTIONNEL';
+    const etatClass = etat === 'ARRET' ? 'arret' : 'fonctionnel';
+    const etatLabel = etat === 'ARRET' ? 'AR' : 'OK';
+    const rowClass = etat === 'ARRET' ? 'row-arret' : '';
+    tbody.innerHTML += `<tr class="${rowClass}">
+      <td>${r.date_prelevement}</td>
+      <td>${r.heure_prelevement}</td>
+      <td>${r.echelon}</td>
+      <td><span class="etat-badge ${etatClass}">${etatLabel}</span></td>
+      <td>${r.densite_entree_29 ?? '—'}</td>
+      <td>${r.densite_sortie_54 ?? '—'}</td>
+      <td>${r.prenom} ${r.nom}</td>
+    </tr>`;
+  });
+}
+
+async function getDensiteCible(echelon) {
+  try {
+    const url = echelon && echelon !== 'all'
+      ? `/api/densite-cible/derniere?echelon=${echelon}`
+      : `/api/densite-cible/derniere`;
+    const res = await fetch(url, { cache: 'no-store' });
+    const data = await res.json();
+    return data.densite_cible;
+  } catch (e) {
+    return null;
+  }
+}
+
+function renderChartUnEchelon(canvasId, currentInstance, rows, field, cibleValue, label) {
+  const labels = rows.map(r => `${r.date_prelevement} ${r.heure_prelevement}`);
+  const valeurs = rows.map(r => r[field] !== null && r[field] !== undefined ? Number(r[field]) : null);
+  const datasets = [{
+    label: label,
+    data: valeurs,
+    borderColor: '#1a6b3a',
+    backgroundColor: 'rgba(26,107,58,0.06)',
+    tension: 0.3,
+    fill: true,
+    pointRadius: 3,
+    spanGaps: false,
+  }];
+  if (cibleValue !== null && cibleValue !== undefined) {
+    datasets.push({
+      label: 'Densité cible',
+      data: labels.map(() => Number(cibleValue)),
+      borderColor: '#888',
+      borderDash: [6, 4],
+      pointRadius: 0,
+      fill: false,
+    });
+  }
+
+  if (currentInstance) currentInstance.destroy();
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  return new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 8 } } } }
+    }
+  });
+}
+
+function renderChartTousEchelons(canvasId, currentInstance, rows, field) {
+  const labels = [...new Set(rows.map(r => `${r.date_prelevement} ${r.heure_prelevement}`))].sort();
+
+  const datasets = ['J', 'K', 'L'].map(ech => {
+    const parRows = rows.filter(r => r.echelon === ech);
+    const map = {};
+    parRows.forEach(r => {
+      map[`${r.date_prelevement} ${r.heure_prelevement}`] = r[field] !== null && r[field] !== undefined ? Number(r[field]) : null;
+    });
+    return {
+      label: `Échelon ${ech}`,
+      data: labels.map(l => (l in map ? map[l] : null)),
+      borderColor: COULEURS_ECHELON[ech],
+      backgroundColor: 'transparent',
+      tension: 0.3,
+      fill: false,
+      pointRadius: 2,
+      spanGaps: false,
+    };
+  });
+
+  if (currentInstance) currentInstance.destroy();
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  return new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 8 } } } }
+    }
+  });
+}
+
+function renderLegende(elId, echelon) {
+  const el = document.getElementById(elId);
+  if (echelon === 'all') {
+    el.innerHTML = ['J', 'K', 'L'].map(ech =>
+      `<span class="legend-item"><span class="legend-dot" style="background:${COULEURS_ECHELON[ech]};"></span>Échelon ${ech}</span>`
+    ).join('');
+  } else {
+    el.innerHTML = `
+      <span class="legend-item"><span class="legend-dot" style="background:#1a6b3a;"></span>Densité mesurée</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#999;"></span>Densité cible</span>`;
+  }
+}
+
+async function rafraichir() {
+  const filtered = getFiltered();
+  renderTable(filtered);
+
+  if (!graphiqueVisible) return;
+
+  const echelon = document.getElementById('filterEchelon').value;
+  renderLegende('legend29', echelon);
+  renderLegende('legend54', echelon);
+
+  if (echelon === 'all') {
+    chart29Instance = renderChartTousEchelons('chart29', chart29Instance, filtered, 'densite_entree_29');
+    chart54Instance = renderChartTousEchelons('chart54', chart54Instance, filtered, 'densite_sortie_54');
+  } else {
+    const cible = await getDensiteCible(echelon);
+    chart29Instance = renderChartUnEchelon('chart29', chart29Instance, filtered, 'densite_entree_29', cible, 'ACP 29% mesurée');
+    chart54Instance = renderChartUnEchelon('chart54', chart54Instance, filtered, 'densite_sortie_54', cible, 'ACP 54% mesurée');
+  }
+}
+
+function toggleGraphique() {
+  graphiqueVisible = !graphiqueVisible;
+  document.getElementById('graphiquesPanel').style.display = graphiqueVisible ? 'block' : 'none';
+  document.getElementById('btnGraphique').classList.toggle('actif', graphiqueVisible);
+  if (graphiqueVisible) rafraichir();
+}
+
+function exporterExcel() {
+  const dateDebut = document.getElementById('filterDateDebut').value;
+  const dateFin = document.getElementById('filterDateFin').value;
+  const echelon = document.getElementById('filterEchelon').value;
+
+  const params = new URLSearchParams();
+  if (dateDebut) params.append('date_debut', dateDebut);
+  if (dateFin) params.append('date_fin', dateFin);
+  if (echelon && echelon !== 'all') params.append('echelon', echelon);
+
+  window.location.href = '/api/mesures/export?' + params.toString();
+}
+
+async function charger() {
+  try {
+    const res = await fetch('/api/mesures', { cache: 'no-store' });
+    allMesures = await res.json();
+    rafraichir();
+  } catch (e) {
+    document.getElementById('mesuresBody').innerHTML = `<tr class="empty-row"><td colspan="7">Erreur : ${e.message}</td></tr>`;
+  }
+}
+
+charger();
+
+let notifPreviousCount = 0;
+
+async function checkNotifications() {
+  try {
+    const res = await fetch('/api/notifications/count', { cache: 'no-store' });
+    const data = await res.json();
+    const dot = document.getElementById('notifDot');
+    if (data.count > 0) {
+      dot.style.display = 'block';
+      dot.classList.add('blinking');
+    } else {
+      dot.style.display = 'none';
+      dot.classList.remove('blinking');
+    }
+  } catch (e) { /* silencieux */ }
+}
+
+async function ouvrirNotifications() {
+  const panel = document.getElementById('notifPanel');
+  const isOpen = panel.style.display === 'block';
+  if (isOpen) {
+    panel.style.display = 'none';
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/notifications', { cache: 'no-store' });
+    const rows = await res.json();
+    const list = document.getElementById('notifList');
+
+    if (!rows.length) {
+      list.innerHTML = '<div class="notif-empty">Aucune notification.</div>';
+    } else {
+      list.innerHTML = rows.map(n => `<div class="notif-item"><strong>${n.date_creation}</strong><br>${n.message}</div>`).join('');
+    }
+
+    panel.style.display = 'block';
+
+    await fetch('/api/notifications/marquer-lues', { method: 'POST' });
+    document.getElementById('notifDot').style.display = 'none';
+    document.getElementById('notifDot').classList.remove('blinking');
+  } catch (e) {
+    console.error("Erreur notifications :", e);
+  }
+}
+
+document.getElementById('notifBtn').addEventListener('click', ouvrirNotifications);
+
+checkNotifications();
+setInterval(checkNotifications, 8000);
+</script>
+
+</body>
+</html>

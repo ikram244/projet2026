@@ -2,36 +2,108 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Historique des corrections — Plateforme PAP</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-  body { display: flex; min-height: 100vh; background: #f4f6f5; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { display: flex; min-height: 100vh; background: #f5f7f6; }
 
-  .sidebar { width: 264px; background: #0b3d24; color: #d8e8de; padding: 22px 0; display: flex; flex-direction: column; flex-shrink: 0; }
-  .brand { display: flex; align-items: center; gap: 12px; padding: 0 22px 22px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 14px; }
-  .brand .badge { width: 38px; height: 38px; background: linear-gradient(135deg,#3fae5f,#1a6b3a); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
-  .brand div strong { display: block; font-size: 14.5px; color: white; }
-  .brand div small { display: block; font-size: 10.5px; opacity: 0.6; }
-  .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 22px; font-size: 13.5px; color: #cfe3d8; text-decoration: none; }
-  .nav-item.active { background: rgba(63,174,95,0.18); color: white; font-weight: 600; }
-  .nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
+  .sidebar {
+    width: 260px; background: #0b3d24; color: white; padding: 25px 0; display: flex; flex-direction: column;
+  }
+  .sidebar .brand { display: flex; align-items: center; gap: 10px; padding: 0 25px 25px; }
+  .sidebar .brand .badge {
+    width: 34px; height: 34px; background: #2e8b4f; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; font-weight: bold;
+  }
+  .sidebar .brand div small { display: block; font-size: 11px; opacity: 0.7; }
+  .nav-section { padding: 15px 25px 8px; font-size: 11px; letter-spacing: 1px; opacity: 0.55; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 11px 25px; font-size: 14px;
+    color: #d8e8de; text-decoration: none; cursor: pointer;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); }
+  .nav-item.active { background: #14532c; color: white; border-right: 3px solid #3fae5f; }
 
-  .main { flex: 1; padding: 28px 42px; max-width: 1300px; }
-  .topbar h1 { font-size: 22px; color: #12331f; }
-  .topbar .sub { font-size: 13px; color: #8a958f; margin: 4px 0 24px; }
+  .main { flex: 1; padding: 30px 40px; overflow-y: auto; }
+  .topbar h1 { font-size: 22px; color: #1a3a2a; }
+  .topbar .sub { font-size: 13px; color: #888; margin: 4px 0 0; max-width: 600px; }
 
-  .panel { background: white; border-radius: 14px; padding: 22px; box-shadow: 0 3px 14px rgba(20,60,40,0.06); }
+  .filters-row { display: flex; align-items: center; gap: 12px; margin: 20px 0; flex-wrap: wrap; }
+  .filters-row select {
+    padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13.5px; background: white; cursor: pointer;
+  }
+  .btn-stats, .btn-graphs {
+    padding: 10px 18px; border: none; border-radius: 6px;
+    font-size: 13.5px; cursor: pointer; font-weight: 600;
+  }
+  .btn-graphs { background: white; color: #1a6b3a; border: 1.5px solid #1a6b3a; }
+  .btn-graphs:hover { background: #eafaf0; }
+  .btn-graphs.active { background: #1a6b3a; color: white; }
+  .btn-stats { background: #1a6b3a; color: white; margin-left: auto; }
+  .btn-stats:hover { background: #14532c; }
 
-  table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; font-size: 11px; color: #8a958f; padding: 10px 8px; border-bottom: 1.5px solid #eef1ef; text-transform: uppercase; }
-  td { padding: 12px 8px; font-size: 13px; border-bottom: 1px solid #f2f4f2; color: #33453a; }
+  .panel {
+    background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+  }
+  .panel h3 { font-size: 14px; color: #1a3a2a; margin-bottom: 6px; }
+  .chart-explain { font-size: 12.5px; color: #888; margin-bottom: 14px; line-height: 1.5; }
+  .chart-wrap { position: relative; height: 320px; }
+  .charts-row { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
 
-  .etat-badge { padding: 4px 12px; border-radius: 14px; font-size: 12px; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  th { text-align: left; font-size: 11px; color: #888; padding: 10px 8px; border-bottom: 1px solid #eee; text-transform: uppercase; }
+  td { padding: 12px 8px; font-size: 13px; border-bottom: 1px solid #f2f2f2; color: #333; }
+  tbody tr.main-row:hover { background: #fafcfb; }
+
+  .etat-badge { padding: 4px 12px; border-radius: 14px; font-size: 11.5px; font-weight: 600; }
   .etat-APPLIQUEE { background: #eafaf0; color: #1a6b3a; }
   .etat-REFUSEE { background: #fdecea; color: #c0392b; }
   .etat-EN_ATTENTE { background: #fff6e0; color: #b8860b; }
 
-  .empty-row td { text-align: center; color: #a3ada6; padding: 30px; }
+  .empty-row td { text-align: center; color: #999; padding: 30px; }
+
+  .expand-btn {
+    width: 26px; height: 26px; border-radius: 6px; border: 1px solid #ddd; background: white;
+    cursor: pointer; font-size: 14px; color: #1a6b3a; display: flex; align-items: center; justify-content: center;
+  }
+  .expand-btn:hover { background: #eafaf0; }
+  .expand-btn.open { background: #1a6b3a; color: white; }
+
+  .detail-row { display: none; }
+  .detail-row.open { display: table-row; }
+  .detail-row td { background: #f9fbfa; padding: 16px 20px; }
+  .detail-table { width: 100%; border-collapse: collapse; }
+  .detail-table th { background: #eef3f0; font-size: 10.5px; padding: 8px; }
+  .detail-table td { font-size: 12.5px; padding: 8px; }
+  .detail-title { font-size: 12.5px; font-weight: bold; color: #1a3a2a; margin-bottom: 8px; }
+  .delta-up { color: #2e8b4f; font-weight: 600; }
+  .delta-down { color: #c0392b; font-weight: 600; }
+  .no-data-note { font-size: 12px; color: #999; font-style: italic; }
+
+  #tableView, #chartsView { display: block; }
+  #chartsView.hidden, #tableView.hidden { display: none; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(11,61,36,0.35); align-items: center; justify-content: center; z-index: 50; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: white; border-radius: 14px; padding: 26px; max-height: 88vh; overflow-y: auto; width: 560px; max-width: 92vw; }
+  .modal-box h3 { font-size: 16px; color: #1a3a2a; margin-bottom: 18px; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 18px; }
+  .stat-card { background: #f5f7f6; border-radius: 10px; padding: 14px; }
+  .stat-card .label { font-size: 11.5px; color: #888; margin-bottom: 4px; }
+  .stat-card .val { font-size: 18px; font-weight: bold; color: #1a3a2a; }
+  .param-stats-table th, .param-stats-table td { font-size: 12.5px; }
+
+  .modal-close {
+    margin-top: 16px; padding: 10px 18px; background: white; border: 1.5px solid #ddd;
+    border-radius: 6px; cursor: pointer; font-size: 13.5px; width: 100%;
+  }
+  .modal-close:hover { background: #f4f6f5; }
 </style>
 </head>
 <body>
@@ -39,58 +111,205 @@
 <div class="sidebar">
   <div class="brand">
     <div class="badge">P</div>
-    <div><strong>Plateforme PAP</strong><small>OCP Group — Atelier</small></div>
+    <div>Plateforme PAP<small>OCP Group — Atelier</small></div>
   </div>
-  <a class="nav-item" href="/dashboard">🏠 Tableau de bord</a>
-  <a class="nav-item" href="/correction">🎯 Prédiction &amp; Correction</a>
-  <a class="nav-item active" href="/historique-corrections">🕒 Historique des corrections</a>
-  <a class="nav-item" href="/chatbot">💬 Assistant Chatbot</a>
+  <div class="nav-section">SUIVI</div>
+  <a class="nav-item" href="/dashboard">📊 Tableau de bord</a>
+  <a class="nav-item" href="/mesures-laboratoire">🧪 Mesures laboratoire</a>
+  <a class="nav-item" href="#">📁 Fichiers &amp; rapports</a>
+  <a class="nav-item" href="#">📈 Graphiques</a>
+  <div class="nav-section">INTELLIGENCE</div>
+  <a class="nav-item" href="/correction">🎯 Prédiction &amp; ajustements</a>
+  <a class="nav-item active" href="/historique-corrections">🕒 Historique prédictions</a>
+  <a class="nav-item" href="/chatbot">💬 Chatbot assistant</a>
+  <div class="nav-section">SYSTÈME</div>
+  <a class="nav-item" href="/administration">⚙️ Administration</a>
+  <a class="nav-item" href="/administration/base-connaissance">🧠 Base de connaissance</a>
 </div>
 
 <div class="main">
   <div class="topbar">
-    <h1>Historique des corrections</h1>
-    <div class="sub">Toutes les sessions de correction — appliquées ou refusées</div>
+    <h1>Journal d'audit des ajustements opérateur</h1>
+    <div class="sub">Historique complet des sessions de correction — cliquez sur « + » pour voir le détail de chaque paramètre avant/après.</div>
   </div>
 
-  <div class="panel">
-    <table>
+  <div class="filters-row">
+    <select id="filterPeriode" onchange="appliquerFiltres()">
+      <option value="7">7 derniers jours</option>
+      <option value="30">30 derniers jours</option>
+      <option value="90">90 derniers jours</option>
+      <option value="all">Toute la période</option>
+    </select>
+    <select id="filterEchelon" onchange="appliquerFiltres()">
+      <option value="all">Tous les échelons</option>
+      <option value="J">Échelon J</option>
+      <option value="K">Échelon K</option>
+      <option value="L">Échelon L</option>
+    </select>
+    <select id="filterEtat" onchange="appliquerFiltres()">
+      <option value="all">Tous les statuts</option>
+      <option value="APPLIQUEE">Appliquée</option>
+      <option value="REFUSEE">Refusée</option>
+      
+    </select>
+    <button class="btn-graphs" id="toggleGraphsBtn" onclick="toggleVue()">📈 Graphiques</button>
+    
+  </div>
+
+  <!-- Vue Tableau -->
+  <div id="tableView">
+    <div class="panel">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Opérateur</th>
+            <th>Échelon</th>
+            <th>Densité cible</th>
+            <th>Prédite (avant)</th>
+            <th>Prédite (après)</th>
+            <th>Écart final</th>
+            <th>Statut</th>
+            <th>Motif</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <tr class="empty-row"><td colspan="10">Chargement...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Vue Graphiques -->
+  <div id="chartsView" class="hidden">
+    <div class="charts-row">
+      <div class="panel">
+        <h3>Évolution de l'écart final dans le temps</h3>
+        <div class="chart-explain">
+          Ce graphique montre, pour chaque correction effectuée, l'écart restant entre la densité cible et la densité prédite <strong>après</strong> ajustement des paramètres. Une valeur proche de 0 signifie que la correction a bien rapproché la densité de l'objectif. Des pics éloignés de 0 indiquent des sessions où la correction n'a pas suffi à atteindre la cible.
+        </div>
+        <div class="chart-wrap"><canvas id="ecartChart"></canvas></div>
+      </div>
+      <div class="panel">
+        <h3>Répartition des statuts</h3>
+        <div class="chart-explain">
+          Ce graphique en anneau montre la proportion de corrections <strong>appliquées</strong> (validées par l'opérateur), <strong>refusées</strong> (rejetées avec un motif), . Il donne une vue rapide du taux de confiance accordé aux recommandations du modèle.
+        </div>
+        <div class="chart-wrap"><canvas id="statutChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modale Statistiques globales -->
+<div class="modal-overlay" id="statsModal">
+  <div class="modal-box">
+    <h3>Statistiques paramétriques globales</h3>
+    <div class="stats-grid" id="statsGrid"></div>
+    <table class="param-stats-table">
       <thead>
-        <tr>
-          <th>Date</th>
-          <th>Opérateur</th>
-          <th>Échelon</th>
-          <th>Densité cible</th>
-          <th>Prédite (avant)</th>
-          <th>Prédite (après)</th>
-          <th>Écart final</th>
-          <th>Statut</th>
-          <th>Motif</th>
-        </tr>
+        <tr><th>Paramètre</th><th>Écart moyen (Après − Avant)</th></tr>
       </thead>
-      <tbody id="historyBody">
-        <tr class="empty-row"><td colspan="9">Chargement...</td></tr>
-      </tbody>
+      <tbody id="paramStatsBody"></tbody>
     </table>
+    <button class="modal-close" onclick="fermerStatsGlobales()">Fermer</button>
   </div>
 </div>
 
 <script>
-async function chargerHistorique() {
-  const tbody = document.getElementById('historyBody');
-  try {
-    const res = await fetch('/api/predictions/historique');
-    const rows = await res.json();
+let allRows = [];
+let ecartChartInstance = null;
+let statutChartInstance = null;
+let vueActuelle = 'table';
+let openDetailIds = new Set();
 
-    if (!rows.length) {
-      tbody.innerHTML = '<tr class="empty-row"><td colspan="9">Aucune correction enregistrée.</td></tr>';
-      return;
+const PARAM_DEFS = [
+  { avant: "temperature_sortie", apres: "nouveau_temperature_sortie", label: "TIC223 (T° sortie éch.)", unite: "°C" },
+  { avant: "temperature_entree", apres: "nouveau_temperature_entree", label: "TI244 (T° entrée éch.)", unite: "°C" },
+  { avant: "pression_calandre", apres: "nouveau_pression_calandre", label: "PI226 (Pression calandre)", unite: "bar" },
+  { avant: "pression_boucle", apres: "nouveau_pression_boucle", label: "PI228 (Pression boucle)", unite: "bar" },
+  { avant: "depression", apres: "nouveau_depression", label: "PI246 (Vide séparateur)", unite: "mmHg" },
+  { avant: "debit_sortie", apres: "nouveau_debit_sortie", label: "FIC258 (Débit acide 54%)", unite: "m³/h" },
+];
+
+function joursDepuis(dateStr) {
+  const d = new Date(dateStr.replace(' ', 'T'));
+  const diffMs = Date.now() - d.getTime();
+  return diffMs / (1000 * 60 * 60 * 24);
+}
+
+function getFiltered() {
+  const periode = document.getElementById('filterPeriode').value;
+  const echelon = document.getElementById('filterEchelon').value;
+  const etatFiltre = document.getElementById('filterEtat').value;
+
+  return allRows.filter(r => {
+    if (periode !== 'all' && joursDepuis(r.date_prediction) > parseInt(periode)) return false;
+    if (echelon !== 'all' && r.echelon !== echelon) return false;
+    const etat = r.etat || 'EN_ATTENTE';
+    if (etatFiltre !== 'all' && etat !== etatFiltre) return false;
+    return true;
+  });
+}
+
+function buildDetailHtml(r) {
+  const hasAjustement = !!r.ajustement_id;
+  if (!hasAjustement) {
+    return `<div class="no-data-note">Aucun ajustement n'a encore été enregistré pour cette prédiction (statut en attente).</div>`;
+  }
+
+  let rowsHtml = '';
+  PARAM_DEFS.forEach(def => {
+    const avant = r[def.avant];
+    const apres = r[def.apres];
+    if (avant === null && apres === null) return;
+    let delta = '—';
+    let deltaClass = '';
+    if (avant !== null && avant !== undefined && apres !== null && apres !== undefined) {
+      const d = apres - avant;
+      deltaClass = d >= 0 ? 'delta-up' : 'delta-down';
+      delta = (d >= 0 ? '▲ +' : '▼ ') + d.toFixed(2);
     }
+    rowsHtml += `<tr>
+      <td>${def.label}</td>
+      <td>${avant !== null && avant !== undefined ? avant + ' ' + def.unite : '—'}</td>
+      <td>${apres !== null && apres !== undefined ? apres + ' ' + def.unite : '—'}</td>
+      <td class="${deltaClass}">${delta}</td>
+    </tr>`;
+  });
 
-    tbody.innerHTML = '';
-    rows.forEach(r => {
-      const etat = r.etat || 'EN_ATTENTE';
-      tbody.innerHTML += `<tr>
+  return `
+    <div class="detail-title">Détail des paramètres — Session #${r.prediction_id}${r.ajustement_id ? ' / Ajustement #' + r.ajustement_id : ''}</div>
+    <table class="detail-table">
+      <thead><tr><th>Paramètre</th><th>Avant correction</th><th>Après correction</th><th>Écart</th></tr></thead>
+      <tbody>${rowsHtml || '<tr><td colspan="4" class="no-data-note">Aucune valeur de paramètre enregistrée.</td></tr>'}</tbody>
+    </table>
+  `;
+}
+
+function toggleDetail(id) {
+  if (openDetailIds.has(id)) {
+    openDetailIds.delete(id);
+  } else {
+    openDetailIds.add(id);
+  }
+  renderTable(getFiltered());
+}
+
+function renderTable(rows) {
+  const tbody = document.getElementById('historyBody');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="10">Aucune correction trouvée pour ces filtres.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = '';
+  rows.forEach(r => {
+    const etat = r.etat || 'EN_ATTENTE';
+    const isOpen = openDetailIds.has(r.prediction_id);
+    tbody.innerHTML += `
+      <tr class="main-row">
+        <td><button class="expand-btn ${isOpen ? 'open' : ''}" onclick="toggleDetail(${r.prediction_id})">${isOpen ? '−' : '+'}</button></td>
         <td>${r.date_prediction}</td>
         <td>${r.prenom} ${r.nom}</td>
         <td>${r.echelon}</td>
@@ -100,11 +319,170 @@ async function chargerHistorique() {
         <td>${r.ecart_final ?? '—'}</td>
         <td><span class="etat-badge etat-${etat}">${etat}</span></td>
         <td>${r.motif || '—'}</td>
-      </tr>`;
+      </tr>
+      <tr class="detail-row ${isOpen ? 'open' : ''}">
+        <td colspan="10">${isOpen ? buildDetailHtml(r) : ''}</td>
+      </tr>
+    `;
+  });
+}
+
+function renderEcartChart(rows) {
+  const sorted = [...rows].reverse();
+  const labels = sorted.map(r => r.date_prediction ? r.date_prediction.slice(0, 10) : '');
+  const ecarts = sorted.map(r => r.ecart_final !== null && r.ecart_final !== undefined ? r.ecart_final : r.ecart);
+
+  if (ecartChartInstance) {
+    ecartChartInstance.destroy();
+    ecartChartInstance = null;
+  }
+  const canvas = document.getElementById('ecartChart');
+  const ctx = canvas.getContext('2d');
+  try {
+    ecartChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Écart (kg/m³)',
+          data: ecarts,
+          borderColor: '#1a6b3a',
+          backgroundColor: 'rgba(26,107,58,0.08)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { ticks: { maxRotation: 45, minRotation: 45 } } }
+      }
     });
   } catch (e) {
-    tbody.innerHTML = `<tr class="empty-row"><td colspan="9">Erreur : ${e.message}</td></tr>`;
+    console.error("Erreur creation graphique ecart :", e);
   }
+}
+
+function renderStatutChart(rows) {
+  const counts = { APPLIQUEE: 0, REFUSEE: 0, EN_ATTENTE: 0 };
+  rows.forEach(r => { counts[r.etat || 'EN_ATTENTE']++; });
+
+  if (statutChartInstance) {
+    statutChartInstance.destroy();
+    statutChartInstance = null;
+  }
+  const canvas = document.getElementById('statutChart');
+  const ctx = canvas.getContext('2d');
+  try {
+    statutChartInstance = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Appliquée', 'Refusée'],
+        datasets: [{
+          data: [counts.APPLIQUEE, counts.REFUSEE, counts.EN_ATTENTE],
+          backgroundColor: ['#1a6b3a', '#c0392b', '#b8860b'],
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom', labels: { font: { size: 11.5 } } } }
+      }
+    });
+  } catch (e) {
+    console.error("Erreur creation graphique statut :", e);
+  }
+}
+
+function appliquerFiltres() {
+  const filtered = getFiltered();
+  if (vueActuelle === 'table') {
+    renderTable(filtered);
+  } else {
+    renderEcartChart(filtered);
+    renderStatutChart(filtered);
+  }
+}
+
+function toggleVue() {
+  const tableView = document.getElementById('tableView');
+  const chartsView = document.getElementById('chartsView');
+  const btn = document.getElementById('toggleGraphsBtn');
+
+  if (vueActuelle === 'table') {
+    vueActuelle = 'charts';
+    tableView.classList.add('hidden');
+    chartsView.classList.remove('hidden');
+    btn.textContent = '📋 Tableau';
+    btn.classList.add('active');
+    const filtered = getFiltered();
+    setTimeout(() => {
+      renderEcartChart(filtered);
+      renderStatutChart(filtered);
+    }, 30);
+  } else {
+    vueActuelle = 'table';
+    chartsView.classList.add('hidden');
+    tableView.classList.remove('hidden');
+    btn.textContent = '📈 Graphiques';
+    btn.classList.remove('active');
+    renderTable(getFiltered());
+  }
+}
+
+async function chargerHistorique() {
+  const tbody = document.getElementById('historyBody');
+  try {
+    const res = await fetch('/api/predictions/historique', { cache: 'no-store' });
+    allRows = await res.json();
+    appliquerFiltres();
+  } catch (e) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="10">Erreur : ${e.message}</td></tr>`;
+  }
+}
+
+function ouvrirStatsGlobales() {
+  const rows = getFiltered();
+  const statsGrid = document.getElementById('statsGrid');
+  const paramBody = document.getElementById('paramStatsBody');
+
+  const total = rows.length;
+  const appliquees = rows.filter(r => r.etat === 'APPLIQUEE').length;
+
+  const ecartsAvant = rows.map(r => r.ecart).filter(v => v !== null && v !== undefined);
+  const ecartsApres = rows.map(r => r.ecart_final).filter(v => v !== null && v !== undefined);
+  const moyenne = arr => arr.length ? (arr.reduce((a, b) => a + b, 0) / arr.length) : null;
+
+  const moyAvant = moyenne(ecartsAvant);
+  const moyApres = moyenne(ecartsApres);
+
+  statsGrid.innerHTML = `
+    <div class="stat-card"><div class="label">Sessions totales (période filtrée)</div><div class="val">${total}</div></div>
+    <div class="stat-card"><div class="label">Taux d'application</div><div class="val">${total ? Math.round(appliquees / total * 100) : 0}%</div></div>
+    <div class="stat-card"><div class="label">Écart moyen avant correction</div><div class="val">${moyAvant !== null ? moyAvant.toFixed(2) : '—'} kg/m³</div></div>
+    <div class="stat-card"><div class="label">Écart moyen après correction</div><div class="val">${moyApres !== null ? moyApres.toFixed(2) : '—'} kg/m³</div></div>
+  `;
+
+  const paramRows = PARAM_DEFS.map(def => {
+    const deltas = rows
+      .map(r => {
+        const a = r[def.avant], b = r[def.apres];
+        return (a !== null && a !== undefined && b !== null && b !== undefined) ? b - a : null;
+      })
+      .filter(v => v !== null);
+    const moy = moyenne(deltas);
+    return `<tr><td>${def.label}</td><td>${moy !== null ? (moy >= 0 ? '+' : '') + moy.toFixed(2) + ' ' + def.unite : '—'}</td></tr>`;
+  }).join('');
+
+  paramBody.innerHTML = paramRows;
+
+  document.getElementById('statsModal').classList.add('open');
+}
+
+function fermerStatsGlobales() {
+  document.getElementById('statsModal').classList.remove('open');
 }
 
 chargerHistorique();
