@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCP — Gestion des utilisateurs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #e8ece9; }
+        .app { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 250px;
+            background: #fff;
+            padding: 20px 12px;
+            border-right: 1px solid rgba(0,0,0,0.04);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+        }
+        .sidebar .brand { font-weight: 700; font-size: 20px; color: #0f5c3d; padding: 0 12px 20px; border-bottom: 1px solid rgba(0,0,0,0.04); }
+        .sidebar .brand span { font-weight: 400; color: #6b7a74; font-size: 10px; display: block; }
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: #6b7a74;
+            font-size: 13px;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .sidebar .nav-item:hover { background: rgba(15,92,61,0.04); color: #1b2b24; }
+        .sidebar .nav-item.active { background: #0f5c3d; color: #fff; }
+        .sidebar .nav-item i { width: 18px; }
+        .sidebar .section-title { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; color: #6b7a74; padding: 0 12px; margin: 16px 0 8px; text-transform: uppercase; }
+        .sidebar .footer { border-top: 1px solid rgba(0,0,0,0.04); padding-top: 12px; margin-top: 20px; }
+        .sidebar .user-card { display: flex; align-items: center; gap: 10px; padding: 8px 12px; }
+        .sidebar .user-card .avatar { width: 34px; height: 34px; border-radius: 50%; background: #0f5c3d; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; }
+        .sidebar .user-card .info .name { font-weight: 600; font-size: 13px; color: #1b2b24; }
+        .sidebar .user-card .info .role { font-size: 11px; color: #6b7a74; }
+        .sidebar .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            color: #6b7a74;
+            font-size: 13px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .sidebar .logout-btn:hover { background: rgba(220,38,38,0.06); color: #dc2626; }
+        .main { margin-left: 250px; flex: 1; padding: 20px 32px 32px; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.04); margin-bottom: 24px; }
+        .topbar h1 { font-size: 24px; font-weight: 700; color: #1b2b24; }
+        .topbar p { color: #6b7a74; font-size: 13px; }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
+        .card .header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+        .card .header .icon { width: 40px; height: 40px; border-radius: 10px; background: #e8f5ee; display: flex; align-items: center; justify-content: center; color: #0f5c3d; }
+        .card .header h3 { font-size: 17px; font-weight: 700; margin: 0; }
+        .card .header p { font-size: 13px; color: #6b7a74; margin: 0; }
+        .form-row { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; }
+        .form-group { flex: 1; min-width: 200px; }
+        .form-group label { font-size: 12px; font-weight: 600; color: #6b7a74; display: block; margin-bottom: 4px; }
+        .form-group label .required { color: #dc2626; }
+        .input-with-icon { position: relative; }
+        .input-with-icon input, .input-with-icon select {
+            width: 100%;
+            padding: 9px 12px 9px 36px;
+            border-radius: 10px;
+            border: 1.5px solid #d5ddd9;
+            font-size: 13px;
+            outline: none;
+            background: #fbfcfb;
+            transition: all 0.3s;
+        }
+        .input-with-icon input:focus, .input-with-icon select:focus { border-color: #0f5c3d; box-shadow: 0 0 0 3px rgba(15,92,61,0.06); }
+        .input-with-icon .icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7a74; font-size: 13px; }
+        .input-with-icon .toggle-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7a74; cursor: pointer; }
+        .form-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.04); }
+        .btn-reset { padding: 9px 20px; border-radius: 10px; border: 1.5px solid #d5ddd9; background: transparent; color: #6b7a74; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.3s; }
+        .btn-reset:hover { border-color: #1b2b24; color: #1b2b24; }
+        .btn-submit { padding: 9px 28px; border-radius: 10px; border: none; background: #0f5c3d; color: #fff; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.3s; }
+        .btn-submit:hover { background: #0b4530; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(15,92,61,0.25); }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+        .table-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+        .table-tools .left { display: flex; align-items: center; gap: 12px; }
+        .table-tools .left .icon-sm { width: 36px; height: 36px; border-radius: 10px; background: #e8f5ee; display: flex; align-items: center; justify-content: center; color: #0f5c3d; }
+        .table-tools .left h4 { font-size: 16px; font-weight: 700; margin: 0; }
+        .table-tools .left p { font-size: 12px; color: #6b7a74; margin: 0; }
+        .search-wrapper { position: relative; }
+        .search-wrapper input { padding: 8px 12px 8px 34px; border-radius: 8px; border: 1.5px solid #d5ddd9; font-size: 13px; outline: none; width: 200px; transition: all 0.3s; }
+        .search-wrapper input:focus { border-color: #0f5c3d; width: 240px; }
+        .search-wrapper .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7a74; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        thead th { text-align: left; padding: 10px 12px 10px 0; font-size: 10.5px; font-weight: 600; text-transform: uppercase; color: #6b7a74; border-bottom: 1.5px solid rgba(0,0,0,0.04); }
+        tbody td { padding: 12px 12px 12px 0; border-bottom: 1px solid rgba(0,0,0,0.02); vertical-align: middle; }
+        .user-cell { display: flex; align-items: center; gap: 10px; }
+        .user-cell .avatar { width: 30px; height: 30px; border-radius: 50%; background: #0f5c3d; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px; }
+        .badge-role { display: inline-flex; align-items: center; gap: 6px; padding: 3px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; }
+        .badge-role.admin { background: #ecfdf5; color: #065f46; }
+        .badge-role.ouvrier { background: #f0fdf4; color: #166534; }
+        .badge-role.technicien { background: #eff6ff; color: #1e40af; }
+        .badge-role.stagiaire { background: #faf5ff; color: #7e22ce; }
+        .badge-statut { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+        .badge-statut .dot { width: 6px; height: 6px; border-radius: 50%; }
+        .badge-statut .dot.active { background: #0f5c3d; }
+        .badge-statut .dot.inactive { background: #9ca3af; }
+        .btn-action { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.04); background: transparent; color: #6b7a74; cursor: pointer; transition: all 0.3s; }
+        .btn-action:hover { background: rgba(0,0,0,0.02); }
+        .btn-action.edit:hover { border-color: #0f5c3d; color: #0f5c3d; }
+        .btn-action.delete:hover { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+        .pagination { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.04); flex-wrap: wrap; gap: 12px; }
+        .pagination .info { font-size: 12px; color: #6b7a74; }
+        .pagination .btns { display: flex; gap: 4px; }
+        .pagination .btns button { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.04); background: transparent; color: #6b7a74; cursor: pointer; transition: all 0.3s; }
+        .pagination .btns button:hover:not(:disabled) { border-color: #0f5c3d; color: #0f5c3d; }
+        .pagination .btns button.active { background: #0f5c3d; color: #fff; border-color: #0f5c3d; }
+        .pagination .btns button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; max-width: 380px; }
+        .toast-item { padding: 12px 18px; border-radius: 10px; background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-left: 4px solid #0f5c3d; display: flex; align-items: center; gap: 10px; animation: fadeIn 0.3s ease; font-size: 13px; }
+        .toast-item.error { border-left-color: #dc2626; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; padding: 16px; }
+            .form-row { flex-direction: column; }
+            .form-actions { flex-direction: column; align-items: stretch; }
+            .form-actions .btn-group { display: flex; gap: 10px; }
+            .form-actions .btn-group button { flex: 1; justify-content: center; }
+            .table-tools { flex-direction: column; align-items: stretch; }
+            .search-wrapper input { width: 100%; }
+            .search-wrapper input:focus { width: 100%; }
+            .pagination { flex-direction: column; align-items: center; }
+        }
+        .sidebar-toggle { display: none; background: none; border: none; font-size: 24px; color: #1b2b24; cursor: pointer; padding: 4px 8px; }
+        @media (max-width: 768px) { .sidebar-toggle { display: block; } }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.2); z-index: 99; }
+        .sidebar-overlay.show { display: block; }
+    </style>
+</head>
+<body>
+    <div class="toast-container" id="toastContainer"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div>
+                <div class="brand">OCP <span>ATELIER PAP</span></div>
+                <div style="padding: 12px 0;">
+                    <div class="section-title">PRINCIPAL</div>
+                    <a href="/dashboard" class="nav-item"><i class="fas fa-home"></i> Tableau de bord</a>
+                    <a href="#" class="nav-item"><i class="fas fa-flask"></i> Mesures laboratoire</a>
+                    <a href="#" class="nav-item"><i class="fas fa-file-alt"></i> Fichiers & rapports</a>
+                    <a href="#" class="nav-item"><i class="fas fa-chart-bar"></i> Graphiques</a>
+                    <a href="/correction" class="nav-item"><i class="fas fa-sliders-h"></i> Prédiction & ajustements</a>
+                    <a href="#" class="nav-item"><i class="fas fa-history"></i> Historique prédictions</a>
+                    <a href="#" class="nav-item"><i class="fas fa-comment-dots"></i> Assistant intelligent</a>
+                    <div class="section-title">ADMINISTRATION</div>
+                    <a href="/gestion-utilisateurs" class="nav-item active"><i class="fas fa-users"></i> Gestion des utilisateurs</a>
+                    <a href="#" class="nav-item"><i class="fas fa-shield-alt"></i> Gestion des rôles</a>
+                    <a href="#" class="nav-item"><i class="fas fa-book"></i> Base de connaissances</a>
+                    <a href="#" class="nav-item"><i class="fas fa-cog"></i> Paramètres système</a>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="user-card">
+                    <div class="avatar" id="avatar">AD</div>
+                    <div class="info">
+                        <div class="name" id="userName">Admin</div>
+                        <div class="role" id="userRole">Administrateur</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <div>
+                    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                    <h1>Gestion des utilisateurs</h1>
+                    <p>Créez et gérez les comptes de la plateforme.</p>
+                </div>
+            </div>
+
+            <!-- Formulaire -->
+            <div class="card">
+                <div class="header">
+                    <div class="icon"><i class="fas fa-user-plus"></i></div>
+                    <div>
+                        <h3 id="formTitle">Ajouter un utilisateur</h3>
+                        <p id="formSubtitle">Remplissez les informations ci-dessous.</p>
+                    </div>
+                </div>
+
+                <form id="userForm">
+                    <input type="hidden" id="editId" value="">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nom <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user icon"></i>
+                                <input type="text" id="nom" placeholder="Entrez le nom" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Prénom <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user icon"></i>
+                                <input type="text" id="prenom" placeholder="Entrez le prénom" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope icon"></i>
+                                <input type="email" id="email" placeholder="exemple@ocpgroup.ma" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="max-width: 300px;">
+                            <label>Rôle <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-briefcase icon"></i>
+                                <select id="role" required>
+                                    <option value="">Sélectionnez</option>
+                                    <option value="ADMIN">Administrateur</option>
+                                    <option value="OUVRIER">Opérateur</option>
+                                    <option value="TECHNICIEN_LABO">Technicien labo</option>
+                                    <option value="STAGIAIRE">Stagiaire</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mot de passe <span class="required" id="pwdLabel">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock icon"></i>
+                                <input type="password" id="password" placeholder="Entrez le mot de passe">
+                                <button type="button" class="toggle-btn" onclick="togglePwd('password', this)"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmer <span class="required" id="confirmLabel">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock icon"></i>
+                                <input type="password" id="confirm" placeholder="Confirmez">
+                                <button type="button" class="toggle-btn" onclick="togglePwd('confirm', this)"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <span style="font-size:12px;color:#6b7a74;"><i class="fas fa-shield-alt" style="color:#0f5c3d;"></i> <span id="infoText">Mot de passe min 6 caractères</span></span>
+                        <div class="btn-group">
+                            <button type="button" class="btn-reset" onclick="resetForm()"><i class="fas fa-rotate"></i> Réinitialiser</button>
+                            <button type="submit" class="btn-submit" id="submitBtn"><i class="fas fa-user-plus"></i> <span id="submitText">Créer l'utilisateur</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Liste -->
+            <div class="card">
+                <div class="table-tools">
+                    <div class="left">
+                        <div class="icon-sm"><i class="fas fa-users"></i></div>
+                        <div>
+                            <h4>Liste des utilisateurs</h4>
+                            <p>Gérez les comptes existants</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px;align-items:center;">
+                        <div class="search-wrapper">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="searchInput" placeholder="Rechercher...">
+                        </div>
+                        <button class="btn-reset" onclick="loadUsers()" style="padding:6px 12px;"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nom complet</th>
+                                <th>Email</th>
+                                <th>Rôle</th>
+                                <th>Statut</th>
+                                <th>Dernière connexion</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr><td colspan="6" style="text-align:center;padding:40px 0;color:#6b7a74;"><i class="fas fa-spinner fa-spin" style="font-size:24px;display:block;margin-bottom:8px;"></i>Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <span class="info" id="paginationInfo">0 utilisateurs</span>
+                    <div class="btns" id="paginationBtns">
+                        <button id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
+                        <button class="active" data-page="1">1</button>
+                        <button id="nextPage"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API = '/api';
+        let users = [];
+        let filtered = [];
+        let currentPage = 1;
+        const pageSize = 10;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (!user.email) { window.location.href = '/'; return; }
+            if (user.role !== 'ADMIN') { window.location.href = '/dashboard'; return; }
+            
+            updateUI(user);
+            await loadUsers();
+            
+            document.getElementById('sidebarToggle').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.toggle('open');
+                document.getElementById('sidebarOverlay').classList.toggle('show');
+            });
+            document.getElementById('sidebarOverlay').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('sidebarOverlay').classList.remove('show');
+            });
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                localStorage.clear();
+                window.location.href = '/';
+            });
+            document.getElementById('userForm').addEventListener('submit', handleSubmit);
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+            document.getElementById('prevPage').addEventListener('click', () => changePage(-1));
+            document.getElementById('nextPage').addEventListener('click', () => changePage(1));
+        });
+
+        function updateUI(user) {
+            const initials = ((user.prenom || '')[0] + (user.nom || '')[0]).toUpperCase() || 'AD';
+            document.getElementById('avatar').textContent = initials;
+            document.getElementById('userName').textContent = user.prenom || 'Admin';
+            document.getElementById('userRole').textContent = getRoleLabel(user.role);
+        }
+
+        function getRoleLabel(r) {
+            const map = { ADMIN:'Administrateur', OUVRIER:'Opérateur', TECHNICIEN_LABO:'Technicien labo', STAGIAIRE:'Stagiaire' };
+            return map[r] || r;
+        }
+
+        function getRoleClass(r) {
+            const map = { ADMIN:'admin', OUVRIER:'ouvrier', TECHNICIEN_LABO:'technicien', STAGIAIRE:'stagiaire' };
+            return map[r] || '';
+        }
+
+        function getRoleIcon(r) {
+            const map = { ADMIN:'shield-alt', OUVRIER:'user-cog', TECHNICIEN_LABO:'flask', STAGIAIRE:'graduation-cap' };
+            return map[r] || 'user';
+        }
+
+        function togglePwd(id, btn) {
+            const input = document.getElementById(id);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } 
+            else { input.type = 'password'; icon.className = 'fas fa-eye'; }
+        }
+
+        async function loadUsers() {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API}/auth/users`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (res.status === 401) { localStorage.clear(); window.location.href = '/'; return; }
+                const data = await res.json();
+                users = data.users || [];
+                applyFilters();
+            } catch (e) {
+                showToast('Erreur de chargement', 'error');
+                users = [];
+                applyFilters();
+            }
+        }
+
+        function applyFilters() {
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+            filtered = users.filter(u => {
+                const full = `${u.prenom||''} ${u.nom||''}`.toLowerCase();
+                return full.includes(q) || (u.email||'').toLowerCase().includes(q);
+            });
+            currentPage = 1;
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const start = (currentPage - 1) * pageSize;
+            const end = Math.min(start + pageSize, filtered.length);
+            const pageItems = filtered.slice(start, end);
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px 0;color:#6b7a74;">
+                    <i class="fas fa-users" style="font-size:24px;display:block;margin-bottom:8px;opacity:0.3;"></i>
+                    Aucun utilisateur
+                </td></tr>`;
+            } else {
+                tbody.innerHTML = pageItems.map(u => `
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar">${((u.prenom||'')[0] + (u.nom||'')[0]).toUpperCase() || 'U'}</div>
+                                <span>${u.prenom || ''} ${u.nom || ''}</span>
+                            </div>
+                        </td>
+                        <td>${u.email || '-'}</td>
+                        <td><span class="badge-role ${getRoleClass(u.role)}"><i class="fas fa-${getRoleIcon(u.role)}"></i> ${getRoleLabel(u.role)}</span></td>
+                        <td><span class="badge-statut"><span class="dot ${u.statut === 'Actif' ? 'active' : 'inactive'}"></span> ${u.statut || 'Inactif'}</span></td>
+                        <td>${u.derniere_connexion || '-'}</td>
+                        <td style="text-align:right;">
+                            <button class="btn-action edit" onclick="editUser(${u.id})" title="Modifier"><i class="fas fa-pen"></i></button>
+                            <button class="btn-action delete" onclick="deleteUser(${u.id})" title="Supprimer"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            const total = filtered.length;
+            const totalPages = Math.max(1, Math.ceil(total / pageSize));
+            document.getElementById('paginationInfo').textContent = total === 0 ? 'Aucun utilisateur' : `${start + 1} à ${end} sur ${total}`;
+
+            let html = `<button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<button onclick="goToPage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+            }
+            html += `<button onclick="changePage(1)" ${currentPage === totalPages ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
+            document.getElementById('paginationBtns').innerHTML = html;
+        }
+
+        function changePage(d) { const total = Math.max(1, Math.ceil(filtered.length / pageSize)); const np = currentPage + d; if (np >= 1 && np <= total) { currentPage = np; renderTable(); } }
+        function goToPage(p) { const total = Math.max(1, Math.ceil(filtered.length / pageSize)); if (p >= 1 && p <= total) { currentPage = p; renderTable(); } }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            const nom = document.getElementById('nom').value.trim();
+            const prenom = document.getElementById('prenom').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const role = document.getElementById('role').value;
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm').value;
+            const editId = document.getElementById('editId').value;
+
+            if (!nom || !prenom || !email || !role) {
+                showToast('⚠️ Tous les champs sont requis', 'error');
+                return;
+            }
+
+            if (!editId) {
+                if (!password || password.length < 6) {
+                    showToast('⚠️ Mot de passe minimum 6 caractères', 'error');
+                    return;
+                }
+                if (password !== confirm) {
+                    showToast('⚠️ Les mots de passe ne correspondent pas', 'error');
+                    return;
+                }
+            } else {
+                if (password && password.length < 6) {
+                    showToast('⚠️ Mot de passe minimum 6 caractères', 'error');
+                    return;
+                }
+                if (password && password !== confirm) {
+                    showToast('⚠️ Les mots de passe ne correspondent pas', 'error');
+                    return;
+                }
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            try {
+                const token = localStorage.getItem('token');
+                const body = { nom, prenom, email, role };
+                if (password && password.trim()) body.mot_de_passe = password;
+
+                let url = `${API}/auth/users`;
+                let method = 'POST';
+                if (editId) { url += `/${editId}`; method = 'PUT'; }
+
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    showToast(editId ? '✅ Utilisateur mis à jour' : '✅ Utilisateur créé', 'success');
+                    resetForm();
+                    await loadUsers();
+                } else {
+                    showToast(data.message || '❌ Erreur', 'error');
+                }
+            } catch (e) {
+                showToast('❌ Erreur de connexion', 'error');
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = editId ? '<i class="fas fa-pen"></i> <span>Mettre à jour</span>' : '<i class="fas fa-user-plus"></i> <span>Créer l\'utilisateur</span>';
+        }
+
+        function editUser(id) {
+            const user = users.find(u => u.id === id);
+            if (!user) { showToast('❌ Utilisateur non trouvé', 'error'); return; }
+
+            document.getElementById('editId').value = id;
+            document.getElementById('nom').value = user.nom || '';
+            document.getElementById('prenom').value = user.prenom || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('role').value = user.role || '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirm').value = '';
+
+            document.getElementById('formTitle').textContent = '✏️ Modifier l\'utilisateur';
+            document.getElementById('formSubtitle').textContent = 'Modifiez les informations souhaitées.';
+            document.getElementById('submitText').textContent = 'Mettre à jour';
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-pen"></i> <span>Mettre à jour</span>';
+            document.getElementById('pwdLabel').textContent = '(optionnel)';
+            document.getElementById('confirmLabel').textContent = '(optionnel)';
+            document.getElementById('infoText').textContent = 'Laissez vide pour conserver le mot de passe actuel.';
+            document.getElementById('password').placeholder = 'Laissez vide pour conserver';
+            document.getElementById('confirm').placeholder = 'Confirmez le nouveau';
+
+            document.getElementById('addUserSection').scrollIntoView({ behavior: 'smooth' });
+            showToast('✏️ Mode édition activé', 'success');
+        }
+
+        async function deleteUser(id) {
+            const user = users.find(u => u.id === id);
+            const name = user ? `${user.prenom||''} ${user.nom||''}` : 'cet utilisateur';
+            if (!confirm(`⚠️ Supprimer "${name}" ?`)) return;
+
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API}/auth/users/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showToast(`🗑️ "${name}" supprimé`, 'success');
+                    if (document.getElementById('editId').value == id) resetForm();
+                    await loadUsers();
+                } else {
+                    showToast(data.message || '❌ Erreur', 'error');
+                }
+            } catch (e) {
+                showToast('❌ Erreur de connexion', 'error');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('userForm').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirm').value = '';
+            document.getElementById('formTitle').textContent = '👤 Ajouter un utilisateur';
+            document.getElementById('formSubtitle').textContent = 'Remplissez les informations ci-dessous.';
+            document.getElementById('submitText').textContent = 'Créer l\'utilisateur';
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-user-plus"></i> <span>Créer l\'utilisateur</span>';
+            document.getElementById('pwdLabel').textContent = '*';
+            document.getElementById('confirmLabel').textContent = '*';
+            document.getElementById('infoText').textContent = 'Mot de passe min 6 caractères';
+            document.getElementById('password').placeholder = 'Entrez le mot de passe';
+            document.getElementById('confirm').placeholder = 'Confirmez';
+            showToast('🔄 Formulaire réinitialisé', 'success');
+        }
+
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast-item ${type}`;
+            toast.innerHTML = `<span style="font-size:18px;color:${type === 'success' ? '#0f5c3d' : '#dc2626'};"><i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i></span><span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(20px)'; toast.style.transition = 'all 0.3s'; setTimeout(() => toast.remove(), 300); }, 3500);
+        }
+    </script>
+</body>
+</html>

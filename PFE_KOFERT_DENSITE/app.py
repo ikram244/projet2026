@@ -21,6 +21,7 @@ app = Flask(
 app.secret_key = "dev-secret-key-a-changer"
 CORS(app)
 
+# Enregistrement des blueprints
 app.register_blueprint(predict_bp)
 app.register_blueprint(correction_bp)
 app.register_blueprint(chat_bp)
@@ -30,10 +31,11 @@ app.register_blueprint(knowledge_bp)
 app.register_blueprint(mesures_bp)
 app.register_blueprint(notifications_bp)
 
-@app.route("/")
-def login():
-    return render_template("login.html")
+# ============ ROUTES DES PAGES ============
 
+@app.route("/")
+def login_page():
+    return render_template("login.html")
 
 @app.route("/login", methods=["POST"])
 def login_submit():
@@ -61,66 +63,69 @@ def login_submit():
 
     return redirect(url_for("dashboard"))
 
-
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("login"))
+    return redirect(url_for("login_page"))
 
+# ============ PROTECTION PAR RÔLE ============
+
+def role_required(roles):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if "user_role" not in session:
+                return redirect(url_for("login_page"))
+            if session["user_role"] not in roles:
+                return redirect(url_for("dashboard"))
+            return f(*args, **kwargs)
+        return wrapper
+    return decorator
+
+# ============ PAGES PRINCIPALES ============
 
 @app.route("/dashboard")
 def dashboard():
+    if "user_id" not in session:
+        return redirect(url_for("login_page"))
     return render_template("dashboard.html")
 
-
 @app.route("/correction")
+@role_required(["ADMIN", "OUVRIER"])
 def correction_page():
     return render_template("correction.html")
 
-
-@app.route("/chatbot")
-def chatbot_page():
-    return render_template("chat.html")
-
-
 @app.route("/historique-corrections")
+@role_required(["ADMIN", "OUVRIER"])
 def historique_page():
     return render_template("historique.html")
 
-
-def admin_required(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        if session.get("user_role") != "ADMIN":
-            return redirect(url_for("dashboard"))
-        return f(*args, **kwargs)
-    return wrapper
-
-
-@app.route("/administration")
-@admin_required
-def administration_page():
-    return render_template("admin_users.html")
-
-
-@app.route("/administration/base-connaissance")
-@admin_required
-def base_connaissance_page():
-    return render_template("base_connaissance.html")
-
-
 @app.route("/mesures-laboratoire")
+@role_required(["ADMIN", "TECHNICIEN_LABO"])
 def mesures_laboratoire():
     return render_template("mesures_laboratoire.html")
 
-
-
 @app.route("/historique-mesures-laboratoire")
+@role_required(["ADMIN", "OUVRIER", "TECHNICIEN_LABO"])
 def historique_mesures_page():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
     return render_template("historique_mesures.html")
 
+@app.route("/chatbot")
+def chatbot_page():
+    if "user_id" not in session:
+        return redirect(url_for("login_page"))
+    return render_template("chat.html")
 
+@app.route("/administration")
+@role_required(["ADMIN"])
+def administration_page():
+    return render_template("admin_users.html")
+
+@app.route("/administration/base-connaissance")
+@role_required(["ADMIN"])
+def base_connaissance_page():
+    return render_template("base_connaissance.html")
+
+# ============ DÉMARRAGE ============
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

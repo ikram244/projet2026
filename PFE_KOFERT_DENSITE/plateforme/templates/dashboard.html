@@ -101,38 +101,7 @@
 
 <body>
 
-<div class="sidebar">
-  <div class="brand">
-    <div class="badge">P</div>
-    <div><strong>Plateforme PAP</strong><small>OCP Group — Atelier</small></div>
-  </div>
-
-  <div class="nav-scroll">
-    <div class="nav-section">SUIVI</div>
-    <a class="nav-item active" href="/dashboard"><span class="ic">🏠</span> Tableau de bord</a>
-    <a class="nav-item" href="#"><span class="ic">📁</span> Fichiers &amp; rapports</a>
-
-    <div class="nav-section">PRÉDICTION & CORRECTION</div>
-    <a class="nav-item" href="/correction"><span class="ic">🎯</span> Prédiction &amp; Correction</a>
-    <a class="nav-item" href="#"><span class="ic">🕒</span> Historique des corrections</a>
-    <a class="nav-item" href="#"><span class="ic">📈</span> Statistiques du modèle</a>
-
-    <div class="nav-section">LABORATOIRE</div>
-    <a class="nav-item" href="#"><span class="ic">🧪</span> Mesures laboratoire</a>
-    <a class="nav-item" href="#"><span class="ic">📊</span> Historique des mesures</a>
-
-    <div class="nav-section">ASSISTANT</div>
-    <a class="nav-item" href="/chatbot"><span class="ic">💬</span> Assistant Chatbot</a>
-
-    <div class="nav-section">ALERTES</div>
-    <a class="nav-item" href="#"><span class="ic">🔔</span> Alertes</a>
-
-    {% if session.get('user_role') == 'ADMIN' %}
-    <div class="nav-section">ADMINISTRATION</div>
-    <a class="nav-item" href="/administration"><span class="ic">👥</span> Gestion des utilisateurs</a>
-    <a class="nav-item" href="#"><span class="ic">📚</span> Base de connaissances</a>
-    {% endif %}
-  </div>
+{% include 'partials/sidebar.html' %}
 
   <div class="sidebar-footer">
     <div class="user-mini">
@@ -144,7 +113,7 @@
     </div>
     <a class="logout-link" href="/logout">↩ Se déconnecter</a>
   </div>
-</div>
+ 
 
 <div class="main">
   <div class="topbar">
@@ -264,6 +233,92 @@ new Chart(lCtx, {
   options: { plugins: { legend: { display: true, position: 'top' } }, scales: { y: { min: 1550, max: 1700 } } }
 });
 </script>
+<!-- ========== CODE NOTIFICATIONS AJOUTÉ DANS DASHBOARD ========== -->
+<style>
+  @keyframes blink-red { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  #notifDot.blinking { animation: blink-red 1s infinite; }
+  .notif-item:last-child { border-bottom: none !important; }
+</style>
 
+<script>
+let previousNotifCount = 0;
+
+async function checkNotifications() {
+  try {
+    const res = await fetch('/api/notifications/count', { cache: 'no-store' });
+    if(!res.ok) return;
+    const data = await res.json();
+    
+    const dot = document.getElementById('notifDot');
+    // Si le nombre change (ou est > 0), on active le clignotement
+    if (data.count > 0 && data.count !== previousNotifCount) {
+      dot.style.display = 'block';
+      dot.classList.add('blinking');
+    } else if (data.count > 0) {
+      // Si déjà compté, il clignote toujours
+      dot.style.display = 'block';
+      dot.classList.add('blinking');
+    } else {
+      dot.style.display = 'none';
+      dot.classList.remove('blinking');
+    }
+    previousNotifCount = data.count; // Mise à jour du compteur
+  } catch (e) {
+    // Ignorer les erreurs réseau silencieusement
+  }
+}
+
+async function ouvrirNotifications() {
+  const panel = document.getElementById('notifPanel');
+  const isOpen = panel.style.display === 'block';
+  
+  // Fermer si déjà ouvert
+  if (isOpen) {
+    panel.style.display = 'none';
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/notifications', { cache: 'no-store' });
+    const rows = await res.json();
+    const list = document.getElementById('notifList');
+
+    if (!rows.length) {
+      list.innerHTML = '<div class="notif-empty" style="padding: 16px 8px; color: #999; font-size: 12.5px; text-align: center;">Aucune notification.</div>';
+    } else {
+      list.innerHTML = rows.map(n => 
+        `<div class="notif-item" style="padding: 10px 8px; border-bottom: 1px solid #f0f0f0; font-size: 12.5px; color: #333; line-height: 1.4;">
+           <strong style="display:block; font-size:11px; color:#666; margin-bottom:2px;">${n.date_creation}</strong>
+           ${n.message}
+         </div>`
+      ).join('');
+    }
+
+    panel.style.display = 'block';
+
+    // Marquer comme lues et arrêter le clignotement
+    await fetch('/api/notifications/marquer-lues', { method: 'POST' });
+    document.getElementById('notifDot').style.display = 'none';
+    document.getElementById('notifDot').classList.remove('blinking');
+    previousNotifCount = 0; // Remise à zéro locale
+  } catch (e) {
+    console.error("Erreur notifications :", e);
+  }
+}
+
+// Attacher l'événement au clic après le chargement du DOM
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('notifBtn');
+    if(btn) {
+        btn.addEventListener('click', ouvrirNotifications);
+    }
+});
+
+// LANCER LE POLLING TOUTES LES 3 SECONDES (pour éviter le retard)
+checkNotifications(); // Premier appel immédiat
+setInterval(checkNotifications, 3000); // 3000 ms = 3 secondes
+
+</script>
+<!-- ============================================================== -->
 </body>
 </html>

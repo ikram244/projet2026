@@ -1,0 +1,41 @@
+/* ===== SIDEBAR UNIFIÉE ===== */
+.sidebar {
+  width: 264px; 
+  background: #0b3d24; 
+  color: #d8e8de; 
+  padding: 22px 0;
+  display: flex; 
+  flex-direction: column; 
+  flex-shrink: 0;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.12);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.brand { display: flex; align-items: center; gap: 12px; padding: 0 22px 22px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 14px; }
+.brand .badge {
+  width: 38px; height: 38px; background: linear-gradient(135deg,#3fae5f,#1a6b3a); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; color: white;
+}
+.brand div strong { display: block; font-size: 14.5px; color: white; }
+.brand div small { display: block; font-size: 10.5px; opacity: 0.6; }
+
+.nav-scroll { flex: 1; overflow-y: auto; }
+.nav-section { padding: 16px 22px 6px; font-size: 10.5px; letter-spacing: 1.2px; opacity: 0.5; font-weight: bold; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px; padding: 10px 22px; font-size: 13.5px;
+  color: #cfe3d8; text-decoration: none; cursor: pointer; position: relative; transition: background 0.15s;
+}
+.nav-item .ic { width: 18px; text-align: center; font-size: 14px; }
+.nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
+.nav-item.active { background: rgba(63,174,95,0.18); color: white; font-weight: 600; }
+.nav-item.active::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #3fae5f; }
+
+.sidebar-footer { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px; margin-top: 8px; }
+.user-mini { display: flex; align-items: center; gap: 10px; padding: 10px 22px; }
+.avatar-sm { width: 32px; height: 32px; border-radius: 50%; background: #3fae5f; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+.user-mini .name { font-size: 13px; font-weight: bold; color: white; }
+.user-mini .role { font-size: 10.5px; opacity: 0.6; }
+.logout-link { display: flex; align-items: center; gap: 10px; padding: 9px 22px; font-size: 12.5px; color: #cfe3d8; text-decoration: none; }
+.logout-link:hover { color: white; }
