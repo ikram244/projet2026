@@ -1,358 +1,966 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Historique de mesures labo — Plateforme PAP</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-  body { display: flex; min-height: 100vh; background: #f5f7f6; }
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historique des mesures · Plateforme PAP</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green-deep: #072f1d;
+      --green-mid: #0f4a2f;
+      --green-bright: #1a7a4a;
+      --green-light: #3fae5f;
+      --green-soft: #e5f0ea;
+      --cream: #f5f7f5;
+      --white: #ffffff;
+      --ink: #14261d;
+      --ink-soft: #4a6658;
+      --shadow: 0 8px 32px -8px rgba(7, 47, 29, 0.12);
+      --shadow-hover: 0 16px 48px -12px rgba(7, 47, 29, 0.25);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    body {
+      font-family: var(--font);
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
 
-  .sidebar {
-    width: 260px; background: #0b3d24; color: white; padding: 25px 0; display: flex; flex-direction: column;
-  }
-  .sidebar .brand { display: flex; align-items: center; gap: 10px; padding: 0 25px 25px; }
-  .sidebar .brand .badge {
-    width: 34px; height: 34px; background: #2e8b4f; border-radius: 8px; display: flex;
-    align-items: center; justify-content: center; font-weight: bold;
-  }
-  .sidebar .brand div small { display: block; font-size: 11px; opacity: 0.7; }
-  .nav-section { padding: 15px 25px 8px; font-size: 11px; letter-spacing: 1px; opacity: 0.55; }
-  .nav-item {
-    display: flex; align-items: center; gap: 12px; padding: 11px 25px; font-size: 14px;
-    color: #d8e8de; text-decoration: none; cursor: pointer;
-  }
-  .nav-item:hover { background: rgba(255,255,255,0.06); }
-  .nav-item.active { background: #14532c; color: white; border-right: 3px solid #3fae5f; }
+    .main {
+      flex: 1;
+      padding: 28px 36px 48px;
+      overflow-y: auto;
+      min-width: 0;
+      animation: mainIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+    }
+    @keyframes mainIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  .main { flex: 1; padding: 30px 40px; overflow-y: auto; position: relative; }
-  .topbar h1 { font-size: 22px; color: #1a3a2a; }
-  .topbar .sub { font-size: 13px; color: #888; margin: 4px 0 0; max-width: 650px; }
+    .topbar {
+      margin-bottom: 22px;
+      animation: slideDown 0.6s ease 0.2s both;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .topbar h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.4px;
+      background: linear-gradient(135deg, var(--ink), var(--green-mid));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .topbar .sub {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-top: 3px;
+      max-width: 620px;
+      line-height: 1.6;
+      -webkit-text-fill-color: var(--ink-soft);
+    }
 
-  .filters-row { display: flex; align-items: flex-end; gap: 14px; margin: 20px 0; flex-wrap: wrap; }
-  .filters-row .field label { display:block; font-size: 12px; color: #555; margin-bottom: 5px; }
-  .filters-row input, .filters-row select {
-    padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13.5px; background: white;
-  }
-  .btn-export, .btn-graphique {
-    padding: 10px 18px; color: white; border: none; border-radius: 6px;
-    font-size: 13.5px; cursor: pointer; font-weight: 600;
-  }
-  .btn-export { background: #1a6b3a; margin-left: auto; }
-  .btn-export:hover { background: #14532c; }
-  .btn-graphique { background: #2e6da4; }
-  .btn-graphique:hover { background: #24547f; }
-  .btn-graphique.actif { background: #14532c; }
+    .last-measure-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      transition: all var(--transition);
+      border-left: 4px solid var(--green-light);
+      animation: notifIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+      position: relative;
+      overflow: hidden;
+    }
+    .last-measure-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(63, 174, 95, 0.03), transparent 60%);
+      pointer-events: none;
+    }
+    @keyframes notifIn {
+      from { opacity: 0; transform: translateX(-30px) scale(0.97); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    .last-measure-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+      border-left-color: var(--green-bright);
+    }
+    .last-measure-card .left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .last-measure-card .left .icon-svg {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--green-soft), #d0ece0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.4s ease;
+    }
+    .last-measure-card:hover .left .icon-svg {
+      transform: rotate(-5deg) scale(1.05);
+      box-shadow: 0 4px 20px rgba(26, 122, 74, 0.15);
+    }
+    .last-measure-card .left .icon-svg svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--green-mid);
+      stroke-width: 1.8;
+      fill: none;
+    }
+    .last-measure-card .left .label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--ink-soft);
+    }
+    .last-measure-card .left .value {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .last-measure-card .left .value strong {
+      color: var(--green-mid);
+      font-weight: 700;
+    }
+    .last-measure-card .left .value .statut-badge {
+      display: inline-block;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-left: 6px;
+      animation: badgePop 0.5s ease 0.8s both;
+    }
+    @keyframes badgePop {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .statut-badge.ok {
+      background: #e5f0ea;
+      color: #0a3d26;
+    }
+    .statut-badge.arret {
+      background: #fde8e5;
+      color: #b03a2e;
+    }
+    .last-measure-card .right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .last-measure-card .right .meta {
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      text-align: right;
+      line-height: 1.5;
+    }
+    .last-measure-card .right .meta strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .last-measure-card .right .badge-live {
+      padding: 4px 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--green-bright), var(--green-mid));
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 16px rgba(26, 122, 74, 0.25);
+      animation: livePulse 2s ease-in-out infinite;
+      position: relative;
+    }
+    .badge-live::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 24px;
+      border: 2px solid rgba(63, 174, 95, 0.2);
+      animation: ringPulse 2s ease-in-out infinite;
+    }
+    @keyframes ringPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0; }
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.02); }
+    }
 
-  .panel {
-    background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-    margin-bottom: 20px;
-  }
-  .panel h3 { font-size: 14px; color: #1a3a2a; margin-bottom: 8px; }
+    .filters-bar {
+      display: flex;
+      align-items: flex-end;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      background: var(--white);
+      padding: 16px 22px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      animation: filterIn 0.6s ease 0.4s both;
+    }
+    @keyframes filterIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .filters-bar .field label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--ink-soft);
+      margin-bottom: 5px;
+    }
+    .filters-bar .field input,
+    .filters-bar .field select {
+      padding: 8px 14px;
+      border: 1.5px solid #e2eae6;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: var(--font);
+      background: #fafcfa;
+      color: var(--ink);
+      transition: all var(--transition);
+      min-width: 140px;
+    }
+    .filters-bar .field input:focus,
+    .filters-bar .field select:focus {
+      outline: none;
+      border-color: var(--green-light);
+      box-shadow: 0 0 0 4px rgba(63, 174, 95, 0.08);
+    }
+    .filters-bar .actions {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+      align-items: center;
+    }
 
-  table { width: 100%; border-collapse: collapse; margin-top: 6px; }
-  th { text-align: left; font-size: 10.5px; color: #888; padding: 8px 6px; border-bottom: 1px solid #eee; text-transform: uppercase; }
-  td { padding: 10px 6px; font-size: 12.5px; border-bottom: 1px solid #f2f2f2; color: #333; }
-  tr.row-arret { background: #fdecea; }
-  tbody tr:hover { background: #fafcfb; }
-  .empty-row td { text-align: center; color: #999; padding: 24px; }
+    .btn {
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: var(--font);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.2px;
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1.5px solid #d5e2db;
+    }
+    .btn-outline:hover {
+      background: #f0f6f2;
+      border-color: var(--green-light);
+      color: var(--green-mid);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(63, 174, 95, 0.1);
+    }
+    .btn-outline.active {
+      background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+      color: #fff;
+      border-color: var(--green-mid);
+      box-shadow: 0 4px 20px rgba(15, 74, 47, 0.25);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(15, 74, 47, 0.2);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(15, 74, 47, 0.35);
+    }
+    .btn-primary svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      transition: transform 0.3s ease;
+    }
+    .btn-primary:hover svg {
+      transform: translateX(3px);
+    }
 
-  .etat-badge { padding: 3px 10px; border-radius: 14px; font-size: 10.5px; font-weight: 700; color: white; }
-  .etat-badge.arret { background: #c0392b; }
-  .etat-badge.fonctionnel { background: #2e8b4f; }
+    .panel {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 22px 24px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      margin-bottom: 20px;
+      transition: all var(--transition);
+      animation: panelIn 0.7s ease both;
+    }
+    .panel:nth-child(1) { animation-delay: 0.3s; }
+    .panel:nth-child(2) { animation-delay: 0.5s; }
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .panel:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+    .panel-header h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .panel-header .icon-svg {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--green-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.4s ease;
+    }
+    .panel:hover .panel-header .icon-svg {
+      transform: rotate(-5deg) scale(1.1);
+      background: linear-gradient(135deg, var(--green-soft), #d0ece0);
+    }
+    .panel-header .icon-svg svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--green-mid);
+      stroke-width: 2;
+      fill: none;
+    }
+    .panel-desc {
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin: 6px 0 14px;
+      padding: 10px 16px;
+      background: #f8fbf9;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--green-light);
+      line-height: 1.6;
+      transition: all 0.3s ease;
+    }
+    .panel:hover .panel-desc {
+      border-left-color: var(--green-bright);
+      background: #f5faf7;
+    }
 
-  #graphiquesPanel { display: none; }
-  .graphiques-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .chart-wrap { position: relative; height: 240px; }
-  .chart-explain {
-    font-size: 12px; color: #55655c; margin: 10px 0 14px; line-height: 1.55;
-    background: #f5f7f6; border-radius: 8px; padding: 10px 14px; border-left: 3px solid #2e8b4f;
-  }
-  .chart-explain strong { color: #1a3a2a; }
-  .legend-row { display: flex; gap: 14px; font-size: 11.5px; color: #666; margin-top: 6px; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 5px; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-</style>
+    .table-wrap {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead th {
+      text-align: left;
+      padding: 10px 10px 10px 0;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #8aa69a;
+      border-bottom: 1.5px solid #eef3f0;
+    }
+    tbody td {
+      padding: 11px 10px 11px 0;
+      border-bottom: 1px solid #f0f5f2;
+      vertical-align: middle;
+      color: var(--ink);
+    }
+    tbody tr {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    tbody tr::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(63, 174, 95, 0.04);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+    tbody tr:hover::after {
+      opacity: 1;
+    }
+    tbody tr.row-arret {
+      background: #fef6f5;
+    }
+    tbody tr.row-arret:hover {
+      background: #fdeeec;
+    }
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .etat-badge {
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .etat-badge.ok {
+      background: #e5f0ea;
+      color: #0a3d26;
+    }
+    .etat-badge.arret {
+      background: #fde8e5;
+      color: #b03a2e;
+      animation: blinkAlert 2s ease-in-out infinite;
+    }
+    @keyframes blinkAlert {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .empty-row td {
+      text-align: center;
+      color: #9bb3a7;
+      padding: 32px 0;
+      font-size: 13px;
+    }
+
+    #graphiquesPanel {
+      display: none;
+      animation: graphIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    #graphiquesPanel.visible {
+      display: block;
+    }
+    @keyframes graphIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .graphiques-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .chart-wrap {
+      position: relative;
+      height: 230px;
+      margin-top: 4px;
+    }
+    .chart-legend {
+      display: flex;
+      gap: 18px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      margin-top: 12px;
+      flex-wrap: wrap;
+      animation: legendIn 0.5s ease 0.5s both;
+    }
+    @keyframes legendIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .chart-legend .item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    .chart-legend .item:hover {
+      transform: scale(1.05);
+    }
+    .chart-legend .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    .chart-legend .item:hover .dot {
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 1024px) {
+      .graphiques-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 820px) {
+      .main { padding: 20px 16px 32px; }
+      .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+      }
+      .filters-bar .actions { margin-left: 0; justify-content: flex-end; flex-wrap: wrap; }
+      .filters-bar .field input,
+      .filters-bar .field select { width: 100%; min-width: auto; }
+      .last-measure-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 18px;
+      }
+      .last-measure-card .right {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+    }
+    @media (max-width: 520px) {
+      .panel { padding: 16px 14px 18px; }
+      .filters-bar .actions {
+        flex-direction: column;
+        width: 100%;
+      }
+      .filters-bar .actions .btn { width: 100%; justify-content: center; }
+      table { font-size: 12px; }
+      thead th, tbody td { padding: 8px 6px; }
+      .topbar h1 { font-size: 20px; }
+      .last-measure-card .left .value { font-size: 13px; }
+    }
+  </style>
 </head>
 <body>
 
-{% include 'partials/sidebar.html' %}
+  <!-- ===== UNE SEULE SIDEBAR (INCLUSE) ===== -->
+  {% include 'partials/sidebar.html' %}
 
-<div class="main">
-  <div class="topbar">
-    <h1>Historique de mesures labo</h1>
-    <div class="sub">Historique complet des relevés de densité ACP 29% et ACP 54%, avec filtres par date/heure, export Excel et graphiques d'évolution.</div>
-  </div>
+  <!-- ===== MAIN ===== -->
+  <main class="main">
+    <div class="topbar">
+      <h1>Historique des mesures</h1>
+      <div class="sub">Suivi chronologique des relevés de densité ACP 29% et ACP 54% avec filtres avancés et export des données.</div>
+    </div>
 
-  <div class="filters-row">
-    <div class="field">
-      <label>Date début</label>
-      <input type="date" id="filterDateDebut" onchange="rafraichir()">
-    </div>
-    <div class="field">
-      <label>Date fin</label>
-      <input type="date" id="filterDateFin" onchange="rafraichir()">
-    </div>
-    <div class="field">
-      <label>Échelon</label>
-      <select id="filterEchelon" onchange="rafraichir()">
-        <option value="all">Tous les échelons</option>
-        <option value="J">Échelon J</option>
-        <option value="K">Échelon K</option>
-        <option value="L">Échelon L</option>
-      </select>
-    </div>
-    <button class="btn-graphique" id="btnGraphique" onclick="toggleGraphique()">📊 Graphique</button>
-    <button class="btn-export" onclick="exporterExcel()">⬇ Exporter en Excel</button>
-  </div>
-
-  <div class="panel">
-    <h3>Tableau des mesures</h3>
-    <div class="chart-explain">
-      Ce tableau liste tous les relevés de laboratoire correspondant aux filtres sélectionnés ci-dessus. Les lignes surlignées en <strong>rouge</strong> indiquent un échelon marqué <strong>à l'arrêt (AR)</strong> au moment du prélèvement.
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Heure</th>
-          <th>Échelon</th>
-          <th>État</th>
-          <th>Densité ACP 29%</th>
-          <th>Densité ACP 54%</th>
-          <th>Saisi par</th>
-        </tr>
-      </thead>
-      <tbody id="mesuresBody">
-        <tr class="empty-row"><td colspan="7">Chargement...</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div id="graphiquesPanel">
-    <div class="graphiques-grid">
-      <div class="panel">
-        <h3>Évolution ACP 29% (entrée)</h3>
-        <div class="chart-explain" id="explain29">
-          Ce graphique montre la <strong>densité mesurée en laboratoire</strong> à l'entrée, dans l'ordre chronologique des prélèvements.
+    <!-- Dernière mesure -->
+    <div class="last-measure-card" id="lastMeasureNotification">
+      <div class="left">
+        <div class="icon-svg">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
-        <div class="chart-wrap"><canvas id="chart29"></canvas></div>
-        <div class="legend-row" id="legend29"></div>
+        <div>
+          <div class="label">Dernière mesure enregistrée</div>
+          <div class="value" id="historiqueLastMeasure">Chargement...</div>
+        </div>
       </div>
-      <div class="panel">
-        <h3>Évolution ACP 54% (sortie)</h3>
-        <div class="chart-explain" id="explain54">
-          Même principe que ci-dessus, mais pour la densité mesurée en <strong>sortie</strong> de production (acide à 54%).
-        </div>
-        <div class="chart-wrap"><canvas id="chart54"></canvas></div>
-        <div class="legend-row" id="legend54"></div>
+      <div class="right">
+        <div class="meta" id="historiqueLastTime"></div>
+        <span class="badge-live">En direct</span>
       </div>
     </div>
-  </div>
-</div>
 
-<script>
-let allMesures = [];
-let chart29Instance = null;
-let chart54Instance = null;
-let graphiqueVisible = false;
+    <!-- Filtres -->
+    <div class="filters-bar">
+      <div class="field">
+        <label>Date de début</label>
+        <input type="date" id="filterDateDebut" onchange="rafraichir()">
+      </div>
+      <div class="field">
+        <label>Date de fin</label>
+        <input type="date" id="filterDateFin" onchange="rafraichir()">
+      </div>
+      <div class="field">
+        <label>Échelon</label>
+        <select id="filterEchelon" onchange="rafraichir()">
+          <option value="all">Tous les échelons</option>
+          <option value="J">Échelon J</option>
+          <option value="K">Échelon K</option>
+          <option value="L">Échelon L</option>
+        </select>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline" id="btnGraphique" onclick="toggleGraphique()">
+          <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+          Graphiques
+        </button>
+        <button class="btn btn-primary" onclick="exporterExcel()">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="16" x2="16" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="20" x2="13" y2="20"/></svg>
+          Exporter Excel
+        </button>
+      </div>
+    </div>
 
-const COULEURS_ECHELON = { J: '#1a6b3a', K: '#c0392b', L: '#2e6da4' };
+    <!-- Tableau -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="icon-svg">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <h3>Relevés de laboratoire</h3>
+      </div>
+      <div class="panel-desc">
+        Les lignes surlignées en <strong>rouge</strong> indiquent un échelon marqué à l'arrêt (<strong>AR</strong>) au moment du prélèvement.
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Heure</th>
+              <th>Échelon</th>
+              <th>État</th>
+              <th>Densité ACP 29%</th>
+              <th>Densité ACP 54%</th>
+              <th>Saisi par</th>
+            </tr>
+          </thead>
+          <tbody id="mesuresBody">
+            <tr class="empty-row"><td colspan="7">Chargement des données...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-function getFiltered() {
-  const dateDebut = document.getElementById('filterDateDebut').value;
-  const dateFin = document.getElementById('filterDateFin').value;
-  const echelon = document.getElementById('filterEchelon').value;
+    <!-- Graphiques -->
+    <div id="graphiquesPanel">
+      <div class="graphiques-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="icon-svg">
+              <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <h3>Évolution ACP 29%</h3>
+          </div>
+          <div class="panel-desc">Densité mesurée à l'entrée du procédé, ordre chronologique des prélèvements.</div>
+          <div class="chart-wrap"><canvas id="chart29"></canvas></div>
+          <div class="chart-legend" id="legend29"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="icon-svg">
+              <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <h3>Évolution ACP 54%</h3>
+          </div>
+          <div class="panel-desc">Densité mesurée en sortie de production (acide à 54%), avec cible de référence.</div>
+          <div class="chart-wrap"><canvas id="chart54"></canvas></div>
+          <div class="chart-legend" id="legend54"></div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-  return allMesures.filter(m => {
-    if (echelon !== 'all' && m.echelon !== echelon) return false;
-    if (dateDebut && m.date_prelevement < dateDebut) return false;
-    if (dateFin && m.date_prelevement > dateFin) return false;
-    return true;
-  }).sort((a, b) => {
-    const ta = a.date_prelevement + ' ' + a.heure_prelevement;
-    const tb = b.date_prelevement + ' ' + b.heure_prelevement;
-    return ta.localeCompare(tb);
-  });
-}
+  <script>
+    let allMesures = [];
+    let chart29Instance = null;
+    let chart54Instance = null;
+    let graphiqueVisible = false;
+    const COULEURS_ECHELON = { J: '#1a6b3a', K: '#b03a2e', L: '#2e6da4' };
 
-function renderTable(rows) {
-  const tbody = document.getElementById('mesuresBody');
-  if (!rows.length) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Aucune mesure trouvée pour ces filtres.</td></tr>';
-    return;
-  }
-  const rowsDesc = [...rows].reverse();
-  tbody.innerHTML = '';
-  rowsDesc.forEach(r => {
-    const etat = r.etat_echelon || 'FONCTIONNEL';
-    const etatClass = etat === 'ARRET' ? 'arret' : 'fonctionnel';
-    const etatLabel = etat === 'ARRET' ? 'AR' : 'OK';
-    const rowClass = etat === 'ARRET' ? 'row-arret' : '';
-    tbody.innerHTML += `<tr class="${rowClass}">
-      <td>${r.date_prelevement}</td>
-      <td>${r.heure_prelevement}</td>
-      <td>${r.echelon}</td>
-      <td><span class="etat-badge ${etatClass}">${etatLabel}</span></td>
-      <td>${r.densite_entree_29 ?? '—'}</td>
-      <td>${r.densite_sortie_54 ?? '—'}</td>
-      <td>${r.prenom} ${r.nom}</td>
-    </tr>`;
-  });
-}
+    async function getLastMeasureForHistorique() {
+      try {
+        const res = await fetch('/api/mesures/last', { cache: 'no-store' });
+        if (!res.ok) {
+          document.getElementById('historiqueLastMeasure').textContent = 'Aucune mesure récente';
+          document.getElementById('historiqueLastTime').textContent = '';
+          return;
+        }
+        const data = await res.json();
+        if (data && data.id) {
+          const d29 = data.densite_entree_29 !== null && data.densite_entree_29 !== undefined ? Number(data.densite_entree_29).toFixed(0) : '—';
+          const d54 = data.densite_sortie_54 !== null && data.densite_sortie_54 !== undefined ? Number(data.densite_sortie_54).toFixed(0) : '—';
+          const echelon = data.echelon || '?';
+          const etat = data.etat_echelon || 'FONCTIONNEL';
+          const etatClass = etat === 'ARRET' ? 'arret' : 'ok';
+          const etatLabel = etat === 'ARRET' ? 'Arrêt' : 'Fonctionnel';
+          const date = data.date_prelevement || '';
+          const heure = data.heure_prelevement || '';
+          const saisiePar = data.prenom && data.nom ? `${data.prenom} ${data.nom}` : '';
 
-async function getDensiteCible(echelon) {
-  try {
-    const url = echelon && echelon !== 'all'
-      ? `/api/densite-cible/derniere?echelon=${echelon}`
-      : `/api/densite-cible/derniere`;
-    const res = await fetch(url, { cache: 'no-store' });
-    const data = await res.json();
-    return data.densite_cible;
-  } catch (e) {
-    return null;
-  }
-}
-
-function renderChartUnEchelon(canvasId, currentInstance, rows, field, cibleValue, label) {
-  const labels = rows.map(r => `${r.date_prelevement} ${r.heure_prelevement}`);
-  const valeurs = rows.map(r => r[field] !== null && r[field] !== undefined ? Number(r[field]) : null);
-  const datasets = [{
-    label: label,
-    data: valeurs,
-    borderColor: '#1a6b3a',
-    backgroundColor: 'rgba(26,107,58,0.06)',
-    tension: 0.3,
-    fill: true,
-    pointRadius: 3,
-    spanGaps: false,
-  }];
-  if (cibleValue !== null && cibleValue !== undefined) {
-    datasets.push({
-      label: 'Densité cible',
-      data: labels.map(() => Number(cibleValue)),
-      borderColor: '#888',
-      borderDash: [6, 4],
-      pointRadius: 0,
-      fill: false,
-    });
-  }
-
-  if (currentInstance) currentInstance.destroy();
-  const ctx = document.getElementById(canvasId).getContext('2d');
-  return new Chart(ctx, {
-    type: 'line',
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 8 } } } }
+          document.getElementById('historiqueLastMeasure').innerHTML =
+            `Échelon <strong>${echelon}</strong> · ACP29% = <strong>${d29}</strong> kg/m³ · ACP54% = <strong>${d54}</strong> kg/m³ · <span class="statut-badge ${etatClass}">${etatLabel}</span>`;
+          document.getElementById('historiqueLastTime').innerHTML =
+            saisiePar ? `Saisi par <strong>${saisiePar}</strong> · ${date} ${heure}` : `${date} ${heure}`;
+        }
+      } catch (e) { console.error('Erreur dernière mesure:', e); }
     }
-  });
-}
 
-function renderChartTousEchelons(canvasId, currentInstance, rows, field) {
-  const labels = [...new Set(rows.map(r => `${r.date_prelevement} ${r.heure_prelevement}`))].sort();
+    function getFiltered() {
+      const dateDebut = document.getElementById('filterDateDebut').value;
+      const dateFin = document.getElementById('filterDateFin').value;
+      const echelon = document.getElementById('filterEchelon').value;
 
-  const datasets = ['J', 'K', 'L'].map(ech => {
-    const parRows = rows.filter(r => r.echelon === ech);
-    const map = {};
-    parRows.forEach(r => {
-      map[`${r.date_prelevement} ${r.heure_prelevement}`] = r[field] !== null && r[field] !== undefined ? Number(r[field]) : null;
-    });
-    return {
-      label: `Échelon ${ech}`,
-      data: labels.map(l => (l in map ? map[l] : null)),
-      borderColor: COULEURS_ECHELON[ech],
-      backgroundColor: 'transparent',
-      tension: 0.3,
-      fill: false,
-      pointRadius: 2,
-      spanGaps: false,
-    };
-  });
-
-  if (currentInstance) currentInstance.destroy();
-  const ctx = document.getElementById(canvasId).getContext('2d');
-  return new Chart(ctx, {
-    type: 'line',
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 8 } } } }
+      return allMesures.filter(m => {
+        if (echelon !== 'all' && m.echelon !== echelon) return false;
+        if (dateDebut && m.date_prelevement < dateDebut) return false;
+        if (dateFin && m.date_prelevement > dateFin) return false;
+        return true;
+      }).sort((a, b) => {
+        // Trier du plus récent au plus ancien
+        const ta = a.date_prelevement + ' ' + a.heure_prelevement;
+        const tb = b.date_prelevement + ' ' + b.heure_prelevement;
+        return tb.localeCompare(ta);
+      });
     }
-  });
-}
 
-function renderLegende(elId, echelon) {
-  const el = document.getElementById(elId);
-  if (echelon === 'all') {
-    el.innerHTML = ['J', 'K', 'L'].map(ech =>
-      `<span class="legend-item"><span class="legend-dot" style="background:${COULEURS_ECHELON[ech]};"></span>Échelon ${ech}</span>`
-    ).join('');
-  } else {
-    el.innerHTML = `
-      <span class="legend-item"><span class="legend-dot" style="background:#1a6b3a;"></span>Densité mesurée</span>
-      <span class="legend-item"><span class="legend-dot" style="background:#999;"></span>Densité cible</span>`;
-  }
-}
+    function renderTable(rows) {
+      const tbody = document.getElementById('mesuresBody');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Aucune mesure trouvée pour ces critères.</td></tr>';
+        return;
+      }
+      // rows est déjà trié du plus récent au plus ancien
+      tbody.innerHTML = '';
+      rows.forEach(r => {
+        const etat = r.etat_echelon || 'FONCTIONNEL';
+        const etatClass = etat === 'ARRET' ? 'arret' : 'fonctionnel';
+        const etatLabel = etat === 'ARRET' ? 'AR' : 'OK';
+        const rowClass = etat === 'ARRET' ? 'row-arret' : '';
+        const d29 = r.densite_entree_29 !== null && r.densite_entree_29 !== undefined ? Number(r.densite_entree_29).toFixed(1) : '—';
+        const d54 = r.densite_sortie_54 !== null && r.densite_sortie_54 !== undefined ? Number(r.densite_sortie_54).toFixed(1) : '—';
+        tbody.innerHTML += `<tr class="${rowClass}">
+          <td>${r.date_prelevement}</td>
+          <td>${r.heure_prelevement}</td>
+          <td>${r.echelon}</td>
+          <td><span class="etat-badge ${etatClass}">${etatLabel}</span></td>
+          <td>${d29}</td>
+          <td>${d54}</td>
+          <td>${r.prenom} ${r.nom}</td>
+        </tr>`;
+      });
+    }
 
-async function rafraichir() {
-  const filtered = getFiltered();
-  renderTable(filtered);
+    async function getDensiteCible(echelon) {
+      try {
+        const url = echelon && echelon !== 'all' ? `/api/densite-cible/derniere?echelon=${echelon}` : `/api/densite-cible/derniere`;
+        const res = await fetch(url, { cache: 'no-store' });
+        const data = await res.json();
+        return data.densite_cible !== null && data.densite_cible !== undefined ? Number(data.densite_cible) : null;
+      } catch (e) { return null; }
+    }
 
-  if (!graphiqueVisible) return;
+    function renderChartUnEchelon(canvasId, currentInstance, rows, field, cibleValue, label) {
+      const labels = rows.map(r => `${r.date_prelevement} ${r.heure_prelevement}`);
+      const valeurs = rows.map(r => r[field] !== null && r[field] !== undefined ? Number(r[field]) : null);
+      const datasets = [{
+        label: label,
+        data: valeurs,
+        borderColor: '#1a6b3a',
+        backgroundColor: 'rgba(26,107,58,0.06)',
+        tension: 0.3,
+        fill: true,
+        pointRadius: 3,
+        pointBackgroundColor: '#1a6b3a',
+        pointBorderColor: '#1a6b3a',
+        pointBorderWidth: 1,
+        spanGaps: false,
+      }];
+      if (cibleValue !== null && cibleValue !== undefined) {
+        datasets.push({
+          label: 'Densité cible',
+          data: labels.map(() => Number(cibleValue)),
+          borderColor: '#b03a2e',
+          borderDash: [6, 4],
+          pointRadius: 0,
+          fill: false,
+        });
+      }
+      if (currentInstance) currentInstance.destroy();
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      return new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 8 } } },
+            y: { grid: { color: 'rgba(0,0,0,0.04)' } }
+          },
+          animation: { duration: 1000, easing: 'easeInOutQuart' }
+        }
+      });
+    }
 
-  const echelon = document.getElementById('filterEchelon').value;
-  renderLegende('legend29', echelon);
-  renderLegende('legend54', echelon);
+    function renderChartTousEchelons(canvasId, currentInstance, rows, field) {
+      const labels = [...new Set(rows.map(r => `${r.date_prelevement} ${r.heure_prelevement}`))].sort();
+      const datasets = ['J', 'K', 'L'].map(ech => {
+        const parRows = rows.filter(r => r.echelon === ech);
+        const map = {};
+        parRows.forEach(r => {
+          map[`${r.date_prelevement} ${r.heure_prelevement}`] = r[field] !== null && r[field] !== undefined ? Number(r[field]) : null;
+        });
+        return {
+          label: `Échelon ${ech}`,
+          data: labels.map(l => (l in map ? map[l] : null)),
+          borderColor: COULEURS_ECHELON[ech],
+          backgroundColor: 'transparent',
+          tension: 0.3,
+          fill: false,
+          pointRadius: 3,
+          pointBackgroundColor: COULEURS_ECHELON[ech],
+          pointBorderColor: COULEURS_ECHELON[ech],
+          pointBorderWidth: 1,
+          spanGaps: false,
+        };
+      });
+      if (currentInstance) currentInstance.destroy();
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      return new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 8 } } },
+            y: { grid: { color: 'rgba(0,0,0,0.04)' } }
+          },
+          animation: { duration: 1000, easing: 'easeInOutQuart' }
+        }
+      });
+    }
 
-  if (echelon === 'all') {
-    chart29Instance = renderChartTousEchelons('chart29', chart29Instance, filtered, 'densite_entree_29');
-    chart54Instance = renderChartTousEchelons('chart54', chart54Instance, filtered, 'densite_sortie_54');
-  } else {
-    const cible = await getDensiteCible(echelon);
-    chart29Instance = renderChartUnEchelon('chart29', chart29Instance, filtered, 'densite_entree_29', cible, 'ACP 29% mesurée');
-    chart54Instance = renderChartUnEchelon('chart54', chart54Instance, filtered, 'densite_sortie_54', cible, 'ACP 54% mesurée');
-  }
-}
+    function renderLegende(elId, echelon) {
+      const el = document.getElementById(elId);
+      if (echelon === 'all') {
+        el.innerHTML = ['J', 'K', 'L'].map(ech =>
+          `<span class="item"><span class="dot" style="background:${COULEURS_ECHELON[ech]};"></span>Échelon ${ech}</span>`
+        ).join('');
+      } else {
+        el.innerHTML = `
+          <span class="item"><span class="dot" style="background:#1a6b3a;"></span>Densité mesurée</span>
+          <span class="item"><span class="dot" style="background:#b03a2e;border:1px dashed #b03a2e;"></span>Densité cible</span>`;
+      }
+    }
 
-function toggleGraphique() {
-  graphiqueVisible = !graphiqueVisible;
-  document.getElementById('graphiquesPanel').style.display = graphiqueVisible ? 'block' : 'none';
-  document.getElementById('btnGraphique').classList.toggle('actif', graphiqueVisible);
-  if (graphiqueVisible) rafraichir();
-}
+    async function rafraichir() {
+      const filtered = getFiltered();
+      renderTable(filtered);
+      if (!graphiqueVisible) return;
+      const echelon = document.getElementById('filterEchelon').value;
+      renderLegende('legend29', echelon);
+      renderLegende('legend54', echelon);
+      if (echelon === 'all') {
+        chart29Instance = renderChartTousEchelons('chart29', chart29Instance, filtered, 'densite_entree_29');
+        chart54Instance = renderChartTousEchelons('chart54', chart54Instance, filtered, 'densite_sortie_54');
+      } else {
+        const cible = await getDensiteCible(echelon);
+        chart29Instance = renderChartUnEchelon('chart29', chart29Instance, filtered, 'densite_entree_29', cible, 'ACP 29% mesurée');
+        chart54Instance = renderChartUnEchelon('chart54', chart54Instance, filtered, 'densite_sortie_54', cible, 'ACP 54% mesurée');
+      }
+    }
 
-function exporterExcel() {
-  const dateDebut = document.getElementById('filterDateDebut').value;
-  const dateFin = document.getElementById('filterDateFin').value;
-  const echelon = document.getElementById('filterEchelon').value;
+    function toggleGraphique() {
+      graphiqueVisible = !graphiqueVisible;
+      const panel = document.getElementById('graphiquesPanel');
+      const btn = document.getElementById('btnGraphique');
+      if (graphiqueVisible) {
+        panel.classList.add('visible');
+        panel.style.display = 'block';
+        btn.classList.add('active');
+        rafraichir();
+      } else {
+        panel.classList.remove('visible');
+        panel.style.display = 'none';
+        btn.classList.remove('active');
+      }
+    }
 
-  const params = new URLSearchParams();
-  if (dateDebut) params.append('date_debut', dateDebut);
-  if (dateFin) params.append('date_fin', dateFin);
-  if (echelon && echelon !== 'all') params.append('echelon', echelon);
+    function exporterExcel() {
+      const dateDebut = document.getElementById('filterDateDebut').value;
+      const dateFin = document.getElementById('filterDateFin').value;
+      const echelon = document.getElementById('filterEchelon').value;
+      const params = new URLSearchParams();
+      if (dateDebut) params.append('date_debut', dateDebut);
+      if (dateFin) params.append('date_fin', dateFin);
+      if (echelon && echelon !== 'all') params.append('echelon', echelon);
+      window.location.href = '/api/mesures/export?' + params.toString();
+    }
 
-  window.location.href = '/api/mesures/export?' + params.toString();
-}
+    // Mise à jour des notifications
+    async function updateNotifications() {
+      try {
+        const res = await fetch('/api/notifications/count', { cache: 'no-store' });
+        const data = await res.json();
+        // Mettre à jour le compteur de notifications dans la sidebar
+        const badge = document.querySelector('.nav-badge.live');
+        if (badge) {
+          if (data.count > 0) {
+            badge.textContent = data.count;
+          } else {
+            badge.textContent = 'Live';
+          }
+        }
+      } catch (e) {
+        console.error('Erreur lors de la mise à jour des notifications:', e);
+      }
+    }
 
-async function charger() {
-  try {
-    const res = await fetch('/api/mesures', { cache: 'no-store' });
-    allMesures = await res.json();
-    rafraichir();
-  } catch (e) {
-    document.getElementById('mesuresBody').innerHTML = `<tr class="empty-row"><td colspan="7">Erreur : ${e.message}</td></tr>`;
-  }
-}
+    async function charger() {
+      try {
+        const res = await fetch('/api/mesures', { cache: 'no-store' });
+        allMesures = await res.json();
+        rafraichir();
+        getLastMeasureForHistorique();
+        updateNotifications(); // Mettre à jour les notifications
+      } catch (e) {
+        document.getElementById('mesuresBody').innerHTML =
+          `<tr class="empty-row"><td colspan="7">Erreur de chargement : ${e.message}</td></tr>`;
+      }
+    }
 
-charger();
-</script>
+    // Charger les données immédiatement
+    charger();
+
+    // Rafraîchir toutes les 5 secondes (temps réel)
+    setInterval(charger, 5000);
+  </script>
 
 </body>
 </html>

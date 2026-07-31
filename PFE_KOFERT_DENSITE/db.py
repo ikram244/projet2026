@@ -13,13 +13,13 @@ def get_connection():
     """
     try:
         connection = mysql.connector.connect(
-            host='127.0.0.1',        # WampServer utilise localhost
-            port=3306,                # Port par défaut de MySQL
-            database='kofert_db',     # Votre base de données
-            user='root',              # Utilisateur par défaut Wamp
-            password='',              # Pas de mot de passe par défaut
-            charset='utf8mb4',        # Pour supporter l'unicode
-            use_pure=True             # Utilise l'implémentation pure Python
+            host='127.0.0.1',
+            port=3306,
+            database='kofert_db',
+            user='root',
+            password='',
+            charset='utf8mb4',
+            use_pure=True
         )
         
         if connection.is_connected():
@@ -250,6 +250,20 @@ def get_mesures(limit=200):
         LIMIT %s
     """
     return execute_query(query, (limit,), fetch_all=True)
+
+
+def get_last_mesure():
+    """Retourne la derniere mesure saisie (pour le tableau de bord)"""
+    query = """
+        SELECT m.id, m.echelon, m.date_prelevement, m.heure_prelevement,
+               m.densite_entree_29, m.densite_sortie_54, m.etat_echelon, m.date_saisie,
+               u.nom, u.prenom
+        FROM mesures_labo m
+        JOIN utilisateurs u ON u.id = m.utilisateur_id
+        ORDER BY m.date_prelevement DESC, m.heure_prelevement DESC
+        LIMIT 1
+    """
+    return execute_query(query, fetch_one=True)
 
 
 def get_mesures_filtrees(date_debut=None, date_fin=None, echelon=None):

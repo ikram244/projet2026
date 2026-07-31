@@ -1,148 +1,1139 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Connexion — Plateforme PAP</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-  body { display: flex; min-height: 100vh; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion — Plateforme PAP | OCP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-deep: #0F5C3E;
+            --green-deep-2: #0c4a32;
+            --green-mint: #3DBE8B;
+            --green-mint-2: #9AF2D0;
+            --bg: #F5F7F6;
+            --panel: rgba(255, 255, 255, .88);
+            --panel-border: rgba(15, 92, 62, .12);
+            --text: #1a1f1c;
+            --text-muted: #5b6560;
+            --shadow: 0 25px 60px -18px rgba(15, 92, 62, .28);
+            --radius-s: 8px;
+            --radius-m: 12px;
+            --radius-l: 20px;
+            --ease: cubic-bezier(.22, .61, .36, 1);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        h1,
+        h2,
+        .font-d {
+            font-family: 'Manrope', sans-serif;
+        }
 
-  .left {
-    flex: 1;
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-    padding: 40px 50px 0 50px;
-    position: relative;
-    overflow: hidden;
-  }
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            animation: pageIn 1s var(--ease);
+        }
+        @keyframes pageIn {
+            0% {
+                opacity: 0;
+                transform: scale(.96) rotate(-1deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
 
-  .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; }
-  .logo img { height: 34px; }
-  .logo span { font-weight: bold; font-size: 15px; color: #1a3a2a; }
+        /* ============ LEFT: photo + animations ============ */
+        .login-left {
+            flex: 1.15;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 50px 54px;
+            color: #eef4f0;
+            background: #0d2b1f;
+        }
+        .login-left .photo-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(.60) saturate(1.1);
+            transform: scale(1.08);
+            animation: photoZoom 25s ease-in-out infinite alternate;
+        }
+        @keyframes photoZoom {
+            0% {
+                transform: scale(1.08) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.15) rotate(0.5deg);
+            }
+            100% {
+                transform: scale(1.12) rotate(-0.5deg);
+            }
+        }
+        .login-left::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(160deg, rgba(9, 42, 29, .92) 0%, rgba(9, 42, 29, .55) 40%, rgba(15, 92, 62, .10) 100%);
+            animation: overlayPulse 6s ease-in-out infinite alternate;
+        }
+        @keyframes overlayPulse {
+            0% {
+                opacity: .9;
+            }
+            100% {
+                opacity: .7;
+            }
+        }
 
-  .left h1 { font-size: 24px; line-height: 1.35; color: #1a3a2a; margin-bottom: 16px; max-width: 460px; }
-  .divider { width: 60px; height: 3px; background: #2e8b4f; margin-bottom: 18px; }
-  .left p { color: #6b6b6b; font-size: 13px; max-width: 440px; margin-bottom: 28px; line-height: 1.5; }
+        /* Aurores boréales ultra-dynamiques */
+        .aurora {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: .5;
+            z-index: 1;
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+        .aurora.a1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #3DBE8B, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation: auroraDance 12s ease-in-out infinite alternate;
+        }
+        .aurora.a2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #0F5C3E, transparent 70%);
+            bottom: -150px;
+            right: -150px;
+            animation: auroraDance 15s ease-in-out infinite alternate-reverse;
+        }
+        .aurora.a3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #9AF2D0, transparent 70%);
+            top: 20%;
+            left: 40%;
+            animation: auroraDance 10s ease-in-out infinite alternate;
+        }
+        .aurora.a4 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #F5A623, transparent 70%);
+            bottom: 10%;
+            left: 20%;
+            animation: auroraDance 18s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes auroraDance {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            25% {
+                transform: translate(60px, -40px) scale(1.2) rotate(10deg);
+            }
+            50% {
+                transform: translate(-30px, 50px) scale(.9) rotate(-5deg);
+            }
+            75% {
+                transform: translate(40px, 30px) scale(1.1) rotate(15deg);
+            }
+            100% {
+                transform: translate(-50px, -60px) scale(1.05) rotate(-10deg);
+            }
+        }
 
-  .feature { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; max-width: 440px; }
-  .feature .icon {
-    width: 30px; height: 30px; min-width: 30px; border-radius: 50%;
-    background: #eafaf0; color: #2e8b4f; display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
-  }
-  .feature .title { font-weight: bold; font-size: 14px; color: #1a3a2a; margin-bottom: 2px; }
-  .feature .desc { font-size: 12.5px; color: #888; line-height: 1.4; }
+        #login-particles {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
 
-  .photo-wrap {
-    margin-top: auto;
-    position: relative;
-    width: 100%;
-    height: 260px;
-  }
-  .photo-wrap img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-  }
-  .tri-dark {
-    position: absolute; left: 0; bottom: 0;
-    width: 0; height: 0;
-    border-left: 240px solid #0b3d24;
-    border-top: 260px solid transparent;
-  }
-  .tri-light {
-    position: absolute; left: 0; bottom: 0;
-    width: 0; height: 0;
-    border-left: 160px solid #3fae5f;
-    border-top: 180px solid transparent;
-    opacity: 0.85;
-  }
-  .dots {
-    position: absolute; left: 12px; bottom: 12px;
-    width: 70px; height: 40px;
-    background-image: radial-gradient(#ffffff 1.5px, transparent 1.5px);
-    background-size: 10px 10px;
-    opacity: 0.5;
-    z-index: 2;
-  }
+        /* Étoiles filantes */
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 20px 4px rgba(255, 255, 255, .3);
+            animation: shootStar 4s ease-in-out infinite;
+        }
+        .shooting-star:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        .shooting-star:nth-child(2) {
+            top: 30%;
+            left: 60%;
+            animation-delay: 1.5s;
+            width: 3px;
+            height: 3px;
+        }
+        .shooting-star:nth-child(3) {
+            top: 60%;
+            left: 10%;
+            animation-delay: 3s;
+            width: 5px;
+            height: 5px;
+        }
+        .shooting-star:nth-child(4) {
+            top: 80%;
+            left: 70%;
+            animation-delay: 2s;
+            width: 3px;
+            height: 3px;
+        }
+        @keyframes shootStar {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            20% {
+                transform: translate(-150px, 150px) scale(0);
+                opacity: 0;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
 
-  .right { flex: 1; display: flex; align-items: center; justify-content: center; background: #ffffff; }
-  .card { width: 380px; }
-  .card-icon {
-    width: 56px; height: 56px; background: #eafaf0; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px;
-  }
-  .card h2 { text-align: center; margin-bottom: 6px; color: #1a3a2a; }
-  .card .sub { text-align: center; color: #777; font-size: 13px; margin-bottom: 25px; }
+        .login-left>*:not(.photo-bg):not(.aurora):not(#login-particles):not(.shooting-star) {
+            position: relative;
+            z-index: 3;
+        }
 
-  label { display: block; margin: 15px 0 6px; font-size: 14px; color: #333; }
-  input[type=email], input[type=password] {
-    width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;
-  }
-  button {
-    width: 100%; margin-top: 25px; padding: 12px; background: #1a6b3a; color: white;
-    border: none; border-radius: 6px; font-size: 15px; cursor: pointer;
-  }
-  button:hover { background: #14532c; }
-  .error { color: #c0392b; font-size: 13px; margin-top: 10px; text-align: center; }
-</style>
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 50px;
+            animation: slideDown .8s var(--ease) .1s both;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--green-mint), var(--green-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            color: #0c1210;
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+        @keyframes logoGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(61, 190, 139, .3);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(61, 190, 139, .7), 0 0 100px rgba(61, 190, 139, .2);
+            }
+        }
+        .brand-name {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: .3px;
+        }
+        .brand-sub {
+            font-size: 11px;
+            color: #9fd9bf;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 1px;
+        }
+
+        .login-left h1 {
+            font-weight: 800;
+            font-size: 36px;
+            line-height: 1.28;
+            max-width: 490px;
+            margin-bottom: 18px;
+            letter-spacing: -.5px;
+            animation: slideRight .8s var(--ease) .2s both;
+        }
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .shimmer-text {
+            background: linear-gradient(100deg, #eafaf0 20%, var(--green-mint-2) 40%, var(--green-mint) 50%, #eafaf0 70%);
+            background-size: 220% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 3.5s linear infinite;
+        }
+        @keyframes shimmer {
+            to {
+                background-position: -220% center;
+            }
+        }
+
+        .login-divider {
+            width: 56px;
+            height: 3px;
+            background: var(--green-mint);
+            border-radius: 3px;
+            margin-bottom: 20px;
+            animation: expandWidth .8s var(--ease) .3s both;
+        }
+        @keyframes expandWidth {
+            from {
+                width: 0;
+            }
+            to {
+                width: 56px;
+            }
+        }
+        .login-left>p.lead {
+            color: #d3e2da;
+            font-size: 14px;
+            max-width: 450px;
+            line-height: 1.65;
+            margin-bottom: 38px;
+            animation: slideRight .8s var(--ease) .35s both;
+        }
+
+        .feature-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+            max-width: 450px;
+            opacity: 0;
+            animation: featureSlide .7s var(--ease) forwards;
+        }
+        .feature-row:nth-child(1) {
+            animation-delay: .5s
+        }
+        .feature-row:nth-child(2) {
+            animation-delay: .65s
+        }
+        .feature-row:nth-child(3) {
+            animation-delay: .8s
+        }
+        @keyframes featureSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-30px) scale(.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+        .f-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 10px;
+            background: rgba(61, 190, 139, .12);
+            border: 1px solid rgba(61, 190, 139, .25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-mint-2);
+            transition: all .3s var(--ease);
+        }
+        .feature-row:hover .f-icon {
+            transform: scale(1.2) rotate(-10deg);
+            background: rgba(61, 190, 139, .25);
+            border-color: var(--green-mint);
+        }
+        .f-title {
+            font-weight: 700;
+            font-size: 13.5px;
+            margin-bottom: 2px;
+        }
+        .f-desc {
+            font-size: 12px;
+            color: #adc0b6;
+            line-height: 1.5;
+        }
+
+        .live-strip {
+            display: flex;
+            gap: 28px;
+            margin-top: auto;
+            padding-top: 26px;
+            border-top: 1px solid rgba(255, 255, 255, .12);
+            animation: slideUp .8s var(--ease) .5s both;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .live-metric {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .live-metric .val {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .live-metric .lab {
+            font-size: 10.5px;
+            color: #a9beb2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green-mint);
+            animation: pulse 2s infinite;
+        }
+        .pulse-dot.warn {
+            background: #F5A623;
+            animation: pulseWarn 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(61, 190, 139, .6)
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(61, 190, 139, 0)
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(61, 190, 139, 0)
+            }
+        }
+        @keyframes pulseWarn {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 166, 35, .6)
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(245, 166, 35, 0)
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 166, 35, 0)
+            }
+        }
+
+        /* ============ RIGHT: form card with ultra animations ============ */
+        .login-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Anneau lumineux tournant ultra-élégant */
+        .ring-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            animation: ringSpin 20s linear infinite;
+        }
+        .ring:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-image: linear-gradient(135deg, var(--green-mint), transparent, var(--green-deep)) 1;
+            border-image-slice: 1;
+            border: 2px solid;
+            border-image: linear-gradient(135deg, var(--green-mint), transparent, var(--green-deep)) 1;
+            animation-duration: 25s;
+        }
+        .ring:nth-child(2) {
+            width: 380px;
+            height: 380px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-image: linear-gradient(225deg, var(--green-mint-2), transparent, var(--green-mint)) 1;
+            border-image-slice: 1;
+            border: 1.5px solid;
+            border-image: linear-gradient(225deg, var(--green-mint-2), transparent, var(--green-mint)) 1;
+            animation-duration: 15s;
+            animation-direction: reverse;
+        }
+        .ring:nth-child(3) {
+            width: 260px;
+            height: 260px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-image: linear-gradient(315deg, var(--green-deep), transparent, var(--green-mint-2)) 1;
+            border-image-slice: 1;
+            border: 1px solid;
+            border-image: linear-gradient(315deg, var(--green-deep), transparent, var(--green-mint-2)) 1;
+            animation-duration: 10s;
+        }
+        @keyframes ringSpin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(180deg) scale(1.05);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg) scale(1);
+            }
+        }
+
+        .card-shell {
+            position: relative;
+            width: 390px;
+            z-index: 2;
+        }
+
+        .login-card {
+            position: relative;
+            padding: 40px 34px;
+            border-radius: var(--radius-l);
+            background: var(--panel);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--panel-border);
+            box-shadow: var(--shadow);
+            animation: cardIn 1s var(--ease) .3s both, cardFloat 6s ease-in-out infinite 1.3s;
+        }
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(.92) rotateX(5deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotateX(0deg);
+            }
+        }
+        @keyframes cardFloat {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .card-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 15px;
+            margin: 0 auto 18px;
+            background: linear-gradient(135deg, var(--green-deep), var(--green-mint));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 24px -6px rgba(15, 92, 62, .4);
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+        @keyframes iconPulse {
+            0%,
+            100% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 10px 24px -6px rgba(15, 92, 62, .4);
+            }
+            50% {
+                transform: scale(1.05) rotate(3deg);
+                box-shadow: 0 15px 40px -8px rgba(61, 190, 139, .6);
+            }
+        }
+
+        .login-card h2 {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: 21px;
+            text-align: center;
+            margin-bottom: 5px;
+            animation: textGlow 4s ease-in-out infinite;
+        }
+        @keyframes textGlow {
+            0%,
+            100% {
+                color: var(--text);
+            }
+            50% {
+                color: var(--green-deep);
+            }
+        }
+        .login-card .sub {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .field {
+            margin-bottom: 17px;
+            animation: fieldSlide .6s var(--ease) both;
+        }
+        .field:nth-of-type(1) {
+            animation-delay: .5s;
+        }
+        .field:nth-of-type(2) {
+            animation-delay: .65s;
+        }
+        @keyframes fieldSlide {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .field label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .field .input-wrap {
+            position: relative;
+        }
+        .field input {
+            width: 100%;
+            padding: 11px 14px 11px 40px;
+            border-radius: var(--radius-s);
+            border: 1px solid var(--panel-border);
+            background: #fff;
+            color: var(--text);
+            font-size: 13.5px;
+            transition: all .3s var(--ease);
+        }
+        .field input:focus {
+            border-color: var(--green-mint);
+            box-shadow: 0 0 0 4px rgba(61, 190, 139, .12);
+            transform: scale(1.02);
+            outline: none;
+        }
+        .field .icon-in {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-faint);
+            display: flex;
+            transition: color .3s;
+        }
+        .field input:focus+.icon-in,
+        .field input:focus~.icon-in {
+            color: var(--green-mint);
+        }
+
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: none;
+            border-radius: var(--radius-s);
+            background: linear-gradient(120deg, var(--green-deep), var(--green-mint));
+            background-size: 200% auto;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: .2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all .3s var(--ease);
+            box-shadow: 0 10px 22px -8px rgba(15, 92, 62, .45);
+            cursor: pointer;
+            animation: btnAppear .8s var(--ease) .7s both;
+        }
+        @keyframes btnAppear {
+            from {
+                opacity: 0;
+                transform: scale(.9) rotateX(10deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg);
+            }
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 18px 35px -8px rgba(61, 190, 139, .6);
+        }
+        .btn-primary:active {
+            transform: translateY(0) scale(.97);
+        }
+        .btn-primary .shine {
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 60%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .2), transparent);
+            transform: rotate(25deg);
+            animation: shineMove 4s ease-in-out infinite;
+        }
+        @keyframes shineMove {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 200%;
+            }
+        }
+
+        .ripple-fx {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .4);
+            transform: scale(0);
+            animation: rippleAnim .7s ease-out;
+            pointer-events: none;
+        }
+        @keyframes rippleAnim {
+            to {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Explosion de particules */
+        .burst-particle {
+            position: fixed;
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+            animation: burstFly .9s ease-out forwards;
+        }
+        @keyframes burstFly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Confettis arc-en-ciel */
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            z-index: 9998;
+            pointer-events: none;
+            animation: confettiFall 3s ease-in forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-20px) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 50px)) rotate(720deg) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .form-foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+            animation: fadeUp .6s var(--ease) .8s both;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .form-foot a {
+            color: var(--green-deep);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all .3s;
+        }
+        .form-foot a:hover {
+            color: var(--green-mint);
+            transform: scale(1.05);
+        }
+        .error {
+            color: #c0392b;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+            animation: shake .5s;
+        }
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0) rotate(0deg);
+            }
+            20% {
+                transform: translateX(-10px) rotate(-2deg);
+            }
+            40% {
+                transform: translateX(10px) rotate(2deg);
+            }
+            60% {
+                transform: translateX(-6px) rotate(-1deg);
+            }
+            80% {
+                transform: translateX(6px) rotate(1deg);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .login-left {
+                display: none;
+            }
+            .login-right {
+                width: 100%;
+            }
+            .ring {
+                display: none;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .001ms !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="left">
-  <div class="logo">
-    <span>🌿 OCP</span>
-  </div>
+    <div id="login-screen">
+        <div class="login-left">
+            <img class="photo-bg" src="{{ url_for('static', filename='img/photologin.jpeg') }}" alt="Usine OCP">
+            <div class="aurora a1"></div>
+            <div class="aurora a2"></div>
+            <div class="aurora a3"></div>
+            <div class="aurora a4"></div>
+            <div class="shooting-star"></div>
+            <div class="shooting-star"></div>
+            <div class="shooting-star"></div>
+            <div class="shooting-star"></div>
+            <canvas id="login-particles"></canvas>
 
-  <h1>Plateforme Intelligente PAP – Prédiction de la Densité de l'Acide Phosphorique</h1>
-  <div class="divider"></div>
-  <p>Solution digitale avancée pour la supervision, la prédiction et l'optimisation du processus de production de l'acide phosphorique à l'Atelier PAP – OCP.</p>
+            <div class="brand">
+                <div class="brand-mark">OCP</div>
+                <div>
+                    <div class="brand-name">COFERT CONTROL</div>
+                    <div class="brand-sub">Atelier PAP · Supervision Industrielle</div>
+                </div>
+            </div>
 
-  <div class="feature">
-    <div class="icon">✓</div>
-    <div>
-      <div class="title">Supervision en temps réel</div>
-      <div class="desc">Suivez en direct les mesures et paramètres clés de l'unité de production.</div>
+            <h1>Plateforme intelligente de <span class="shimmer-text">prédiction de densité</span> de l'acide phosphorique</h1>
+            <div class="login-divider"></div>
+            <p class="lead">Supervision, prédiction et optimisation en temps réel du procédé de production PAP — conçue pour les équipes d'exploitation OCP.</p>
+
+            <div class="feature-row">
+                <div class="f-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                <div><div class="f-title">Supervision en temps réel</div><div class="f-desc">Suivez en direct les mesures et paramètres clés de l'unité de production.</div></div>
+            </div>
+            <div class="feature-row">
+                <div class="f-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.1-2.8-2.8L7 14"/></svg></div>
+                <div><div class="f-title">Prédiction &amp; ajustements</div><div class="f-desc">Anticipez la densité cible et obtenez les ajustements recommandés par l'IA.</div></div>
+            </div>
+            <div class="feature-row">
+                <div class="f-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div><div class="f-title">Assistant intelligent</div><div class="f-desc">Interrogez l'assistant Cofert en français, anglais ou darija.</div></div>
+            </div>
+
+            <div class="live-strip">
+                <div class="live-metric"><div class="val"><span class="pulse-dot"></span>1.612</div><div class="lab">Densité g/cm³</div></div>
+                <div class="live-metric"><div class="val"><span class="pulse-dot"></span>72.4°C</div><div class="lab">Température</div></div>
+                <div class="live-metric"><div class="val"><span class="pulse-dot warn"></span>3</div><div class="lab">Alertes actives</div></div>
+            </div>
+        </div>
+
+        <div class="login-right">
+            <div class="ring-container">
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+            </div>
+
+            <div class="card-shell">
+                <form class="login-card" method="POST" action="/login" id="login-form">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <h2>Bienvenue</h2>
+                    <div class="sub">Connectez-vous à votre espace de supervision</div>
+
+                    <div class="field">
+                        <label>Email</label>
+                        <div class="input-wrap">
+                            <input type="email" name="email" placeholder="example@ocpgroup.ma" required>
+                            <span class="icon-in"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6 12 13 2 6"/><path d="M2 6h20v12H2z"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Mot de passe</label>
+                        <div class="input-wrap">
+                            <input type="password" name="password" placeholder="••••••••" required>
+                            <span class="icon-in"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary magnetic ripple" id="submit-btn">
+                        <span class="shine"></span>
+                        Se connecter
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                    </button>
+
+                    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+                    
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="feature">
-    <div class="icon">📈</div>
-    <div>
-      <div class="title">Prédiction &amp; Ajustements</div>
-      <div class="desc">Prédisez la densité cible et obtenez les ajustements recommandés par nos modèles intelligents.</div>
-    </div>
-  </div>
-  <div class="feature">
-    <div class="icon">💬</div>
-    <div>
-      <div class="title">Assistant intelligent</div>
-      <div class="desc">Posez vos questions à l'assistant Cofert en Français, Anglais ou Darija et obtenez des réponses instantanées.</div>
-    </div>
-  </div>
 
-  <div class="photo-wrap">
-    <img src="{{ url_for('static', filename='img/photologin.jpeg') }}" alt="Usine">
-    <div class="tri-dark"></div>
-    <div class="tri-light"></div>
-    <div class="dots"></div>
-  </div>
-</div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        // ===== PARTICULES AMÉLIORÉES =====
+        function initParticleField(canvasId, options) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            const opts = Object.assign({ density: 5000, linkDist: 120, color: '154,242,208' }, options);
 
-<div class="right">
-  <form class="card" method="POST" action="/login">
-    <div class="card-icon">🔒</div>
-    <h2>Bienvenue</h2>
-    <div class="sub">Connectez-vous à votre espace</div>
+            function resize() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                w = canvas.width;
+                h = canvas.height;
+                generateParticles();
+            }
 
-    <label>Email</label>
-    <input type="email" name="email" placeholder="example@ocpgroup.ma" required>
+            function generateParticles() {
+                const count = Math.floor((w * h) / opts.density);
+                particles = [];
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        vx: (Math.random() - 0.5) * 0.4,
+                        vy: (Math.random() - 0.5) * 0.4,
+                        size: 0.8 + Math.random() * 1.2
+                    });
+                }
+            }
 
-    <label>Mot de passe</label>
-    <input type="password" name="password" placeholder="••••••••" required>
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+                });
 
-    <button type="submit">Se connecter</button>
-    {% if error %}<div class="error">{{ error }}</div>{% endif %}
-  </form>
-</div>
+                // Connexions
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < opts.linkDist) {
+                            const opacity = 1 - (dist / opts.linkDist);
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(${opts.color}, ${opacity * 0.3})`;
+                            ctx.lineWidth = 0.6 + opacity * 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
 
+                // Points
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${opts.color}, 0.6)`;
+                    ctx.fill();
+                    // Lueur
+                    ctx.shadowColor = `rgba(${opts.color}, 0.2)`;
+                    ctx.shadowBlur = 10;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+        }
+
+        // ===== EFFET MAGNÉTIQUE =====
+        function initMagneticButtons() {
+            document.querySelectorAll('.magnetic').forEach(btn => {
+                btn.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    this.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px) scale(1.02)`;
+                });
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translate(0, 0) scale(1)';
+                });
+            });
+        }
+
+        // ===== EFFET RIPPLE =====
+        function initRipple() {
+            document.querySelectorAll('.ripple').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple-fx';
+                    const size = Math.max(rect.width, rect.height) * 1.2;
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                    this.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 700);
+                });
+            });
+        }
+
+        // ===== BURST DE PARTICULES + CONFETTIS =====
+        function magicBurst(btn) {
+            const rect = btn.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const colors = ['#3DBE8B', '#0F5C3E', '#9AF2D0', '#F5A623', '#FF6B6B', '#4ECDC4', '#FFE66D'];
+
+            // Particules explosées
+            for (let i = 0; i < 35; i++) {
+                const p = document.createElement('div');
+                p.className = 'burst-particle';
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 60 + Math.random() * 120;
+                const dx = Math.cos(angle) * dist;
+                const dy = Math.sin(angle) * dist - 40;
+                p.style.setProperty('--dx', dx + 'px');
+                p.style.setProperty('--dy', dy + 'px');
+                p.style.left = cx + 'px';
+                p.style.top = cy + 'px';
+                p.style.width = p.style.height = (5 + Math.random() * 8) + 'px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                p.style.boxShadow = `0 0 15px ${p.style.background}`;
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 900);
+            }
+
+            // Confettis
+            for (let i = 0; i < 25; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = (cx + (Math.random() - 0.5) * 100) + 'px';
+                c.style.top = cy + 'px';
+                c.style.width = (4 + Math.random() * 6) + 'px';
+                c.style.height = (4 + Math.random() * 6) + 'px';
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                c.style.animationDuration = (2 + Math.random() * 2) + 's';
+                c.style.animationDelay = (Math.random() * 0.5) + 's';
+                c.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 4000);
+            }
+        }
+
+        // ===== INIT =====
+        initParticleField('login-particles', { density: 6000, linkDist: 110, color: '154,242,208' });
+        initMagneticButtons();
+        initRipple();
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            magicBurst(document.getElementById('submit-btn'));
+        });
+    </script>
 </body>
 </html>

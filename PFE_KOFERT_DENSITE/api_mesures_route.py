@@ -5,18 +5,20 @@ Blueprint Flask : saisie et consultation des mesures de laboratoire.
 
 POST /api/mesures                    -> creer une mesure (reserve au role TECHNICIEN_LABO)
 GET  /api/mesures                    -> liste des mesures (accessible a tous les roles connectes)
+GET  /api/mesures/last               -> derniere mesure saisie (pour le dashboard)
 GET  /api/densite-cible/derniere     -> derniere densite cible saisie en page Correction
 GET  /api/mesures/export             -> export Excel des mesures filtrees
 """
 from io import BytesIO
 
-from flask import Blueprint, request, jsonify, session, send_file
+from flask import Blueprint, request, jsonify, session, send_file, make_response
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill
 
 from db import (
     create_mesure, get_mesures, get_derniere_densite_cible,
     create_alertes_pour_tous_sauf_stagiaire, get_mesures_filtrees,
+    get_last_mesure,
 )
 
 mesures_bp = Blueprint("mesures_bp", __name__)
@@ -73,7 +75,36 @@ def list_mesures():
         if r.get("date_saisie"):
             r["date_saisie"] = r["date_saisie"].strftime("%Y-%m-%d %H:%M")
 
-    return jsonify(rows or [])
+    response = make_response(jsonify(rows or []))
+    # Désactiver le cache pour un affichage en temps réel
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+
+@mesures_bp.route("/api/mesures/last", methods=["GET"])
+def last_mesure():
+    """Retourne la dernière mesure saisie pour le tableau de bord."""
+    if "user_id" not in session:
+        return jsonify({"error": "Non authentifié."}), 401
+
+    row = get_last_mesure()
+    if not row:
+        return jsonify({"error": "Aucune mesure trouvée."}), 404
+
+    if row.get("date_prelevement"):
+        row["date_prelevement"] = row["date_prelevement"].strftime("%Y-%m-%d")
+    if row.get("heure_prelevement"):
+        row["heure_prelevement"] = str(row["heure_prelevement"])
+    if row.get("date_saisie"):
+        row["date_saisie"] = row["date_saisie"].strftime("%Y-%m-%d %H:%M")
+
+    response = make_response(jsonify(row))
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 
 @mesures_bp.route("/api/densite-cible/derniere", methods=["GET"])

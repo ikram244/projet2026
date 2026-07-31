@@ -7,7 +7,7 @@ GET  /api/notifications                 -> liste des notifications de l'utilisat
 GET  /api/notifications/count           -> nombre de notifications non lues
 POST /api/notifications/marquer-lues    -> marque toutes les notifications comme lues
 """
-from flask import Blueprint, jsonify, session
+from flask import Blueprint, jsonify, session, make_response
 
 from db import get_notifications, count_notifications_non_lues, marquer_notifications_lues
 
@@ -26,7 +26,12 @@ def list_notifications():
         if r.get("date_creation"):
             r["date_creation"] = r["date_creation"].strftime("%Y-%m-%d %H:%M")
 
-    return jsonify(rows or [])
+    response = make_response(jsonify(rows or []))
+    # Désactiver le cache
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 
 @notifications_bp.route("/api/notifications/count", methods=["GET"])
@@ -37,7 +42,11 @@ def notifications_count():
         return jsonify({"count": 0})
 
     count = count_notifications_non_lues(session["user_id"])
-    return jsonify({"count": count})
+    response = make_response(jsonify({"count": count}))
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 
 @notifications_bp.route("/api/notifications/marquer-lues", methods=["POST"])

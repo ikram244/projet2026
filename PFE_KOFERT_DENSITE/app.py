@@ -31,6 +31,48 @@ app.register_blueprint(knowledge_bp)
 app.register_blueprint(mesures_bp)
 app.register_blueprint(notifications_bp)
 
+# ============ CONTEXT PROCESSOR POUR LA SIDEBAR ============
+@app.context_processor
+def inject_menus():
+    role = session.get('user_role', '')
+    menus = []
+
+    if role == 'ADMIN':
+        menus = [
+            {'name': 'Tableau de bord', 'url': '/dashboard', 'icon': 'dashboard', 'badge': 'live'},
+            {'name': 'Prédiction & Correction', 'url': '/correction', 'icon': 'correction'},
+            {'name': 'Historique corrections', 'url': '/historique-corrections', 'icon': 'history'},
+            {'name': 'Mesures laboratoire', 'url': '/mesures-laboratoire', 'icon': 'lab'},
+            {'name': 'Historique mesures', 'url': '/historique-mesures-laboratoire', 'icon': 'history_lab'},
+            {'name': 'Assistant Chatbot', 'url': '/chatbot', 'icon': 'chat', 'badge': 'new'},
+            {'name': 'Gestion des utilisateurs', 'url': '/administration', 'icon': 'users'},
+            {'name': 'Base de connaissance', 'url': '/administration/base-connaissance', 'icon': 'knowledge'},
+        ]
+    elif role == 'OUVRIER':
+        menus = [
+            {'name': 'Tableau de bord', 'url': '/dashboard', 'icon': 'dashboard', 'badge': 'live'},
+            {'name': 'Prédiction & Correction', 'url': '/correction', 'icon': 'correction'},
+            {'name': 'Historique corrections', 'url': '/historique-corrections', 'icon': 'history'},
+            {'name': 'Mesures laboratoire', 'url': '/mesures-laboratoire', 'icon': 'lab'},
+            {'name': 'Historique mesures', 'url': '/historique-mesures-laboratoire', 'icon': 'history_lab'},
+            {'name': 'Assistant Chatbot', 'url': '/chatbot', 'icon': 'chat', 'badge': 'new'},
+        ]
+    elif role == 'TECHNICIEN_LABO':
+        menus = [
+            {'name': 'Tableau de bord', 'url': '/dashboard', 'icon': 'dashboard', 'badge': 'live'},
+            {'name': 'Mesures laboratoire', 'url': '/mesures-laboratoire', 'icon': 'lab'},
+            {'name': 'Historique mesures', 'url': '/historique-mesures-laboratoire', 'icon': 'history_lab'},
+            {'name': 'Assistant Chatbot', 'url': '/chatbot', 'icon': 'chat', 'badge': 'new'},
+        ]
+    elif role == 'STAGIAIRE':
+        menus = [
+            {'name': 'Assistant Chatbot', 'url': '/chatbot', 'icon': 'chat', 'badge': 'new'},
+        ]
+    else:
+        menus = []
+
+    return dict(menus=menus, user_role=role)
+
 # ============ ROUTES DES PAGES ============
 
 @app.route("/")
@@ -61,7 +103,11 @@ def login_submit():
     session["user_prenom"] = user["prenom"]
     session["user_role"] = user["role"]
 
-    return redirect(url_for("dashboard"))
+    # Redirection selon le rôle
+    if user["role"] == "STAGIAIRE":
+        return redirect(url_for("chatbot_page"))
+    else:
+        return redirect(url_for("dashboard"))
 
 @app.route("/logout")
 def logout():
@@ -70,13 +116,17 @@ def logout():
 
 # ============ PROTECTION PAR RÔLE ============
 
-def role_required(roles):
+def role_required(allowed_roles):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
             if "user_role" not in session:
                 return redirect(url_for("login_page"))
-            if session["user_role"] not in roles:
+            if session["user_role"] not in allowed_roles:
+                # Si stagiaire, rediriger vers chatbot
+                if session["user_role"] == "STAGIAIRE":
+                    return redirect(url_for("chatbot_page"))
+                # Sinon vers dashboard
                 return redirect(url_for("dashboard"))
             return f(*args, **kwargs)
         return wrapper
@@ -88,6 +138,9 @@ def role_required(roles):
 def dashboard():
     if "user_id" not in session:
         return redirect(url_for("login_page"))
+    # Stagiaire redirigé vers chatbot
+    if session.get("user_role") == "STAGIAIRE":
+        return redirect(url_for("chatbot_page"))
     return render_template("dashboard.html")
 
 @app.route("/correction")
@@ -101,7 +154,7 @@ def historique_page():
     return render_template("historique.html")
 
 @app.route("/mesures-laboratoire")
-@role_required(["ADMIN", "TECHNICIEN_LABO"])
+@role_required(["ADMIN", "OUVRIER", "TECHNICIEN_LABO"])
 def mesures_laboratoire():
     return render_template("mesures_laboratoire.html")
 

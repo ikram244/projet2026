@@ -1,80 +1,269 @@
-{% set role = session.get('user_role', '') %}
-{% set prenom = session.get('user_prenom', 'Utilisateur') %}
-{% set nom = session.get('user_nom', '') %}
+{# templates/partials/sidebar.html #}
+<div class="sidebar" id="sidebarOcp">
 
-<div class="sidebar">
-  <div class="brand">
-    <div class="badge">P</div>
-    <div>
-      <strong>Plateforme PAP</strong>
-      <small>OCP Group — Atelier</small>
+  <div class="sidebar-header">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg width="24" height="24" viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="38" stroke="white" stroke-width="3"/>
+          <path d="M40 10 L40 70 M10 40 L70 40" stroke="white" stroke-width="2.5" opacity="0.3"/>
+          <circle cx="40" cy="40" r="14" fill="white" opacity="0.15"/>
+          <text x="40" y="46" text-anchor="middle" fill="white" font-size="20" font-weight="700" font-family="Arial">P</text>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <strong>Plateforme PAP</strong>
+        <span>OCP Group — Atelier</span>
+      </div>
     </div>
   </div>
 
   <div class="nav-scroll">
-    <div class="nav-section">SUIVI &amp; PRÉDICTION</div>
-    
-    <a class="nav-item {{ 'active' if request.endpoint == 'dashboard' }}" href="/dashboard">
-      <span class="ic">🏠</span> Tableau de bord
-    </a>
-    
-    {% if role in ['ADMIN', 'OUVRIER'] %}
-    <a class="nav-item {{ 'active' if request.endpoint == 'correction_page' }}" href="/correction">
-      <span class="ic">🎯</span> Prédiction &amp; Correction
-    </a>
-    <a class="nav-item {{ 'active' if request.endpoint == 'historique_page' }}" href="/historique-corrections">
-      <span class="ic">🕒</span> Historique des corrections
-    </a>
-    {% endif %}
-
-    {% if role in ['ADMIN', 'TECHNICIEN_LABO'] %}
-    <a class="nav-item {{ 'active' if request.endpoint == 'mesures_laboratoire' }}" href="/mesures-laboratoire">
-      <span class="ic">🧪</span> Mesures laboratoire
-    </a>
-    {% endif %}
-
-    {% if role in ['ADMIN', 'OUVRIER', 'TECHNICIEN_LABO'] %}
-    <a class="nav-item {{ 'active' if request.endpoint == 'historique_mesures_page' }}" href="/historique-mesures-laboratoire">
-      <span class="ic">📋</span> Historique mesures labo
-    </a>
-    {% endif %}
-
-    <a class="nav-item {{ 'active' if request.endpoint == 'chatbot_page' }}" href="/chatbot">
-      <span class="ic">💬</span> Assistant Chatbot
-    </a>
-
-    {% if role == 'ADMIN' %}
-    <div class="nav-section">ADMINISTRATION</div>
-    <a class="nav-item {{ 'active' if request.endpoint == 'administration_page' }}" href="/administration">
-      <span class="ic">👥</span> Gestion des utilisateurs
-    </a>
-    <a class="nav-item {{ 'active' if request.endpoint == 'base_connaissance_page' }}" href="/administration/base-connaissance">
-      <span class="ic">📚</span> Base de connaissance
-    </a>
-    {% endif %}
+    {# Variable "menus" injectée par le context_processor #}
+    {% set sections = {
+        'Tableau de bord': 'Suivi &amp; prédiction',
+        'Prédiction & Correction': 'Suivi &amp; prédiction',
+        'Historique corrections': 'Suivi &amp; prédiction',
+        'Mesures laboratoire': 'Laboratoire',
+        'Historique mesures': 'Laboratoire',
+        'Assistant Chatbot': 'Assistant',
+        'Gestion des utilisateurs': 'Administration',
+        'Base de connaissance': 'Administration'
+    } %}
+    {% set last_section = '' %}
+    {% for item in menus %}
+      {% set current_section = sections.get(item.name, '') %}
+      {% if current_section and current_section != last_section %}
+        <div class="nav-section">{{ current_section|safe }}</div>
+        {% set last_section = current_section %}
+      {% endif %}
+      
+      <a class="nav-item {{ 'active' if request.path == item.url }}" href="{{ item.url }}">
+        <span class="ic">
+          {# Choix de l'icône selon le nom #}
+          {% if item.icon == 'dashboard' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          {% elif item.icon == 'correction' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          {% elif item.icon == 'history' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          {% elif item.icon == 'lab' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M12 2v4M16 2v4"/><path d="M8 10v6M12 10v6M16 10v6"/><rect x="6" y="6" width="12" height="14" rx="2"/><path d="M6 6h12"/></svg>
+          {% elif item.icon == 'history_lab' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><circle cx="8" cy="15" r="1"/></svg>
+          {% elif item.icon == 'chat' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>
+          {% elif item.icon == 'users' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          {% elif item.icon == 'knowledge' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>
+          {% else %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+          {% endif %}
+        </span>
+        <span class="nav-label">{{ item.name }}</span>
+        {% if item.badge == 'live' %}
+          <span class="nav-badge live">Live</span>
+        {% elif item.badge == 'new' %}
+          <span class="nav-badge new">IA</span>
+        {% endif %}
+      </a>
+    {% endfor %}
   </div>
 
-  <!-- ==================== AJOUT DE LA CLOCHE ICI ==================== -->
-  <div id="notifBellContainer" style="padding: 12px 25px 5px 25px; position: relative; border-top: 1px solid rgba(255,255,255,0.08);">
-    <button id="notifBtn" style="width:42px; height:42px; border-radius:50%; border:none; background:#2e8b4f; color:white; font-size:18px; cursor:pointer; position:relative; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
-      🔔
-      <span id="notifDot" style="display:none; position:absolute; top:2px; right:2px; width:12px; height:12px; background:#c0392b; border-radius:50%; border:2px solid #0b3d24; box-shadow: 0 0 0 2px #0b3d24;"></span>
-    </button>
-    <div id="notifPanel" style="display:none; position:absolute; bottom: 55px; left: 25px; width:340px; max-height:400px; overflow-y:auto; background:white; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.3); padding:10px; z-index:9999;">
-      <div style="font-size:13px; font-weight:bold; color:#1a3a2a; padding:6px 8px; border-bottom: 1px solid #eee;">Notifications</div>
-      <div id="notifList" style="padding-top: 5px;"></div>
-    </div>
-  </div>
-  <!-- =============================================================== -->
-
+  <!-- Footer utilisateur -->
   <div class="sidebar-footer">
-    <div class="user-mini">
-      <div class="avatar-sm">{{ prenom[0] }}{{ nom[0] if nom else '' }}</div>
-      <div>
-        <div class="name">{{ prenom }}</div>
-        <div class="role">{{ role }}</div>
+    <div class="user-card">
+      <div class="avatar-initials">{{ session.get('user_prenom', 'U')[0] }}{{ session.get('user_nom', '')[0] if session.get('user_nom') else '' }}</div>
+      <div class="user-info">
+        <div class="user-name">{{ session.get('user_prenom', 'Utilisateur') }} {{ session.get('user_nom', '') }}</div>
+        <div class="user-role">{{ session.get('user_role', '') }}</div>
       </div>
+      <div class="avatar-status online"></div>
     </div>
-    <a class="logout-link" href="/logout">↩ Se déconnecter</a>
+    <a class="logout-link" href="/logout">
+      <span class="logout-icon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </span>
+      Se déconnecter
+    </a>
   </div>
 </div>
+
+<style>
+/* ===== STYLES SIDEBAR ===== */
+.sidebar {
+  --ink-1: rgba(255,255,255,0.92);
+  --ink-2: rgba(255,255,255,0.72);
+  --ink-3: rgba(255,255,255,0.46);
+  --ink-4: rgba(255,255,255,0.28);
+  --accent: #3fae5f;
+  --accent-dim: #1a6b3a;
+
+  width: 272px;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0b2c1f 0%, #0c3524 55%, #0a2f1e 100%);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  font-family: -apple-system, "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+  box-shadow: 1px 0 0 rgba(255,255,255,0.05);
+  animation: sidebarIn 0.4s ease-out;
+}
+@keyframes sidebarIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.sidebar-header {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-logo {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent-dim), #0f5c3e);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+.brand-text strong { display: block; font-size: 15px; font-weight: 650; color: var(--ink-1); letter-spacing: -0.2px; line-height: 1.25; }
+.brand-text span { display: block; font-size: 11px; color: var(--ink-3); font-weight: 500; margin-top: 2px; }
+
+.nav-scroll {
+  flex: 1; overflow-y: auto;
+  padding: 8px 12px 12px;
+}
+.nav-scroll::-webkit-scrollbar { width: 4px; }
+.nav-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+
+.nav-section {
+  padding: 18px 12px 8px;
+  font-size: 11px; font-weight: 650; text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--ink-4);
+}
+.nav-section:first-child { padding-top: 8px; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 14px; font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  margin-bottom: 2px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.nav-item .ic {
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--ink-3);
+  transition: color 0.15s ease;
+}
+.nav-item .ic svg { width: 17px; height: 17px; }
+.nav-item:hover { color: var(--ink-1); background: rgba(255,255,255,0.06); }
+.nav-item:hover .ic { color: var(--ink-2); }
+.nav-item.active {
+  color: var(--ink-1);
+  background: rgba(63,174,95,0.14);
+  position: relative;
+}
+.nav-item.active .ic { color: var(--accent); }
+.nav-item.active::before {
+  content: '';
+  position: absolute; left: -12px; top: 20%; bottom: 20%;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 0 3px 3px 0;
+}
+
+.nav-badge {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 10px; font-weight: 650; letter-spacing: 0.3px;
+}
+.nav-badge.new { background: rgba(63,174,95,0.18); color: #6bd68a; }
+.nav-badge.live {
+  background: rgba(239,68,68,0.16);
+  color: #ff8a8a;
+}
+.nav-badge.live::before {
+  content: '●';
+  margin-right: 4px;
+  font-size: 8px;
+  animation: liveDot 1.6s ease-in-out infinite;
+}
+@keyframes liveDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.sidebar-footer {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 14px 16px 16px;
+}
+.user-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px;
+  border-radius: 10px;
+}
+.avatar-initials {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-dim), #0f5c3e);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 650; color: #ffffff;
+  flex-shrink: 0;
+}
+.user-info { flex: 1; min-width: 0; }
+.user-name {
+  font-size: 13.5px; font-weight: 600;
+  color: var(--ink-1);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.user-role {
+  font-size: 10.5px;
+  color: var(--ink-3);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-top: 1px;
+}
+.avatar-status {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.avatar-status.online {
+  background: var(--accent);
+  box-shadow: 0 0 0 2px rgba(63,174,95,0.25);
+}
+
+.logout-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; margin-top: 6px;
+  border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.logout-icon { display: flex; opacity: 0.8; }
+.logout-link:hover {
+  color: #ff8a8a;
+  background: rgba(239,68,68,0.1);
+}
+
+@media (max-width: 768px) {
+  .sidebar { width: 100%; min-height: auto; }
+  .sidebar-header { padding: 16px; }
+  .nav-scroll { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar, .nav-badge.live::before { animation: none !important; }
+}
+</style>
